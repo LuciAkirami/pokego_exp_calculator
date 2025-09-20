@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
+import HomePage from "./components/HomePage";
 import Header from "./components/Header";
 import SimpleLevelCalculatorCard from "./components/SimpleLevelCalculatorCard";
 import CatchingPokemonCard from "./components/CatchingPokemonCard";
@@ -10,6 +11,10 @@ import RaidsCard from "./components/RaidsCard";
 import FriendshipCard from "./components/FriendshipCard";
 import OtherActivitiesCard from "./components/OtherActivitiesCard";
 import TotalExperienceCard from "./components/TotalExperienceCard";
+import { Button } from "./components/ui/button";
+import { Switch } from "./components/ui/switch";
+import { Card, CardContent, CardTitle, CardDescription } from "./components/ui/card";
+import { Label } from "./components/ui/label";
 
 export interface XPInputs {
   catching: {
@@ -67,6 +72,7 @@ export interface CalculationResult {
 }
 
 function App() {
+  const [currentPage, setCurrentPage] = useState<string>('home');
   const [inputs, setInputs] = useState<XPInputs>({
     catching: {
       normal_catches: 0,
@@ -118,6 +124,10 @@ function App() {
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
+
+  const handleNavigate = useCallback((page: string) => {
+    setCurrentPage(page);
+  }, []);
 
   const calculateXP = useCallback(async () => {
     setIsCalculating(true);
@@ -226,11 +236,31 @@ function App() {
     return () => clearTimeout(timeoutId);
   }, [inputs, calculateXP]);
 
+  // Show home page
+  if (currentPage === 'home') {
+    return <HomePage onNavigate={handleNavigate} />;
+  }
+
+  // Show calculator page
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Header />
       
       <div className="container mx-auto px-4 py-6 max-w-4xl">
+        {/* Back to Home Button */}
+        <div className="mb-6">
+          <Button
+            onClick={() => setCurrentPage('home')}
+            variant="ghost"
+            className="flex items-center space-x-2 text-red-600 hover:text-red-800 transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span>Back to Home</span>
+          </Button>
+        </div>
+
         {/* Save/Load Message */}
         {saveMessage && (
           <div className={`mb-4 p-3 rounded-lg text-center ${
@@ -289,23 +319,26 @@ function App() {
         </div>
 
         {/* Lucky Egg Toggle */}
-        <div className="mt-6 bg-white rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800">Lucky Egg Bonus</h3>
-              <p className="text-sm text-gray-600">Double XP for all activities</p>
+        <Card className="mt-6">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-lg text-gray-800">Lucky Egg Bonus</CardTitle>
+                <CardDescription className="text-sm text-gray-600">Double XP for all activities</CardDescription>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Label htmlFor="lucky-egg" className="text-sm font-medium">
+                  {inputs.lucky_egg ? 'Enabled' : 'Disabled'}
+                </Label>
+                <Switch
+                  id="lucky-egg"
+                  checked={inputs.lucky_egg}
+                  onCheckedChange={(checked) => setInputs(prev => ({ ...prev, lucky_egg: checked }))}
+                />
+              </div>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={inputs.lucky_egg}
-                onChange={(e) => setInputs(prev => ({ ...prev, lucky_egg: e.target.checked }))}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Total Experience Card */}
         <TotalExperienceCard
