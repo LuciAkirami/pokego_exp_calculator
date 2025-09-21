@@ -25,6 +25,8 @@ export interface XPInputs {
     first_throws: number;
     great_throws: number;
     nice_throws: number;
+    xp_celebration: number;
+    event_bonus: number;
   };
   evolution: {
     normal_evolutions: number;
@@ -82,6 +84,8 @@ function App() {
       first_throws: 0,
       great_throws: 0,
       nice_throws: 0,
+      xp_celebration: 1,
+      event_bonus: 1
     },
     evolution: {
       normal_evolutions: 0,
@@ -161,6 +165,8 @@ function App() {
         first_throws: 0,
         great_throws: 0,
         nice_throws: 0,
+        xp_celebration: 1,
+        event_bonus: 1
       },
       evolution: {
         normal_evolutions: 0,

@@ -7,6 +7,8 @@ pub struct XPValues {
     pub evolution: EvolutionXP,
     pub hatching: HatchingXP,
     pub raids: RaidsXP,
+    pub max_battle: MaxBattleXP,
+    pub max_moves: MaxMovesXP,
     pub friendship: FriendshipXP,
     pub other: OtherXP,
 }
@@ -20,12 +22,14 @@ pub struct CatchingXP {
     pub first_throw: u32,
     pub great_throw: u32,
     pub nice_throw: u32,
+    pub event_bonus: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct EvolutionXP {
     pub normal: u32,
     pub new_pokemon: u32,
+    pub event_bonus: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -35,6 +39,7 @@ pub struct HatchingXP {
     pub seven_km: u32,
     pub ten_km: u32,
     pub twelve_km: u32,
+    pub event_bonus: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -43,7 +48,27 @@ pub struct RaidsXP {
     pub three_star: u32,
     pub five_star: u32,
     pub mega: u32,
+    pub legendary_or_mega: u32,
+    pub legendary_and_mega: u32,
     pub shadow: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct MaxBattleXP {
+    pub one_star: u32,
+    pub two_star: u32,
+    pub three_star: u32,
+    pub four_star: u32,
+    pub five_star: u32,
+    pub six_star: u32,
+    pub in_person_bonus: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct MaxMovesXP {
+    pub level_1: u32,
+    pub level_2: u32,
+    pub level_max: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -52,6 +77,7 @@ pub struct FriendshipXP {
     pub great_friends: u32,
     pub ultra_friends: u32,
     pub best_friends: u32,
+    pub gift_sent: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -87,6 +113,8 @@ pub struct CatchingInputs {
     pub first_throws: u32,
     pub great_throws: u32,
     pub nice_throws: u32,
+    pub xp_celebration: u32,
+    pub event_bonus: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
