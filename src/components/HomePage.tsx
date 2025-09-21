@@ -42,7 +42,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     {
       id: 'friendship',
       title: 'Friends XP Calculator',
-      subtitle: 'Calculate XP gained from friends',
+      subtitle: 'From Friendship level',
       icon: '👥',
       description: 'Calculate XP from friendship milestones',
       color: 'from-red-700 to-red-900',
@@ -50,7 +50,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     {
       id: 'evolution',
       title: 'Evolution XP Calculator',
-      subtitle: 'Calculate XP gained from evolutions',
+      subtitle: 'From evolutions',
       icon: '✨',
       description: 'Calculate XP from Pokemon evolutions',
       color: 'from-red-500 to-red-700',
@@ -93,7 +93,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     {card.icon}
                   </div>
                   <div className="flex-1">
-                    <CardTitle className="text-xl text-white group-hover:text-red-400 transition-colors">
+                    <CardTitle className="text-lg text-white group-hover:text-red-400 transition-colors">
                       {card.title}
                     </CardTitle>
                     <CardDescription className="text-gray-400 text-sm mb-2">{card.subtitle}</CardDescription>
