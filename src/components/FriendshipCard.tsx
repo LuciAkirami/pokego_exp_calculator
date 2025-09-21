@@ -1,4 +1,7 @@
 import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 
 interface FriendshipInputs {
   good_friends: number;
@@ -17,76 +20,71 @@ const FriendshipCard: React.FC<FriendshipCardProps> = ({
   onInputChange,
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-        <span className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
-          👥
-        </span>
-        Friendship
-      </h3>
-      
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Good Friends
-          </label>
-          <input
-            type="number"
-            min="0"
-            value={inputs.good_friends}
-            onChange={(e) => onInputChange('good_friends', parseInt(e.target.value) || 0)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-            placeholder="0"
-          />
-          <p className="text-xs text-gray-500 mt-1">3,000 XP each</p>
-        </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl text-gray-800 flex items-center">
+          <span className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
+            👥
+          </span>
+          Friendship
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="good-friends">Good Friends</Label>
+            <Input
+              id="good-friends"
+              type="number"
+              min="0"
+              value={inputs.good_friends}
+              onChange={(e) => onInputChange('good_friends', parseInt(e.target.value) || 0)}
+              placeholder="0"
+            />
+            <p className="text-xs text-gray-500">3,000 XP each</p>
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Great Friends
-          </label>
-          <input
-            type="number"
-            min="0"
-            value={inputs.great_friends}
-            onChange={(e) => onInputChange('great_friends', parseInt(e.target.value) || 0)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-            placeholder="0"
-          />
-          <p className="text-xs text-gray-500 mt-1">10,000 XP each</p>
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="great-friends">Great Friends</Label>
+            <Input
+              id="great-friends"
+              type="number"
+              min="0"
+              value={inputs.great_friends}
+              onChange={(e) => onInputChange('great_friends', parseInt(e.target.value) || 0)}
+              placeholder="0"
+            />
+            <p className="text-xs text-gray-500">10,000 XP each</p>
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Ultra Friends
-          </label>
-          <input
-            type="number"
-            min="0"
-            value={inputs.ultra_friends}
-            onChange={(e) => onInputChange('ultra_friends', parseInt(e.target.value) || 0)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-            placeholder="0"
-          />
-          <p className="text-xs text-gray-500 mt-1">50,000 XP each</p>
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="ultra-friends">Ultra Friends</Label>
+            <Input
+              id="ultra-friends"
+              type="number"
+              min="0"
+              value={inputs.ultra_friends}
+              onChange={(e) => onInputChange('ultra_friends', parseInt(e.target.value) || 0)}
+              placeholder="0"
+            />
+            <p className="text-xs text-gray-500">50,000 XP each</p>
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Best Friends
-          </label>
-          <input
-            type="number"
-            min="0"
-            value={inputs.best_friends}
-            onChange={(e) => onInputChange('best_friends', parseInt(e.target.value) || 0)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-            placeholder="0"
-          />
-          <p className="text-xs text-gray-500 mt-1">100,000 XP each</p>
+          <div className="space-y-2">
+            <Label htmlFor="best-friends">Best Friends</Label>
+            <Input
+              id="best-friends"
+              type="number"
+              min="0"
+              value={inputs.best_friends}
+              onChange={(e) => onInputChange('best_friends', parseInt(e.target.value) || 0)}
+              placeholder="0"
+            />
+            <p className="text-xs text-gray-500">100,000 XP each</p>
+          </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

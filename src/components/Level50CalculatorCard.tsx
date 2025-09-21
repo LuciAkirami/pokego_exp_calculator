@@ -120,21 +120,29 @@ const Level50CalculatorCard: React.FC<Level50CalculatorCardProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center justify-center space-x-3 mb-6 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-          <Switch 
-            id="lucky-egg" 
-            checked={useLuckyEgg}
-            onCheckedChange={() => setUseLuckyEgg(!useLuckyEgg)}
-            className="data-[state=checked]:bg-blue-600"
-          />
-          <Label htmlFor="lucky-egg" className="text-base font-medium">
-            Using Lucky Egg
-          </Label>
-          {useLuckyEgg && (
-            <Badge variant="outline" className="ml-2 bg-blue-50 text-blue-700 border-blue-200">
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-6 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div className="flex items-center">
+            <Switch 
+              id="lucky-egg" 
+              checked={useLuckyEgg}
+              onCheckedChange={() => setUseLuckyEgg(!useLuckyEgg)}
+              className="data-[state=checked]:bg-blue-600"
+            />
+            <Label htmlFor="lucky-egg" className="ml-2 text-base font-medium cursor-pointer">
+              Using Lucky Egg
+            </Label>
+          </div>
+          <div className={`transition-opacity duration-200 ${useLuckyEgg ? 'opacity-100' : 'opacity-0'}`}>
+            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
               2× XP Active
             </Badge>
-          )}
+          </div>
+          {/* Invisible spacer to prevent layout shift */}
+          <div className="invisible absolute">
+            <Badge variant="outline">
+              2× XP Active
+            </Badge>
+          </div>
         </div>
 
         {!isCalculating && daysRemaining > 0 && xpNeeded > 0 && (
@@ -143,7 +151,7 @@ const Level50CalculatorCard: React.FC<Level50CalculatorCardProps> = ({
             <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
               <CardContent className="p-4">
                 <div className="flex flex-col justify-between items-center">
-                  <span className="text-gray-700 dark:text-gray-300">Days until October 15, 2025</span>
+                  <span className="text-gray-700 dark:text-gray-300">Days until Oct 15, 2025</span>
                   <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
                     {daysRemaining} days
                   </span>
@@ -178,7 +186,7 @@ const Level50CalculatorCard: React.FC<Level50CalculatorCardProps> = ({
                     )}
                   </div>
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                    <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
                       {formatNumber(xpPerDay)} XP / day
                     </div>
                   </div>

@@ -17,7 +17,7 @@ interface TotalExperienceCardProps {
 const TotalExperienceCard: React.FC<TotalExperienceCardProps> = ({
   result,
   isCalculating,
-  onRecalculate,
+  // onRecalculate,
   onReset,
   // onSave,
   // onLoad,

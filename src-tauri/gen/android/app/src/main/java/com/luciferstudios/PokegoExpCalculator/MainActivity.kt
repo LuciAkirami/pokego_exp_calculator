@@ -1,4 +1,4 @@
-package com.luciferstudios.pokego_exp_calculator
+package com.luciferstudios.PokegoExpCalculator
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

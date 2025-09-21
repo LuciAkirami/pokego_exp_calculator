@@ -129,7 +129,7 @@ function App() {
 
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
-  const [saveMessage, setSaveMessage] = useState<string | null>(null);
+  // const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
   const handleNavigate = useCallback((page: string) => {
     setCurrentPage(page);
@@ -254,7 +254,7 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Header />
       
-      <div className="container mx-auto px-4 py-6 max-w-4xl">
+      <div className="container mx-auto px-4 py-6 max-w-4xl bg-black">
         {/* Back to Home Button */}
         <div className="mb-6">
           <Button
@@ -270,7 +270,7 @@ function App() {
         </div>
 
         {/* Save/Load Message */}
-        {saveMessage && (
+        {/* {saveMessage && (
           <div className={`mb-4 p-3 rounded-lg text-center ${
             saveMessage.includes('success') || saveMessage.includes('loaded')
               ? 'bg-green-100 text-green-800'
@@ -278,7 +278,7 @@ function App() {
           }`}>
             {saveMessage}
           </div>
-        )}
+        )} */}
 
         {/* Render the appropriate component based on currentPage */}
         {currentPage === 'level-50' && (

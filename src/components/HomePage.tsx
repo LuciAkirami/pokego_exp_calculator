@@ -87,7 +87,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               onClick={() => onNavigate(card.id)}
               className="bg-gray-900 border-gray-800 hover:border-red-600 transition-all duration-300 cursor-pointer group hover:shadow-2xl hover:shadow-red-900/20"
             >
-              <CardContent className="p-6">
+              <CardContent className="p-2">
                 <div className="flex items-start space-x-4">
                   <div className={`w-16 h-16 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center text-2xl`}>
                     {card.icon}

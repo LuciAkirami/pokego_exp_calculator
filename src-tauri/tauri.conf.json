@@ -2,10 +2,10 @@
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "pokego_exp_calculator",
   "version": "0.1.0",
-  "identifier": "com.luciferstudios.pokego_exp_calculator",
+  "identifier": "com.luciferstudios.PokegoExpCalculator",
   "build": {
-    "beforeDevCommand": "npm run dev",
-    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev --host",
+    "devUrl": "http://127.0.0.1:1420",
     "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist"
   },
