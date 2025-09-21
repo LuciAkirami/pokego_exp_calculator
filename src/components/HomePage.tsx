@@ -8,9 +8,9 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   const calculatorCards = [
     {
-      id: 'simple',
+      id: 'level-50',
       title: 'To Level 50',
-      subtitle: 'Simple XP calc',
+      subtitle: 'Simple XP calculator',
       icon: '🎯',
       description: 'Calculate XP needed to reach level 50',
       color: 'from-red-600 to-red-800'
@@ -46,7 +46,6 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       icon: '👥',
       description: 'Calculate XP from friendship milestones',
       color: 'from-red-700 to-red-900',
-      fullWidth: true
     },
     {
       id: 'evolution',
@@ -55,7 +54,6 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       icon: '✨',
       description: 'Calculate XP from Pokemon evolutions',
       color: 'from-red-500 to-red-700',
-      fullWidth: true
     }
   ];
 
@@ -83,7 +81,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       <div className="container mx-auto px-4 py-8">
         {/* Grid of Calculator Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {calculatorCards.filter(card => !card.fullWidth).map((card) => (
+          {calculatorCards.map((card) => (
             <Card
               key={card.id}
               onClick={() => onNavigate(card.id)}
@@ -113,7 +111,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Full Width Cards */}
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           {calculatorCards.filter(card => card.fullWidth).map((card) => (
             <Card
               key={card.id}
@@ -141,7 +139,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </CardContent>
             </Card>
           ))}
-        </div>
+        </div> */}
 
         {/* Future Feature Card */}
         <div className="mt-8">

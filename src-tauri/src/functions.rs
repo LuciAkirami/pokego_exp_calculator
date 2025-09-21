@@ -70,56 +70,56 @@ pub fn get_xp_values() -> XPValues {
 
 pub fn get_level_xp_requirements() -> HashMap<u32, u64> {
     let mut requirements = HashMap::new();
-    requirements.insert(1, 0);
-    requirements.insert(2, 1000);
-    requirements.insert(3, 3000);
-    requirements.insert(4, 6000);
-    requirements.insert(5, 10000);
-    requirements.insert(6, 15000);
-    requirements.insert(7, 21000);
-    requirements.insert(8, 28000);
-    requirements.insert(9, 36000);
-    requirements.insert(10, 45000);
-    requirements.insert(11, 55000);
-    requirements.insert(12, 65000);
-    requirements.insert(13, 75000);
-    requirements.insert(14, 85000);
-    requirements.insert(15, 100000);
-    requirements.insert(16, 120000);
-    requirements.insert(17, 140000);
-    requirements.insert(18, 160000);
-    requirements.insert(19, 185000);
-    requirements.insert(20, 210000);
-    requirements.insert(21, 260000);
-    requirements.insert(22, 335000);
-    requirements.insert(23, 435000);
-    requirements.insert(24, 560000);
-    requirements.insert(25, 710000);
-    requirements.insert(26, 900000);
-    requirements.insert(27, 1100000);
-    requirements.insert(28, 1350000);
-    requirements.insert(29, 1650000);
-    requirements.insert(30, 2000000);
-    requirements.insert(31, 2500000);
-    requirements.insert(32, 3000000);
-    requirements.insert(33, 3750000);
-    requirements.insert(34, 4750000);
-    requirements.insert(35, 6000000);
-    requirements.insert(36, 7500000);
-    requirements.insert(37, 9500000);
-    requirements.insert(38, 12000000);
-    requirements.insert(39, 15000000);
-    requirements.insert(40, 20000000);
-    requirements.insert(41, 26000000);
-    requirements.insert(42, 33500000);
-    requirements.insert(43, 42500000);
-    requirements.insert(44, 53500000);
-    requirements.insert(45, 66500000);
-    requirements.insert(46, 82000000);
-    requirements.insert(47, 100000000);
-    requirements.insert(48, 121000000);
-    requirements.insert(49, 146000000);
-    requirements.insert(50, 176000000);
+    requirements.insert(1, 0u64);
+    requirements.insert(2, 1000u64);
+    requirements.insert(3, 3000u64);
+    requirements.insert(4, 6000u64);
+    requirements.insert(5, 10000u64);
+    requirements.insert(6, 15000u64);
+    requirements.insert(7, 21000u64);
+    requirements.insert(8, 28000u64);
+    requirements.insert(9, 36000u64);
+    requirements.insert(10, 45000u64);
+    requirements.insert(11, 55000u64);
+    requirements.insert(12, 65000u64);
+    requirements.insert(13, 75000u64);
+    requirements.insert(14, 85000u64);
+    requirements.insert(15, 100000u64);
+    requirements.insert(16, 120000u64);
+    requirements.insert(17, 140000u64);
+    requirements.insert(18, 160000u64);
+    requirements.insert(19, 185000u64);
+    requirements.insert(20, 210000u64);
+    requirements.insert(21, 260000u64);
+    requirements.insert(22, 335000u64);
+    requirements.insert(23, 435000u64);
+    requirements.insert(24, 560000u64);
+    requirements.insert(25, 710000u64);
+    requirements.insert(26, 900000u64);
+    requirements.insert(27, 1100000u64);
+    requirements.insert(28, 1350000u64);
+    requirements.insert(29, 1650000u64);
+    requirements.insert(30, 2000000u64);
+    requirements.insert(31, 2500000u64);
+    requirements.insert(32, 3000000u64);
+    requirements.insert(33, 3750000u64);
+    requirements.insert(34, 4750000u64);
+    requirements.insert(35, 6000000u64);
+    requirements.insert(36, 7500000u64);
+    requirements.insert(37, 9500000u64);
+    requirements.insert(38, 12000000u64);
+    requirements.insert(39, 15000000u64);
+    requirements.insert(40, 20000000u64);
+    requirements.insert(41, 26000000u64);
+    requirements.insert(42, 33500000u64);
+    requirements.insert(43, 42500000u64);
+    requirements.insert(44, 53500000u64);
+    requirements.insert(45, 66500000u64);
+    requirements.insert(46, 82000000u64);
+    requirements.insert(47, 100000000u64);
+    requirements.insert(48, 121000000u64);
+    requirements.insert(49, 146000000u64);
+    requirements.insert(50, 176000000u64);
     requirements
 }
 
@@ -216,10 +216,54 @@ pub fn calculate_total_xp(inputs: XPInputs) -> CalculationResult {
     // let xp_needed = *target_xp;
     let xp_remaining = xp_needed as i64 - total_xp as i64;
 
+    // Calculate days needed (ceil division of xp_remaining by total_xp)
+    let days_needed = if total_xp > 0 && xp_remaining > 0 {
+        ((xp_remaining as f64) / (total_xp as f64)).ceil() as u64
+    } else if xp_remaining <= 0 {
+        // If xp_remaining is less than or equal to 0, then target already reached, so days_needed=1(current day)
+        1
+    } else {
+        // If no XP has been gained yet, it will be 0
+        0
+    };
+
     CalculationResult {
         total_xp,
         xp_breakdown,
         xp_needed,
         xp_remaining,
+        days_needed,
+    }
+}
+
+pub fn calculate_xp_to_level_50(
+    current_level: u32,
+    current_xp: u32,
+    days_remaining: i64,
+) -> XpToLevel50Response {
+    let level_requirements = get_level_xp_requirements();
+    let total_xp_to_50 = *level_requirements.get(&50).unwrap_or(&0);
+
+    // Convert current_xp to u64 before addition to match the HashMap value type
+    let current_level_xp = *level_requirements.get(&current_level).unwrap_or(&0);
+    let total_xp_earned = current_level_xp + u64::from(current_xp);
+
+    // Max of 0 and total_xp_to_50 - total_xp_earned
+    let xp_needed = if total_xp_to_50 > total_xp_earned {
+        total_xp_to_50 - total_xp_earned
+    } else {
+        0u64 // Explicitly specify u64 type for 0
+    };
+
+    let xp_per_day = if days_remaining > 0 {
+        (xp_needed as f64) / (days_remaining as f64)
+    } else {
+        0.0
+    };
+
+    XpToLevel50Response {
+        xp_per_day: xp_per_day.ceil() as u64,
+        days_remaining,
+        xp_needed,
     }
 }

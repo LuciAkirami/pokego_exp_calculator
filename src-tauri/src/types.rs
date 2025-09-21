@@ -166,4 +166,12 @@ pub struct CalculationResult {
     pub xp_breakdown: HashMap<String, u64>,
     pub xp_needed: u64,
     pub xp_remaining: i64,
+    pub days_needed: u64,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct XpToLevel50Response {
+    pub xp_per_day: u64,
+    pub days_remaining: i64,
+    pub xp_needed: u64,
 }

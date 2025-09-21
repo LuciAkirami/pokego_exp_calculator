@@ -4,6 +4,7 @@ import "./App.css";
 import HomePage from "./components/HomePage";
 import Header from "./components/Header";
 import SimpleLevelCalculatorCard from "./components/SimpleLevelCalculatorCard";
+import Level50CalculatorCard from "./components/Level50CalculatorCard";
 import CatchingPokemonCard from "./components/CatchingPokemonCard";
 import EvolutionCard from "./components/EvolutionCard";
 import HatchingEggsCard from "./components/HatchingEggsCard";
@@ -71,6 +72,7 @@ export interface CalculationResult {
   xp_breakdown: Record<string, number>;
   xp_needed: number;
   xp_remaining: number;
+  days_needed: number;
 }
 
 function App() {
@@ -247,7 +249,7 @@ function App() {
     return <HomePage onNavigate={handleNavigate} />;
   }
 
-  // Show calculator page
+  // Show calculator page based on currentPage
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Header />
@@ -278,83 +280,127 @@ function App() {
           </div>
         )}
 
-        {/* Simple Level Calculator */}
-        <SimpleLevelCalculatorCard
-          currentLevel={inputs.current_level}
-          targetLevel={inputs.target_level}
-          onLevelChange={(field: string, value: number) => {
-            if (field === 'current_level') {
-              setInputs(prev => ({ ...prev, current_level: value }));
-            } else if (field === 'target_level') {
-              setInputs(prev => ({ ...prev, target_level: value }));
-            }
-          }}
-        />
+        {/* Render the appropriate component based on currentPage */}
+        {currentPage === 'level-50' && (
+          <Level50CalculatorCard
+            currentLevel={inputs.current_level}
+            onLevelChange={(field: string, value: number) => {
+              if (field === 'current_level') {
+                setInputs(prev => ({ ...prev, current_level: value }));
+              } else if (field === 'target_level') {
+                setInputs(prev => ({ ...prev, target_level: value }));
+              }
+            }}
+          />
+        )}
 
-        {/* XP Source Cards */}
-        <div className="grid gap-6 md:grid-cols-2">
+        {currentPage === 'catching' && (
           <CatchingPokemonCard
             inputs={inputs.catching}
             onInputChange={(field: string, value: number) => updateInputs('catching', field, value)}
           />
-          
+        )}
+
+        {currentPage === 'evolution' && (
           <EvolutionCard
             inputs={inputs.evolution}
             onInputChange={(field: string, value: number) => updateInputs('evolution', field, value)}
           />
-          
-          <HatchingEggsCard
-            inputs={inputs.hatching}
-            onInputChange={(field: string, value: number) => updateInputs('hatching', field, value)}
-          />
-          
+        )}
+
+        {currentPage === 'raids' && (
           <RaidsCard
             inputs={inputs.raids}
             onInputChange={(field: string, value: number) => updateInputs('raids', field, value)}
           />
-          
+        )}
+
+        {currentPage === 'friendship' && (
           <FriendshipCard
             inputs={inputs.friendship}
             onInputChange={(field: string, value: number) => updateInputs('friendship', field, value)}
           />
-          
-          <OtherActivitiesCard
-            inputs={inputs.other}
-            onInputChange={(field: string, value: number) => updateInputs('other', field, value)}
-          />
-        </div>
+        )}
 
-        {/* Lucky Egg Toggle */}
-        <Card className="mt-6">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-lg text-gray-800">Lucky Egg Bonus</CardTitle>
-                <CardDescription className="text-sm text-gray-600">Double XP for all activities</CardDescription>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Label htmlFor="lucky-egg" className="text-sm font-medium">
-                  {inputs.lucky_egg ? 'Enabled' : 'Disabled'}
-                </Label>
-                <Switch
-                  id="lucky-egg"
-                  checked={inputs.lucky_egg}
-                  onCheckedChange={(checked) => setInputs(prev => ({ ...prev, lucky_egg: checked }))}
-                />
-              </div>
+        {currentPage === 'detailed' && (
+          <div className="grid gap-6">
+            <SimpleLevelCalculatorCard
+              currentLevel={inputs.current_level}
+              targetLevel={inputs.target_level}
+              onLevelChange={(field: string, value: number) => {
+                if (field === 'current_level') {
+                  setInputs(prev => ({ ...prev, current_level: value }));
+                } else if (field === 'target_level') {
+                  setInputs(prev => ({ ...prev, target_level: value }));
+                }
+              }}
+            />
+            <div className="grid gap-6 md:grid-cols-2">
+              <CatchingPokemonCard
+                inputs={inputs.catching}
+                onInputChange={(field: string, value: number) => updateInputs('catching', field, value)}
+              />
+              <EvolutionCard
+                inputs={inputs.evolution}
+                onInputChange={(field: string, value: number) => updateInputs('evolution', field, value)}
+              />
+              <HatchingEggsCard
+                inputs={inputs.hatching}
+                onInputChange={(field: string, value: number) => updateInputs('hatching', field, value)}
+              />
+              <RaidsCard
+                inputs={inputs.raids}
+                onInputChange={(field: string, value: number) => updateInputs('raids', field, value)}
+              />
+              <FriendshipCard
+                inputs={inputs.friendship}
+                onInputChange={(field: string, value: number) => updateInputs('friendship', field, value)}
+              />
+              <OtherActivitiesCard
+                inputs={inputs.other}
+                onInputChange={(field: string, value: number) => updateInputs('other', field, value)}
+              />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        )}
 
-        {/* Total Experience Card */}
-        <TotalExperienceCard
-          result={result}
-          isCalculating={isCalculating}
-          onRecalculate={calculateXP}
-          onReset={resetInputs}
-          // onSave={saveProgress}
-          // onLoad={loadProgress}
-        />
+        {/* Common components that appear on all calculator pages except home and level-50*/}
+        {currentPage !== 'home' && currentPage !== 'level-50' && (
+          <>
+            {/* Lucky Egg Toggle */}
+            <Card className="mt-6">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-lg text-gray-800">Lucky Egg Bonus</CardTitle>
+                    <CardDescription className="text-sm text-gray-600">Double XP for all activities</CardDescription>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Label htmlFor="lucky-egg" className="text-sm font-medium">
+                      {inputs.lucky_egg ? 'Enabled' : 'Disabled'}
+                    </Label>
+                    <Switch
+                      id="lucky-egg"
+                      checked={inputs.lucky_egg}
+                      onCheckedChange={(checked) => setInputs(prev => ({ ...prev, lucky_egg: checked }))}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Total Experience Card - Only show if not on the detailed view */}
+              <TotalExperienceCard
+                result={result}
+                isCalculating={isCalculating}
+                onRecalculate={calculateXP}
+                onReset={resetInputs}
+                isDetailedView={currentPage === 'detailed'}
+                // onSave={saveProgress}
+                // onLoad={loadProgress}
+              />
+          </>
+        )}
       </div>
     </div>
   );
