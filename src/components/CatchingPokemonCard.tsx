@@ -2,21 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-
-interface CatchingInputs {
-  normal_catches: number;
-  new_pokemon_catches: number;
-  excellent_throws: number;
-  curve_balls: number;
-  first_throws: number;
-  great_throws: number;
-  nice_throws: number;
-}
-
-interface CatchingPokemonCardProps {
-  inputs: CatchingInputs;
-  onInputChange: (field: keyof CatchingInputs, value: number) => void;
-}
+import type { CatchingPokemonCardProps } from '../types/component-props';
 
 const CatchingPokemonCard: React.FC<CatchingPokemonCardProps> = ({
   inputs,

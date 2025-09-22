@@ -2,16 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-
-interface EvolutionInputs {
-  normal_evolutions: number;
-  new_pokemon_evolutions: number;
-}
-
-interface EvolutionCardProps {
-  inputs: EvolutionInputs;
-  onInputChange: (field: keyof EvolutionInputs, value: number) => void;
-}
+import type { EvolutionCardProps } from '../types/component-props';
 
 const EvolutionCard: React.FC<EvolutionCardProps> = ({
   inputs,

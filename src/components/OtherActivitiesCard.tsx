@@ -2,21 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-
-interface OtherInputs {
-  research_breakthroughs: number;
-  field_research: number;
-  special_research: number;
-  gym_battles: number;
-  pvp_battles: number;
-  trades: number;
-  photobombs: number;
-}
-
-interface OtherActivitiesCardProps {
-  inputs: OtherInputs;
-  onInputChange: (field: keyof OtherInputs, value: number) => void;
-}
+import type { OtherActivitiesCardProps } from '../types/component-props';
 
 const OtherActivitiesCard: React.FC<OtherActivitiesCardProps> = ({
   inputs,

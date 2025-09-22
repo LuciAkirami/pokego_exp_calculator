@@ -2,19 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-
-interface HatchingInputs {
-  two_km_eggs: number;
-  five_km_eggs: number;
-  seven_km_eggs: number;
-  ten_km_eggs: number;
-  twelve_km_eggs: number;
-}
-
-interface HatchingEggsCardProps {
-  inputs: HatchingInputs;
-  onInputChange: (field: keyof HatchingInputs, value: number) => void;
-}
+import type { HatchingEggsCardProps } from '../types/component-props';
 
 const HatchingEggsCard: React.FC<HatchingEggsCardProps> = ({
   inputs,

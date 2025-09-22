@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
+
+// Components
 import HomePage from "./components/HomePage";
 import Header from "./components/Header";
 import SimpleLevelCalculatorCard from "./components/SimpleLevelCalculatorCard";
@@ -13,67 +15,13 @@ import FriendshipCard from "./components/FriendshipCard";
 import OtherActivitiesCard from "./components/OtherActivitiesCard";
 import TotalExperienceCard from "./components/TotalExperienceCard";
 import { Button } from "./components/ui/button";
-import { Switch } from "./components/ui/switch";
-import { Card, CardContent, CardTitle, CardDescription } from "./components/ui/card";
-import { Label } from "./components/ui/label";
+import LuckyEggToggle from "./components/LuckyEggToggle";
 
-export interface XPInputs {
-  catching: {
-    normal_catches: number;
-    new_pokemon_catches: number;
-    excellent_throws: number;
-    curve_balls: number;
-    first_throws: number;
-    great_throws: number;
-    nice_throws: number;
-    xp_celebration: number;
-    event_bonus: number;
-  };
-  evolution: {
-    normal_evolutions: number;
-    new_pokemon_evolutions: number;
-  };
-  hatching: {
-    two_km_eggs: number;
-    five_km_eggs: number;
-    seven_km_eggs: number;
-    ten_km_eggs: number;
-    twelve_km_eggs: number;
-  };
-  raids: {
-    one_star_raids: number;
-    three_star_raids: number;
-    five_star_raids: number;
-    mega_raids: number;
-    shadow_raids: number;
-  };
-  friendship: {
-    good_friends: number;
-    great_friends: number;
-    ultra_friends: number;
-    best_friends: number;
-  };
-  other: {
-    research_breakthroughs: number;
-    field_research: number;
-    special_research: number;
-    gym_battles: number;
-    pvp_battles: number;
-    trades: number;
-    photobombs: number;
-  };
-  lucky_egg: boolean;
-  current_level: number;
-  target_level: number;
-}
-
-export interface CalculationResult {
-  total_xp: number;
-  xp_breakdown: Record<string, number>;
-  xp_needed: number;
-  xp_remaining: number;
-  days_needed: number;
-}
+// Types
+import type { 
+  XPInputs, 
+  CalculationResult
+} from "./types";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<string>('home');
@@ -147,8 +95,8 @@ function App() {
     }
   }, [inputs]);
 
-  const updateInputs = useCallback((section: keyof XPInputs, field: string, value: number | boolean) => {
-    setInputs(prev => ({
+  const updateInputs = useCallback((section: keyof Omit<XPInputs, 'current_level' | 'target_level' | 'lucky_egg'>, field: string, value: number | boolean) => {
+    setInputs((prev: XPInputs) => ({
       ...prev,
       [section]: {
         ...(prev[section] as any),
@@ -285,11 +233,11 @@ function App() {
           <Level50CalculatorCard
             currentLevel={inputs.current_level}
             onLevelChange={(field: string, value: number) => {
-              if (field === 'current_level') {
-                setInputs(prev => ({ ...prev, current_level: value }));
-              } else if (field === 'target_level') {
-                setInputs(prev => ({ ...prev, target_level: value }));
-              }
+              setInputs((prev: XPInputs) => ({
+                ...prev,
+                ...(field === 'current_level' && { current_level: value }),
+                ...(field === 'target_level' && { target_level: value })
+              }));
             }}
           />
         )}
@@ -297,7 +245,7 @@ function App() {
         {currentPage === 'catching' && (
           <CatchingPokemonCard
             inputs={inputs.catching}
-            onInputChange={(field: string, value: number) => updateInputs('catching', field, value)}
+            onInputChange={(field: keyof XPInputs['catching'], value: number) => updateInputs('catching', field, value)}
           />
         )}
 
@@ -328,37 +276,37 @@ function App() {
               currentLevel={inputs.current_level}
               targetLevel={inputs.target_level}
               onLevelChange={(field: string, value: number) => {
-                if (field === 'current_level') {
-                  setInputs(prev => ({ ...prev, current_level: value }));
-                } else if (field === 'target_level') {
-                  setInputs(prev => ({ ...prev, target_level: value }));
-                }
+                setInputs((prev: XPInputs) => ({
+                  ...prev,
+                  ...(field === 'current_level' && { current_level: value }),
+                  ...(field === 'target_level' && { target_level: value })
+                }));
               }}
             />
             <div className="grid gap-6 md:grid-cols-2">
               <CatchingPokemonCard
                 inputs={inputs.catching}
-                onInputChange={(field: string, value: number) => updateInputs('catching', field, value)}
+                onInputChange={(field: keyof XPInputs['catching'], value: XPInputs['catching'][keyof XPInputs['catching']]) => updateInputs('catching', field, value)}
               />
               <EvolutionCard
                 inputs={inputs.evolution}
-                onInputChange={(field: string, value: number) => updateInputs('evolution', field, value)}
+                onInputChange={(field: keyof XPInputs['evolution'], value: XPInputs['evolution'][keyof XPInputs['evolution']]) => updateInputs('evolution', field, value)}
               />
               <HatchingEggsCard
                 inputs={inputs.hatching}
-                onInputChange={(field: string, value: number) => updateInputs('hatching', field, value)}
+                onInputChange={(field: keyof XPInputs['hatching'], value: XPInputs['hatching'][keyof XPInputs['hatching']]) => updateInputs('hatching', field, value)}
               />
               <RaidsCard
                 inputs={inputs.raids}
-                onInputChange={(field: string, value: number) => updateInputs('raids', field, value)}
+                onInputChange={(field: keyof XPInputs['raids'], value: XPInputs['raids'][keyof XPInputs['raids']]) => updateInputs('raids', field, value)}
               />
               <FriendshipCard
                 inputs={inputs.friendship}
-                onInputChange={(field: string, value: number) => updateInputs('friendship', field, value)}
+                onInputChange={(field: keyof XPInputs['friendship'], value: XPInputs['friendship'][keyof XPInputs['friendship']]) => updateInputs('friendship', field, value)}
               />
               <OtherActivitiesCard
                 inputs={inputs.other}
-                onInputChange={(field: string, value: number) => updateInputs('other', field, value)}
+                onInputChange={(field: keyof XPInputs['other'], value: XPInputs['other'][keyof XPInputs['other']]) => updateInputs('other', field, value)}
               />
             </div>
           </div>
@@ -367,27 +315,10 @@ function App() {
         {/* Common components that appear on all calculator pages except home and level-50*/}
         {currentPage !== 'home' && currentPage !== 'level-50' && (
           <>
-            {/* Lucky Egg Toggle */}
-            <Card className="mt-6">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-lg text-gray-800">Lucky Egg Bonus</CardTitle>
-                    <CardDescription className="text-sm text-gray-600">Double XP for all activities</CardDescription>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Label htmlFor="lucky-egg" className="text-sm font-medium">
-                      {inputs.lucky_egg ? 'Enabled' : 'Disabled'}
-                    </Label>
-                    <Switch
-                      id="lucky-egg"
-                      checked={inputs.lucky_egg}
-                      onCheckedChange={(checked) => setInputs(prev => ({ ...prev, lucky_egg: checked }))}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <LuckyEggToggle 
+              isActive={inputs.lucky_egg} 
+              onToggle={(checked: boolean) => setInputs((prev: XPInputs) => ({ ...prev, lucky_egg: checked }))} 
+            />
 
             {/* Total Experience Card - Only show if not on the detailed view */}
               <TotalExperienceCard

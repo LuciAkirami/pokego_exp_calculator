@@ -2,19 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-
-interface RaidsInputs {
-  one_star_raids: number;
-  three_star_raids: number;
-  five_star_raids: number;
-  mega_raids: number;
-  shadow_raids: number;
-}
-
-interface RaidsCardProps {
-  inputs: RaidsInputs;
-  onInputChange: (field: keyof RaidsInputs, value: number) => void;
-}
+import type { RaidsCardProps } from '../types/component-props';
 
 const RaidsCard: React.FC<RaidsCardProps> = ({
   inputs,

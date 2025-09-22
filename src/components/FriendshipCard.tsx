@@ -2,18 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-
-interface FriendshipInputs {
-  good_friends: number;
-  great_friends: number;
-  ultra_friends: number;
-  best_friends: number;
-}
-
-interface FriendshipCardProps {
-  inputs: FriendshipInputs;
-  onInputChange: (field: keyof FriendshipInputs, value: number) => void;
-}
+import type { FriendshipCardProps } from '../types/component-props';
 
 const FriendshipCard: React.FC<FriendshipCardProps> = ({
   inputs,
