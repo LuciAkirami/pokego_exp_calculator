@@ -18,8 +18,8 @@ import { Button } from "./components/ui/button";
 import LuckyEggToggle from "./components/LuckyEggToggle";
 
 // Types
-import type { 
-  XPInputs, 
+import type {
+  XPInputs,
   CalculationResult
 } from "./types";
 
@@ -201,12 +201,16 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <Header />
-      
+
       <div className="container mx-auto px-4 py-6 max-w-4xl bg-black">
         {/* Back to Home Button */}
         <div className="mb-6">
           <Button
-            onClick={() => setCurrentPage('home')}
+            onClick={() => {
+              setCurrentPage('home')
+              resetInputs()
+            }
+            }
             variant="ghost"
             className="flex items-center space-x-2 text-red-600 hover:text-red-800 transition-colors"
           >
@@ -315,21 +319,21 @@ function App() {
         {/* Common components that appear on all calculator pages except home and level-50*/}
         {currentPage !== 'home' && currentPage !== 'level-50' && (
           <>
-            <LuckyEggToggle 
-              isActive={inputs.lucky_egg} 
-              onToggle={(checked: boolean) => setInputs((prev: XPInputs) => ({ ...prev, lucky_egg: checked }))} 
+            <LuckyEggToggle
+              isActive={inputs.lucky_egg}
+              onToggle={(checked: boolean) => setInputs((prev: XPInputs) => ({ ...prev, lucky_egg: checked }))}
             />
 
             {/* Total Experience Card - Only show if not on the detailed view */}
-              <TotalExperienceCard
-                result={result}
-                isCalculating={isCalculating}
-                onRecalculate={calculateXP}
-                onReset={resetInputs}
-                isDetailedView={currentPage === 'detailed'}
-                // onSave={saveProgress}
-                // onLoad={loadProgress}
-              />
+            <TotalExperienceCard
+              result={result}
+              isCalculating={isCalculating}
+              onRecalculate={calculateXP}
+              onReset={resetInputs}
+              isDetailedView={currentPage === 'detailed'}
+            // onSave={saveProgress}
+            // onLoad={loadProgress}
+            />
           </>
         )}
       </div>
