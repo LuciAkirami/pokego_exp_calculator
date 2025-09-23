@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import type { FriendshipCardProps } from '../types/component-props';
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import { Input } from '../../ui/input';
+import { Label } from '../../ui/label';
+import type { FriendshipCardProps } from '../../../types/component-props';
 
 const FriendshipCard: React.FC<FriendshipCardProps> = ({
   inputs,
@@ -27,7 +27,7 @@ const FriendshipCard: React.FC<FriendshipCardProps> = ({
               type="number"
               min="0"
               value={inputs.good_friends}
-              onChange={(e) => onInputChange('good_friends', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('good_friends', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">3,000 XP each</p>
@@ -40,7 +40,7 @@ const FriendshipCard: React.FC<FriendshipCardProps> = ({
               type="number"
               min="0"
               value={inputs.great_friends}
-              onChange={(e) => onInputChange('great_friends', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('great_friends', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">10,000 XP each</p>
@@ -53,7 +53,7 @@ const FriendshipCard: React.FC<FriendshipCardProps> = ({
               type="number"
               min="0"
               value={inputs.ultra_friends}
-              onChange={(e) => onInputChange('ultra_friends', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('ultra_friends', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">50,000 XP each</p>
@@ -66,7 +66,7 @@ const FriendshipCard: React.FC<FriendshipCardProps> = ({
               type="number"
               min="0"
               value={inputs.best_friends}
-              onChange={(e) => onInputChange('best_friends', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('best_friends', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">100,000 XP each</p>

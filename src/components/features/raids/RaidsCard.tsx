@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import type { RaidsCardProps } from '../types/component-props';
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import { Input } from '../../ui/input';
+import { Label } from '../../ui/label';
+import type { RaidsCardProps } from '../../../types/component-props';
 
 const RaidsCard: React.FC<RaidsCardProps> = ({
   inputs,
@@ -27,7 +27,7 @@ const RaidsCard: React.FC<RaidsCardProps> = ({
               type="number"
               min="0"
               value={inputs.one_star_raids}
-              onChange={(e) => onInputChange('one_star_raids', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('one_star_raids', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">3,000 XP each</p>
@@ -40,7 +40,7 @@ const RaidsCard: React.FC<RaidsCardProps> = ({
               type="number"
               min="0"
               value={inputs.three_star_raids}
-              onChange={(e) => onInputChange('three_star_raids', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('three_star_raids', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">3,200 XP each</p>
@@ -53,7 +53,7 @@ const RaidsCard: React.FC<RaidsCardProps> = ({
               type="number"
               min="0"
               value={inputs.five_star_raids}
-              onChange={(e) => onInputChange('five_star_raids', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('five_star_raids', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">10,000 XP each</p>
@@ -66,7 +66,7 @@ const RaidsCard: React.FC<RaidsCardProps> = ({
               type="number"
               min="0"
               value={inputs.mega_raids}
-              onChange={(e) => onInputChange('mega_raids', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('mega_raids', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">10,000 XP each</p>
@@ -79,7 +79,7 @@ const RaidsCard: React.FC<RaidsCardProps> = ({
               type="number"
               min="0"
               value={inputs.shadow_raids}
-              onChange={(e) => onInputChange('shadow_raids', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('shadow_raids', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">10,000 XP each</p>

@@ -7,15 +7,15 @@ import HomePage from "./components/HomePage";
 import Header from "./components/Header";
 import SimpleLevelCalculatorCard from "./components/SimpleLevelCalculatorCard";
 import Level50CalculatorCard from "./components/Level50CalculatorCard";
-import CatchingPokemonCard from "./components/CatchingPokemonCard";
-import EvolutionCard from "./components/EvolutionCard";
-import HatchingEggsCard from "./components/HatchingEggsCard";
-import RaidsCard from "./components/RaidsCard";
-import FriendshipCard from "./components/FriendshipCard";
-import OtherActivitiesCard from "./components/OtherActivitiesCard";
-import TotalExperienceCard from "./components/TotalExperienceCard";
+import CatchingCard from "./components/features/catching/CatchingCard";
+import EvolutionCard from "./components/features/evolution/EvolutionCard";
+import HatchingEggsCard from "./components/features/hatching/HatchingEggsCard";
+import RaidsCard from "./components/features/raids/RaidsCard";
+import FriendshipCard from "./components/features/friendship/FriendshipCard";
+import OtherActivitiesCard from "./components/features/activities/OtherActivitiesCard";
+import TotalExperienceCard from "./components/common/TotalExperienceCard";
 import { Button } from "./components/ui/button";
-import LuckyEggToggle from "./components/LuckyEggToggle";
+import LuckyEggToggle from "./components/common/LuckyEggToggle";
 
 // Types
 import type {
@@ -247,7 +247,7 @@ function App() {
         )}
 
         {currentPage === 'catching' && (
-          <CatchingPokemonCard
+          <CatchingCard
             inputs={inputs.catching}
             onInputChange={(field: keyof XPInputs['catching'], value: number) => updateInputs('catching', field, value)}
           />
@@ -288,7 +288,7 @@ function App() {
               }}
             />
             <div className="grid gap-6 md:grid-cols-2">
-              <CatchingPokemonCard
+              <CatchingCard
                 inputs={inputs.catching}
                 onInputChange={(field: keyof XPInputs['catching'], value: XPInputs['catching'][keyof XPInputs['catching']]) => updateInputs('catching', field, value)}
               />

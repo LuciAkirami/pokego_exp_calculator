@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import type { OtherActivitiesCardProps } from '../types/component-props';
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import { Input } from '../../ui/input';
+import { Label } from '../../ui/label';
+import type { OtherActivitiesCardProps } from '../../../types/component-props';
 
 const OtherActivitiesCard: React.FC<OtherActivitiesCardProps> = ({
   inputs,
@@ -27,7 +27,7 @@ const OtherActivitiesCard: React.FC<OtherActivitiesCardProps> = ({
               type="number"
               min="0"
               value={inputs.research_breakthroughs}
-              onChange={(e) => onInputChange('research_breakthroughs', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('research_breakthroughs', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">2,000 XP each</p>
@@ -41,7 +41,7 @@ const OtherActivitiesCard: React.FC<OtherActivitiesCardProps> = ({
                 type="number"
                 min="0"
                 value={inputs.field_research}
-                onChange={(e) => onInputChange('field_research', parseInt(e.target.value) || 0)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('field_research', parseInt(e.target.value) || 0)}
                 placeholder="0"
               />
               <p className="text-xs text-gray-500">100 XP each</p>
@@ -54,7 +54,7 @@ const OtherActivitiesCard: React.FC<OtherActivitiesCardProps> = ({
                 type="number"
                 min="0"
                 value={inputs.special_research}
-                onChange={(e) => onInputChange('special_research', parseInt(e.target.value) || 0)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('special_research', parseInt(e.target.value) || 0)}
                 placeholder="0"
               />
               <p className="text-xs text-gray-500">Varies</p>
@@ -69,7 +69,7 @@ const OtherActivitiesCard: React.FC<OtherActivitiesCardProps> = ({
                 type="number"
                 min="0"
                 value={inputs.gym_battles}
-                onChange={(e) => onInputChange('gym_battles', parseInt(e.target.value) || 0)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('gym_battles', parseInt(e.target.value) || 0)}
                 placeholder="0"
               />
               <p className="text-xs text-gray-500">100 XP each</p>
@@ -82,7 +82,7 @@ const OtherActivitiesCard: React.FC<OtherActivitiesCardProps> = ({
                 type="number"
                 min="0"
                 value={inputs.pvp_battles}
-                onChange={(e) => onInputChange('pvp_battles', parseInt(e.target.value) || 0)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('pvp_battles', parseInt(e.target.value) || 0)}
                 placeholder="0"
               />
               <p className="text-xs text-gray-500">500 XP each</p>
@@ -97,7 +97,7 @@ const OtherActivitiesCard: React.FC<OtherActivitiesCardProps> = ({
                 type="number"
                 min="0"
                 value={inputs.trades}
-                onChange={(e) => onInputChange('trades', parseInt(e.target.value) || 0)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('trades', parseInt(e.target.value) || 0)}
                 placeholder="0"
               />
               <p className="text-xs text-gray-500">100 XP each</p>
@@ -110,7 +110,7 @@ const OtherActivitiesCard: React.FC<OtherActivitiesCardProps> = ({
                 type="number"
                 min="0"
                 value={inputs.photobombs}
-                onChange={(e) => onInputChange('photobombs', parseInt(e.target.value) || 0)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('photobombs', parseInt(e.target.value) || 0)}
                 placeholder="0"
               />
               <p className="text-xs text-gray-500">500 XP each</p>

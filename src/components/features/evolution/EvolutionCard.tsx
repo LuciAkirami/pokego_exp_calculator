@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import type { EvolutionCardProps } from '../types/component-props';
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import { Input } from '../../ui/input';
+import { Label } from '../../ui/label';
+import type { EvolutionCardProps } from '../../../types/component-props';
 
 const EvolutionCard: React.FC<EvolutionCardProps> = ({
   inputs,
@@ -27,7 +27,7 @@ const EvolutionCard: React.FC<EvolutionCardProps> = ({
               type="number"
               min="0"
               value={inputs.normal_evolutions}
-              onChange={(e) => onInputChange('normal_evolutions', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('normal_evolutions', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">500 XP each</p>
@@ -40,7 +40,7 @@ const EvolutionCard: React.FC<EvolutionCardProps> = ({
               type="number"
               min="0"
               value={inputs.new_pokemon_evolutions}
-              onChange={(e) => onInputChange('new_pokemon_evolutions', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('new_pokemon_evolutions', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">1000 XP each</p>

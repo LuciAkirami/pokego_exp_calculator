@@ -1,10 +1,10 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import type { CatchingPokemonCardProps } from '../types/component-props';
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import { Input } from '../../ui/input';
+import { Label } from '../../ui/label';
+import type { CatchingPokemonCardProps } from '../../../types/component-props';
 
-const CatchingPokemonCard: React.FC<CatchingPokemonCardProps> = ({
+const CatchingCard: React.FC<CatchingPokemonCardProps> = ({
   inputs,
   onInputChange,
 }) => {
@@ -19,7 +19,6 @@ const CatchingPokemonCard: React.FC<CatchingPokemonCardProps> = ({
         </CardTitle>
       </CardHeader>
       <CardContent>
-      
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="normal-catches">Normal Catches</Label>
@@ -28,7 +27,7 @@ const CatchingPokemonCard: React.FC<CatchingPokemonCardProps> = ({
               type="number"
               min="0"
               value={inputs.normal_catches}
-              onChange={(e) => onInputChange('normal_catches', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('normal_catches', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">100 XP each</p>
@@ -41,7 +40,7 @@ const CatchingPokemonCard: React.FC<CatchingPokemonCardProps> = ({
               type="number"
               min="0"
               value={inputs.new_pokemon_catches}
-              onChange={(e) => onInputChange('new_pokemon_catches', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('new_pokemon_catches', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">500 XP each</p>
@@ -55,7 +54,7 @@ const CatchingPokemonCard: React.FC<CatchingPokemonCardProps> = ({
                 type="number"
                 min="0"
                 value={inputs.excellent_throws}
-                onChange={(e) => onInputChange('excellent_throws', parseInt(e.target.value) || 0)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('excellent_throws', parseInt(e.target.value) || 0)}
                 placeholder="0"
               />
               <p className="text-xs text-gray-500">100 XP each</p>
@@ -68,7 +67,7 @@ const CatchingPokemonCard: React.FC<CatchingPokemonCardProps> = ({
                 type="number"
                 min="0"
                 value={inputs.great_throws}
-                onChange={(e) => onInputChange('great_throws', parseInt(e.target.value) || 0)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('great_throws', parseInt(e.target.value) || 0)}
                 placeholder="0"
               />
               <p className="text-xs text-gray-500">50 XP each</p>
@@ -83,7 +82,7 @@ const CatchingPokemonCard: React.FC<CatchingPokemonCardProps> = ({
                 type="number"
                 min="0"
                 value={inputs.nice_throws}
-                onChange={(e) => onInputChange('nice_throws', parseInt(e.target.value) || 0)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('nice_throws', parseInt(e.target.value) || 0)}
                 placeholder="0"
               />
               <p className="text-xs text-gray-500">10 XP each</p>
@@ -96,7 +95,7 @@ const CatchingPokemonCard: React.FC<CatchingPokemonCardProps> = ({
                 type="number"
                 min="0"
                 value={inputs.curve_balls}
-                onChange={(e) => onInputChange('curve_balls', parseInt(e.target.value) || 0)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('curve_balls', parseInt(e.target.value) || 0)}
                 placeholder="0"
               />
               <p className="text-xs text-gray-500">20 XP each</p>
@@ -110,7 +109,7 @@ const CatchingPokemonCard: React.FC<CatchingPokemonCardProps> = ({
               type="number"
               min="0"
               value={inputs.first_throws}
-              onChange={(e) => onInputChange('first_throws', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('first_throws', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">50 XP each</p>
@@ -121,4 +120,4 @@ const CatchingPokemonCard: React.FC<CatchingPokemonCardProps> = ({
   );
 };
 
-export default CatchingPokemonCard;
+export default CatchingCard;

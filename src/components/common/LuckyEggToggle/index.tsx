@@ -1,6 +1,6 @@
-import { Card, CardContent, CardTitle, CardDescription } from "./ui/card";
-import { Switch } from "./ui/switch";
-import { Label } from "./ui/label";
+import { Card, CardContent, CardTitle, CardDescription } from "../../ui/card";
+import { Switch } from "../../ui/switch";
+import { Label } from "../../ui/label";
 
 interface LuckyEggToggleProps {
   isActive: boolean;

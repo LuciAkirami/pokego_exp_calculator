@@ -1,8 +1,8 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import type { HatchingEggsCardProps } from '../types/component-props';
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import { Input } from '../../ui/input';
+import { Label } from '../../ui/label';
+import type { HatchingEggsCardProps } from '../../../types/component-props';
 
 const HatchingEggsCard: React.FC<HatchingEggsCardProps> = ({
   inputs,
@@ -27,7 +27,7 @@ const HatchingEggsCard: React.FC<HatchingEggsCardProps> = ({
               type="number"
               min="0"
               value={inputs.two_km_eggs}
-              onChange={(e) => onInputChange('two_km_eggs', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('two_km_eggs', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">200 XP each</p>
@@ -40,7 +40,7 @@ const HatchingEggsCard: React.FC<HatchingEggsCardProps> = ({
               type="number"
               min="0"
               value={inputs.five_km_eggs}
-              onChange={(e) => onInputChange('five_km_eggs', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('five_km_eggs', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">500 XP each</p>
@@ -53,7 +53,7 @@ const HatchingEggsCard: React.FC<HatchingEggsCardProps> = ({
               type="number"
               min="0"
               value={inputs.seven_km_eggs}
-              onChange={(e) => onInputChange('seven_km_eggs', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('seven_km_eggs', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">750 XP each</p>
@@ -66,7 +66,7 @@ const HatchingEggsCard: React.FC<HatchingEggsCardProps> = ({
               type="number"
               min="0"
               value={inputs.ten_km_eggs}
-              onChange={(e) => onInputChange('ten_km_eggs', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('ten_km_eggs', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">1,000 XP each</p>
@@ -79,7 +79,7 @@ const HatchingEggsCard: React.FC<HatchingEggsCardProps> = ({
               type="number"
               min="0"
               value={inputs.twelve_km_eggs}
-              onChange={(e) => onInputChange('twelve_km_eggs', parseInt(e.target.value) || 0)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onInputChange('twelve_km_eggs', parseInt(e.target.value) || 0)}
               placeholder="0"
             />
             <p className="text-xs text-gray-500">1,200 XP each</p>
