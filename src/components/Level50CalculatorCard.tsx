@@ -100,14 +100,21 @@ const Level50CalculatorCard: React.FC<Level50CalculatorCardProps> = ({
               id="current-level"
               type="number"
               min="1"
-              max="49"
+              max="50"
               value={currentLevel}
-              onChange={(e) => onLevelChange('current_level', Math.min(49, parseInt(e.target.value) || 1))}
+              onChange={(e) =>
+                onLevelChange(
+                  "current_level",
+                  Math.min(50, parseInt(e.target.value) || 1)
+                )
+              }
               className="text-center text-lg font-medium"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="current-xp">Current XP in Level {currentLevel}</Label>
+            <Label htmlFor="current-xp">
+              Current XP in Level {currentLevel}
+            </Label>
             <Input
               id="current-xp"
               type="number"
@@ -122,82 +129,100 @@ const Level50CalculatorCard: React.FC<Level50CalculatorCardProps> = ({
 
         <div className="flex flex-wrap items-center justify-center gap-2 mb-6 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div className="flex items-center">
-            <Switch 
-              id="lucky-egg" 
+            <Switch
+              id="lucky-egg"
               checked={useLuckyEgg}
               onCheckedChange={() => setUseLuckyEgg(!useLuckyEgg)}
               className="data-[state=checked]:bg-blue-600"
             />
-            <Label htmlFor="lucky-egg" className="ml-2 text-base font-medium cursor-pointer">
+            <Label
+              htmlFor="lucky-egg"
+              className="ml-2 text-base font-medium cursor-pointer"
+            >
               Using Lucky Egg
             </Label>
           </div>
-          <div className={`transition-opacity duration-200 ${useLuckyEgg ? 'opacity-100' : 'opacity-0'}`}>
-            <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+          <div
+            className={`transition-opacity duration-200 ${
+              useLuckyEgg ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <Badge
+              variant="outline"
+              className="bg-blue-50 text-blue-700 border-blue-200"
+            >
               2× XP Active
             </Badge>
           </div>
           {/* Invisible spacer to prevent layout shift */}
           <div className="invisible absolute">
-            <Badge variant="outline">
-              2× XP Active
-            </Badge>
+            <Badge variant="outline">2× XP Active</Badge>
           </div>
         </div>
 
-        {!isCalculating && daysRemaining > 0 && xpNeeded > 0 && (
-          <div className="space-y-6">
-            {/* Days Remaining */}
-            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
-              <CardContent className="p-4">
-                <div className="flex flex-col justify-between items-center">
-                  <span className="text-gray-700 dark:text-gray-300">Days until Oct 15, 2025</span>
-                  <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
-                    {daysRemaining} days
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
+        {/* Stats Section */}
+        <div className="space-y-6 transition-opacity duration-300">
+          {/* Days Remaining */}
+          <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
+            <CardContent className="p-4">
+              <div className="flex flex-col justify-between items-center">
+                <span className="text-gray-700 dark:text-gray-300">
+                  Days until Oct 15, 2025
+                </span>
+                <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
+                  {daysRemaining} days
+                </span>
+              </div>
+            </CardContent>
+          </Card>
 
-            {/* XP Needed */}
-            <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
-              <CardContent className="p-4">
-                <div className="flex flex-col justify-between items-center">
-                  <span className="text-gray-700 dark:text-gray-300">XP needed for Level 50</span>
-                  <span className="text-xl font-bold text-green-600 dark:text-green-400">
-                    {formatNumber(xpNeeded)} XP
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
+          {/* XP Needed */}
+          <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+            <CardContent className="p-4">
+              <div className="flex flex-col justify-between items-center">
+                <span className="text-gray-700 dark:text-gray-300">
+                  XP needed for Level 50
+                </span>
+                <span className="text-xl font-bold text-green-600 dark:text-green-400">
+                  {formatNumber(xpNeeded)} XP
+                </span>
+              </div>
+            </CardContent>
+          </Card>
 
-            {/* XP Per Day */}
-            <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
-              <CardContent className="p-4">
-                <div className="flex flex-col justify-between items-center">
-                  <div className="flex flex-col items-center">
-                    <div className="text-gray-700 dark:text-gray-300">
-                      XP needed per day
-                    </div>
-                    {useLuckyEgg && (
-                      <div className="text-xs text-muted-foreground mt-1">
-                        (With Lucky Egg)
-                      </div>
-                    )}
+          {/* XP Per Day */}
+          <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+            <CardContent className="p-4">
+              <div className="flex flex-col justify-between items-center">
+                <div className="flex flex-col items-center">
+                  <div className="text-gray-700 dark:text-gray-300">
+                    XP needed per day
                   </div>
-                  <div className="text-right">
-                    <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
-                      {formatNumber(xpPerDay)} XP / day
+                  {/* Smoothly show/hide the Lucky Egg text */}
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      useLuckyEgg
+                        ? "max-h-6 opacity-100 mt-1"
+                        : "max-h-0 opacity-0 mt-0"
+                    }`}
+                  >
+                    <div className="text-xs text-muted-foreground">
+                      (With Lucky Egg)
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+                <div className="text-right">
+                  <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
+                    {formatNumber(xpPerDay)} XP / day
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         {currentLevel >= 50 && (
-          <div className="text-center p-6 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+          <div className="text-center p-6 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800 mt-6">
             <div className="text-4xl mb-2">🎉</div>
             <h3 className="text-xl font-bold text-green-700 dark:text-green-300 mb-1">
               Congratulations! You're at the maximum level.
