@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from "react";
-import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 
 // Components
@@ -17,180 +16,43 @@ import TotalExperienceCard from "./components/common/TotalExperienceCard";
 import { Button } from "./components/ui/button";
 import LuckyEggToggle from "./components/common/LuckyEggToggle";
 
+// Custom Hook
+import { useXPCalculator } from "./features/xp-calculator";
+
 // Types
-import type {
-  XPInputs,
-  CalculationResult
-} from "./types";
+import { XPInputs } from "./types/xp-inputs";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<string>('home');
-  const [inputs, setInputs] = useState<XPInputs>({
-    catching: {
-      normal_catches: 0,
-      new_pokemon_catches: 0,
-      excellent_throws: 0,
-      curve_balls: 0,
-      first_throws: 0,
-      great_throws: 0,
-      nice_throws: 0,
-      xp_celebration: 1,
-      event_bonus: 1
-    },
-    evolution: {
-      normal_evolutions: 0,
-      new_pokemon_evolutions: 0,
-    },
-    hatching: {
-      two_km_eggs: 0,
-      five_km_eggs: 0,
-      seven_km_eggs: 0,
-      ten_km_eggs: 0,
-      twelve_km_eggs: 0,
-    },
-    raids: {
-      one_star_raids: 0,
-      three_star_raids: 0,
-      five_star_raids: 0,
-      mega_raids: 0,
-      shadow_raids: 0,
-    },
-    friendship: {
-      good_friends: 0,
-      great_friends: 0,
-      ultra_friends: 0,
-      best_friends: 0,
-    },
-    other: {
-      research_breakthroughs: 0,
-      field_research: 0,
-      special_research: 0,
-      gym_battles: 0,
-      pvp_battles: 0,
-      trades: 0,
-      photobombs: 0,
-    },
-    lucky_egg: false,
-    current_level: 1,
-    target_level: 2,
-  });
-
-  const [result, setResult] = useState<CalculationResult | null>(null);
-  const [isCalculating, setIsCalculating] = useState(false);
-  // const [saveMessage, setSaveMessage] = useState<string | null>(null);
+  
+  // Use the custom hook for state management
+  const {
+    inputs,
+    result,
+    isCalculating,
+    updateInputs,
+    updateLevels,
+    toggleLuckyEgg,
+    resetInputs,
+    calculateXP,
+  } = useXPCalculator();
 
   const handleNavigate = useCallback((page: string) => {
     setCurrentPage(page);
   }, []);
 
-  const calculateXP = useCallback(async () => {
-    setIsCalculating(true);
-    try {
-      const calculationResult = await invoke<CalculationResult>("calculate_total_xp", { inputs });
-      setResult(calculationResult);
-    } catch (error) {
-      console.error("Error calculating XP:", error);
-    } finally {
-      setIsCalculating(false);
-    }
-  }, [inputs]);
+  // Save/load progress functionality can be implemented here later
 
-  const updateInputs = useCallback((section: keyof Omit<XPInputs, 'current_level' | 'target_level' | 'lucky_egg'>, field: string, value: number | boolean) => {
-    setInputs((prev: XPInputs) => ({
-      ...prev,
-      [section]: {
-        ...(prev[section] as any),
-        [field]: value,
-      },
-    }));
-  }, []);
-
-  const resetInputs = useCallback(() => {
-    setInputs({
-      catching: {
-        normal_catches: 0,
-        new_pokemon_catches: 0,
-        excellent_throws: 0,
-        curve_balls: 0,
-        first_throws: 0,
-        great_throws: 0,
-        nice_throws: 0,
-        xp_celebration: 1,
-        event_bonus: 1
-      },
-      evolution: {
-        normal_evolutions: 0,
-        new_pokemon_evolutions: 0,
-      },
-      hatching: {
-        two_km_eggs: 0,
-        five_km_eggs: 0,
-        seven_km_eggs: 0,
-        ten_km_eggs: 0,
-        twelve_km_eggs: 0,
-      },
-      raids: {
-        one_star_raids: 0,
-        three_star_raids: 0,
-        five_star_raids: 0,
-        mega_raids: 0,
-        shadow_raids: 0,
-      },
-      friendship: {
-        good_friends: 0,
-        great_friends: 0,
-        ultra_friends: 0,
-        best_friends: 0,
-      },
-      other: {
-        research_breakthroughs: 0,
-        field_research: 0,
-        special_research: 0,
-        gym_battles: 0,
-        pvp_battles: 0,
-        trades: 0,
-        photobombs: 0,
-      },
-      lucky_egg: false,
-      current_level: 1,
-      target_level: 2,
-    });
-    setResult(null);
-  }, []);
-
-  // const saveProgress = useCallback(async () => {
-  //   try {
-  //     const message = await invoke<string>("save_progress", { inputs });
-  //     setSaveMessage(message);
-  //     setTimeout(() => setSaveMessage(null), 3000);
-  //   } catch (error) {
-  //     console.error("Error saving progress:", error);
-  //     setSaveMessage("Failed to save progress");
-  //     setTimeout(() => setSaveMessage(null), 3000);
-  //   }
-  // }, [inputs]);
-
-  // const loadProgress = useCallback(async () => {
-  //   try {
-  //     const loadedInputs = await invoke<XPInputs>("load_progress");
-  //     setInputs(loadedInputs);
-  //     setSaveMessage("Progress loaded successfully");
-  //     setTimeout(() => setSaveMessage(null), 3000);
-  //   } catch (error) {
-  //     console.error("Error loading progress:", error);
-  //     setSaveMessage("No saved progress found");
-  //     setTimeout(() => setSaveMessage(null), 3000);
-  //   }
-  // }, []);
-
-  // Auto-calculate when inputs change
+  // Auto-calculate when inputs change, but only if not on home page
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      calculateXP();
-    }, 300); // Debounce calculation
+    if (currentPage !== 'home') {
+      const timeoutId = setTimeout(() => {
+        calculateXP();
+      }, 300); // Debounce calculation
 
-    return () => clearTimeout(timeoutId);
-  }, [inputs, calculateXP]);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [inputs, calculateXP, currentPage]);
 
   // Show home page
   if (currentPage === 'home') {
@@ -237,11 +99,9 @@ function App() {
           <Level50CalculatorCard
             currentLevel={inputs.current_level}
             onLevelChange={(field: string, value: number) => {
-              setInputs((prev: XPInputs) => ({
-                ...prev,
-                ...(field === 'current_level' && { current_level: value }),
-                ...(field === 'target_level' && { target_level: value })
-              }));
+              if (field === 'current_level' || field === 'target_level') {
+                updateLevels(field as 'current_level' | 'target_level', value);
+              }
             }}
           />
         )}
@@ -280,11 +140,9 @@ function App() {
               currentLevel={inputs.current_level}
               targetLevel={inputs.target_level}
               onLevelChange={(field: string, value: number) => {
-                setInputs((prev: XPInputs) => ({
-                  ...prev,
-                  ...(field === 'current_level' && { current_level: value }),
-                  ...(field === 'target_level' && { target_level: value })
-                }));
+                if (field === 'current_level' || field === 'target_level') {
+                  updateLevels(field, value);
+                }
               }}
             />
             <div className="grid gap-6 md:grid-cols-2">
@@ -321,7 +179,7 @@ function App() {
           <>
             <LuckyEggToggle
               isActive={inputs.lucky_egg}
-              onToggle={(checked: boolean) => setInputs((prev: XPInputs) => ({ ...prev, lucky_egg: checked }))}
+              onToggle={toggleLuckyEgg}
             />
 
             {/* Total Experience Card - Only show if not on the detailed view */}
@@ -331,8 +189,6 @@ function App() {
               onRecalculate={calculateXP}
               onReset={resetInputs}
               isDetailedView={currentPage === 'detailed'}
-            // onSave={saveProgress}
-            // onLoad={loadProgress}
             />
           </>
         )}
