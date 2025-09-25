@@ -33,6 +33,22 @@ export interface RaidInputs {
   shadow_raids: number;
 }
 
+export interface MaxBattleInputs {
+  one_star_battles: number;
+  two_star_battles: number;
+  three_star_battles: number;
+  four_star_battles: number;
+  five_star_battles: number;
+  six_star_battles: number;
+  in_person_bonus_battles: number;
+}
+
+export interface MaxMovesInputs {
+  level_1_moves: number;
+  level_2_moves: number;
+  level_max_moves: number;
+}
+
 export interface FriendshipInputs {
   good_friends: number;
   great_friends: number;
@@ -55,6 +71,8 @@ export interface XPInputs {
   evolution: EvolutionInputs;
   hatching: HatchingInputs;
   raids: RaidInputs;
+  max_battle: MaxBattleInputs;
+  max_moves: MaxMovesInputs;
   friendship: FriendshipInputs;
   other: OtherActivitiesInputs;
   lucky_egg: boolean;

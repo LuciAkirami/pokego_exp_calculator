@@ -30,6 +30,20 @@ export const initialInputs: XPInputs = {
     mega_raids: 0,
     shadow_raids: 0,
   },
+  max_battle: {
+    one_star_battles: 0,
+    two_star_battles: 0,
+    three_star_battles: 0,
+    four_star_battles: 0,
+    five_star_battles: 0,
+    six_star_battles: 0,
+    in_person_bonus_battles: 0,
+  },
+  max_moves: {
+    level_1_moves: 0,
+    level_2_moves: 0,
+    level_max_moves: 0,
+  },
   friendship: {
     good_friends: 0,
     great_friends: 0,

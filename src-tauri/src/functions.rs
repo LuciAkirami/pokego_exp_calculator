@@ -181,6 +181,26 @@ pub fn calculate_total_xp(inputs: XPInputs) -> CalculationResult {
     xp_breakdown.insert("Friendship".to_string(), friendship_xp);
     total_xp += friendship_xp;
 
+    // Max Battles XP
+    let max_battles_xp = (inputs.max_battle.one_star_battles as u64 * xp_values.max_battle.one_star as u64)
+        + (inputs.max_battle.two_star_battles as u64 * xp_values.max_battle.two_star as u64)
+        + (inputs.max_battle.three_star_battles as u64 * xp_values.max_battle.three_star as u64)
+        + (inputs.max_battle.four_star_battles as u64 * xp_values.max_battle.four_star as u64)
+        + (inputs.max_battle.five_star_battles as u64 * xp_values.max_battle.five_star as u64)
+        + (inputs.max_battle.six_star_battles as u64 * xp_values.max_battle.six_star as u64)
+        + (inputs.max_battle.in_person_bonus_battles as u64 * xp_values.max_battle.in_person_bonus as u64);
+
+    xp_breakdown.insert("Max Raid Battles".to_string(), max_battles_xp);
+    total_xp += max_battles_xp;
+
+    // Max Moves XP
+    let max_moves_xp = (inputs.max_moves.level_1_moves as u64 * xp_values.max_moves.level_1 as u64)
+        + (inputs.max_moves.level_2_moves as u64 * xp_values.max_moves.level_2 as u64)
+        + (inputs.max_moves.level_max_moves as u64 * xp_values.max_moves.level_max as u64);
+
+    xp_breakdown.insert("Max Moves".to_string(), max_moves_xp);
+    total_xp += max_moves_xp;
+
     // Other XP
     let other_xp = (inputs.other.research_breakthroughs as u64
         * xp_values.other.research_breakthrough as u64)

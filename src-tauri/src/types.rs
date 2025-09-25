@@ -97,6 +97,8 @@ pub struct XPInputs {
     pub evolution: EvolutionInputs,
     pub hatching: HatchingInputs,
     pub raids: RaidsInputs,
+    pub max_battle: MaxBattleInputs,
+    pub max_moves: MaxMovesInputs,
     pub friendship: FriendshipInputs,
     pub other: OtherInputs,
     pub lucky_egg: bool,
@@ -139,6 +141,24 @@ pub struct RaidsInputs {
     pub five_star_raids: u32,
     pub mega_raids: u32,
     pub shadow_raids: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct MaxBattleInputs {
+    pub one_star_battles: u32,
+    pub two_star_battles: u32,
+    pub three_star_battles: u32,
+    pub four_star_battles: u32,
+    pub five_star_battles: u32,
+    pub six_star_battles: u32,
+    pub in_person_bonus_battles: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct MaxMovesInputs {
+    pub level_1_moves: u32,
+    pub level_2_moves: u32,
+    pub level_max_moves: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

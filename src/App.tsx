@@ -5,13 +5,15 @@ import "./App.css";
 import HomePage from "./components/HomePage";
 import Header from "./components/Header";
 import SimpleLevelCalculatorCard from "./components/SimpleLevelCalculatorCard";
-import Level50CalculatorCard from "./components/Level50CalculatorCard";
+import Level50CalculatorCard from "./components/features/level50";
 import CatchingCard from "./components/features/catching/CatchingCard";
 import EvolutionCard from "./components/features/evolution/EvolutionCard";
 import HatchingEggsCard from "./components/features/hatching/HatchingEggsCard";
 import RaidsCard from "./components/features/raids/RaidsCard";
 import FriendshipCard from "./components/features/friendship/FriendshipCard";
 import OtherActivitiesCard from "./components/features/activities/OtherActivitiesCard";
+import MaxBattlesCard from "./components/features/maxbattles";
+import MaxMovesCard from "./components/features/maxmoves";
 import TotalExperienceCard from "./components/common/TotalExperienceCard";
 import { Button } from "./components/ui/button";
 import LuckyEggToggle from "./components/common/LuckyEggToggle";
@@ -131,6 +133,20 @@ function App() {
           <FriendshipCard
             inputs={inputs.friendship}
             onInputChange={(field: string, value: number) => updateInputs('friendship', field, value)}
+          />
+        )}
+
+        {currentPage === 'max-battles' && (
+          <MaxBattlesCard
+            inputs={inputs.max_battle}
+            onInputChange={(field: string, value: number) => updateInputs('max_battle', field, value)}
+          />
+        )}
+
+        {currentPage === 'max-moves' && (
+          <MaxMovesCard
+            inputs={inputs.max_moves}
+            onInputChange={(field: string, value: number) => updateInputs('max_moves', field, value)}
           />
         )}
 

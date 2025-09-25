@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Switch } from './ui/switch';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../../components/ui/card';
+import { Input } from '../../../components/ui/input';
+import { Label } from '../../../components/ui/label';
+import { Switch } from '../../../components/ui/switch';
 import { invoke } from '@tauri-apps/api/core';
-import { Badge } from './ui/badge';
+import { Badge } from '../../../components/ui/badge';
 
 interface Level50CalculatorCardProps {
   currentLevel: number;
@@ -20,7 +20,6 @@ const Level50CalculatorCard: React.FC<Level50CalculatorCardProps> = ({
   const [xpPerDay, setXpPerDay] = useState<number>(0);
   const [daysRemaining, setDaysRemaining] = useState<number>(0);
   const [xpNeeded, setXpNeeded] = useState<number>(0);
-  const [isCalculating, setIsCalculating] = useState<boolean>(false);
 
   // Calculate days until October 15, 2025
   const calculateDaysRemaining = (): number => {
@@ -43,7 +42,6 @@ const Level50CalculatorCard: React.FC<Level50CalculatorCardProps> = ({
       return;
     }
 
-    setIsCalculating(true);
     try {
       const days = calculateDaysRemaining();
       setDaysRemaining(days);
@@ -65,8 +63,6 @@ const Level50CalculatorCard: React.FC<Level50CalculatorCardProps> = ({
       setXpNeeded(response.xp_needed);
     } catch (error) {
       console.error('Error calculating XP to level 50:', error);
-    } finally {
-      setIsCalculating(false);
     }
   };
 
@@ -198,7 +194,6 @@ const Level50CalculatorCard: React.FC<Level50CalculatorCardProps> = ({
                   <div className="text-gray-700 dark:text-gray-300">
                     XP needed per day
                   </div>
-                  {/* Smoothly show/hide the Lucky Egg text */}
                   <div
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${
                       useLuckyEgg

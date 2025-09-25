@@ -57,8 +57,14 @@ const TotalExperienceCard: React.FC<TotalExperienceCardProps> = ({
                   <CardContent className="p-4">
                     <h4 className="text-lg font-semibold text-gray-800 mb-3">XP Breakdown</h4>
                     <div className="space-y-2">
-                      {Object.entries(result.xp_breakdown).map(([category, xp]) => (
-                        <div key={category} className="flex justify-between items-center">
+                      {Object.entries(result.xp_breakdown)
+                        // Sort entries by category name for consistent ordering
+                        .sort(([categoryA], [categoryB]) => categoryA.localeCompare(categoryB))
+                        .map(([category, xp], index) => (
+                        <div 
+                          key={`${category}-${index}`} 
+                          className="flex justify-between items-center"
+                        >
                           <span className="text-gray-700">{category}</span>
                           <span className="font-semibold text-gray-800">
                             {formatNumber(xp)} XP

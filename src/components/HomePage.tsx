@@ -54,6 +54,22 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       icon: '✨',
       description: 'Calculate XP from Pokemon evolutions',
       color: 'from-red-500 to-red-700',
+    },
+    {
+      id: 'max-battles',
+      title: 'Max Raid Battles',
+      subtitle: 'From raid battles',
+      icon: '⚔️',
+      description: 'Calculate XP from Max Raid Battles',
+      color: 'from-purple-600 to-purple-800',
+    },
+    {
+      id: 'max-moves',
+      title: 'Max Moves',
+      subtitle: 'From max moves',
+      icon: '💥',
+      description: 'Calculate XP from using Max Moves',
+      color: 'from-blue-600 to-blue-800',
     }
   ];
 
