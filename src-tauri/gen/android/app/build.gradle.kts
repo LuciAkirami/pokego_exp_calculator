@@ -7,7 +7,7 @@ plugins {
     id("rust")
 }
 
-val keyPropertiesFile = rootProject.file("keystore.properties")
+val keyPropertiesFile = rootProject.file("key.properties")
 val keyProperties = Properties()
 keyProperties.load(FileInputStream(keyPropertiesFile))
 
