@@ -38,7 +38,7 @@ const MaxMovesCard: React.FC<MaxMovesCardProps> = ({ inputs, onInputChange }) =>
               min="0"
               value={inputs.level_1_moves}
               onChange={handleInputChange('level_1_moves')}
-              className="text-center"
+              // className="text-center"
             />
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Number of Level 1 moves used
@@ -52,7 +52,7 @@ const MaxMovesCard: React.FC<MaxMovesCardProps> = ({ inputs, onInputChange }) =>
               min="0"
               value={inputs.level_2_moves}
               onChange={handleInputChange('level_2_moves')}
-              className="text-center"
+              // className="text-center"
             />
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Number of Level 2 moves used
@@ -66,7 +66,7 @@ const MaxMovesCard: React.FC<MaxMovesCardProps> = ({ inputs, onInputChange }) =>
               min="0"
               value={inputs.level_max_moves}
               onChange={handleInputChange('level_max_moves')}
-              className="text-center"
+              // className="text-center"
             />
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Number of Max Level moves used

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardTitle, CardDescription } from './ui/card';
+import { cn } from '@/lib/utils';
 
 interface HomePageProps {
   onNavigate: (page: string) => void;
@@ -80,13 +81,30 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-red-600">XP Calculators</h1>
+              <h1 className="text-3xl font-bold text-red-600">
+                XP Calculators
+              </h1>
               <p className="text-gray-400 text-sm mt-1">App Home Screen</p>
             </div>
             <button className="p-2 text-red-600 hover:text-red-400 transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
               </svg>
             </button>
           </div>
@@ -101,23 +119,53 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <Card
               key={card.id}
               onClick={() => onNavigate(card.id)}
-              className="bg-gray-900 border-gray-800 hover:border-red-600 transition-all duration-300 cursor-pointer group hover:shadow-2xl hover:shadow-red-900/20"
+              // For glassmorphism / "App Copy2.css"
+              // className="bg-gray-900 border-gray-800 hover:border-red-600 transition-all duration-300 cursor-pointer group hover:shadow-2xl hover:shadow-red-900/20"
+              // className={cn(
+              //   "glass-card glass-card-hover rounded-2xl p-6 cursor-pointer relative overflow-hidden group",
+              //   "border-2 transition-all duration-400"
+              //   // "border-primary/60 bg-primary/10",
+              //   // "border-transparent",
+              //   // "border-primary"
+              // )}
+              className="border-primary/60 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent shadow-lg shadow-primary/25"
             >
+              {/* For glassmorphism / "App Copy2.css" */}
+              {/* <div className="absolute inset-0 opacity-8 bg-gradient-to-br from-red-600 to-red-800" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/5" /> */}
+
+              {/* <div className="glass-shimmer" /> */}
               <CardContent className="p-2">
-                <div className="flex items-start space-x-4">
-                  <div className={`w-16 h-16 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center text-2xl`}>
+                <div
+                  className="flex items-start space-x-4"
+                >
+                  <div
+                    className={`w-16 h-16 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center text-2xl`}
+                  >
                     {card.icon}
                   </div>
                   <div className="flex-1">
                     <CardTitle className="text-lg text-white group-hover:text-red-400 transition-colors">
                       {card.title}
                     </CardTitle>
-                    <CardDescription className="text-gray-400 text-sm mb-2">{card.subtitle}</CardDescription>
+                    <CardDescription className="text-gray-400 text-sm mb-2">
+                      {card.subtitle}
+                    </CardDescription>
                     <p className="text-gray-500 text-xs">{card.description}</p>
                   </div>
                   <div className="text-red-600 group-hover:text-red-400 transition-colors">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -163,12 +211,26 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <CardContent className="p-6">
               <div className="text-center">
                 <div className="w-16 h-16 mx-auto mb-4 rounded-lg bg-gray-800 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <svg
+                    className="w-8 h-8 text-gray-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                   </svg>
                 </div>
-                <CardTitle className="text-xl text-white mb-2">Future Feature</CardTitle>
-                <CardDescription className="text-gray-400">Coming Soon</CardDescription>
+                <CardTitle className="text-xl text-white mb-2">
+                  Future Feature
+                </CardTitle>
+                <CardDescription className="text-gray-400">
+                  Coming Soon
+                </CardDescription>
               </div>
             </CardContent>
           </Card>

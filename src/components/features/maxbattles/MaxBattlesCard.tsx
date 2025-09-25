@@ -23,7 +23,8 @@ const MaxBattlesCard: React.FC<MaxBattlesCardProps> = ({ inputs, onInputChange }
   };
 
   return (
-    <Card className="mb-6">
+    // Add glow effect
+    <Card className="mb-6  hover:shadow-lg transition-shadow">
       <CardHeader>
         <CardTitle className="text-2xl text-center">
           Max Raid Battles
@@ -40,9 +41,12 @@ const MaxBattlesCard: React.FC<MaxBattlesCardProps> = ({ inputs, onInputChange }
               id="one-star-battles"
               type="number"
               min="0"
+              placeholder='0'
               value={inputs.one_star_battles}
               onChange={handleInputChange('one_star_battles')}
-              className="text-center"
+              // className="text-center"
+              // red outline
+              className="focus:ring-red-500 focus:border-red-500"
             />
           </div>
           <div className="space-y-2">
@@ -53,7 +57,7 @@ const MaxBattlesCard: React.FC<MaxBattlesCardProps> = ({ inputs, onInputChange }
               min="0"
               value={inputs.two_star_battles}
               onChange={handleInputChange('two_star_battles')}
-              className="text-center"
+              // className="text-center"
             />
           </div>
           <div className="space-y-2">
@@ -64,7 +68,7 @@ const MaxBattlesCard: React.FC<MaxBattlesCardProps> = ({ inputs, onInputChange }
               min="0"
               value={inputs.three_star_battles}
               onChange={handleInputChange('three_star_battles')}
-              className="text-center"
+              // className="text-center"
             />
           </div>
           <div className="space-y-2">
@@ -75,7 +79,7 @@ const MaxBattlesCard: React.FC<MaxBattlesCardProps> = ({ inputs, onInputChange }
               min="0"
               value={inputs.four_star_battles}
               onChange={handleInputChange('four_star_battles')}
-              className="text-center"
+              // className="text-center"
             />
           </div>
           <div className="space-y-2">
@@ -86,7 +90,7 @@ const MaxBattlesCard: React.FC<MaxBattlesCardProps> = ({ inputs, onInputChange }
               min="0"
               value={inputs.five_star_battles}
               onChange={handleInputChange('five_star_battles')}
-              className="text-center"
+              // className="text-center"
             />
           </div>
           <div className="space-y-2">
@@ -97,7 +101,7 @@ const MaxBattlesCard: React.FC<MaxBattlesCardProps> = ({ inputs, onInputChange }
               min="0"
               value={inputs.six_star_battles}
               onChange={handleInputChange('six_star_battles')}
-              className="text-center"
+              // className="text-center"
             />
           </div>
           <div className="space-y-2 md:col-span-2">
@@ -108,7 +112,7 @@ const MaxBattlesCard: React.FC<MaxBattlesCardProps> = ({ inputs, onInputChange }
               min="0"
               value={inputs.in_person_bonus_battles}
               onChange={handleInputChange('in_person_bonus_battles')}
-              className="text-center"
+              // className="text-center"
             />
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Number of battles completed in-person for bonus XP
