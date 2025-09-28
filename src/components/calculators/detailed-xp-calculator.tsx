@@ -1,152 +1,32 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ArrowLeft, BarChart3, Target, Clock, Zap, Calculator, TrendingUp } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
-// XP requirements for each level (cumulative)
-const XP_REQUIREMENTS: Record<number, number> = {
-  1: 0,
-  2: 1000,
-  3: 3000,
-  4: 6000,
-  5: 10000,
-  6: 15000,
-  7: 21000,
-  8: 28000,
-  9: 36000,
-  10: 45000,
-  11: 55000,
-  12: 65000,
-  13: 75000,
-  14: 85000,
-  15: 100000,
-  16: 120000,
-  17: 140000,
-  18: 160000,
-  19: 185000,
-  20: 210000,
-  21: 260000,
-  22: 335000,
-  23: 435000,
-  24: 560000,
-  25: 710000,
-  26: 900000,
-  27: 1100000,
-  28: 1350000,
-  29: 1650000,
-  30: 2000000,
-  31: 2500000,
-  32: 3000000,
-  33: 3750000,
-  34: 4750000,
-  35: 6000000,
-  36: 7500000,
-  37: 9500000,
-  38: 12000000,
-  39: 15000000,
-  40: 20000000,
-  41: 26000000,
-  42: 33500000,
-  43: 42500000,
-  44: 53500000,
-  45: 66500000,
-  46: 82000000,
-  47: 100000000,
-  48: 121000000,
-  49: 146000000,
-  50: 176000000,
-}
-
-// XP multipliers for all activities
-const XP_MULTIPLIERS = {
-  catching: {
-    normal: 100,
-    new_pokemon: 1000,
-    excellent_throw: 1000,
-    curve_ball: 20,
-    first_throw: 50,
-    great_throw: 100,
-    nice_throw: 20,
-    xp_celebration: 500,
-  },
-  evolution: { normal: 1000, new_pokemon: 1000 },
-  hatching: { km_2: 500, km_5: 1000, km_7: 1500, km_10: 2000, km_12: 4000 },
-  raids: { star_1: 3000, star_3: 3000, star_5: 10000, mega: 10000, shadow: 1000 },
-  maxBattle: { star_1: 300, star_2: 400, star_3: 500, star_4: 600, star_5: 700, star_6: 800, in_person_bonus: 100 },
-  maxMoves: { level_1: 10, level_2: 25, max_moves: 100 },
-  friendship: { good_friends: 3000, great_friends: 10000, ultra_friends: 50000, best_friends: 100000 },
-}
-
-interface DetailedXPInputs {
-  // Current progress
-  currentLevel: number
-  currentXP: number
-  targetLevel: number
-
-  // Catching
-  normal_catches: number
-  new_pokemon_catches: number
-  excellent_throws: number
-  curve_balls: number
-  first_throws: number
-  great_throws: number
-  nice_throws: number
-  xp_celebration: number
-
-  // Evolution
-  normal_evolutions: number
-  new_pokemon_evolutions: number
-
-  // Hatching
-  km_2_eggs: number
-  km_5_eggs: number
-  km_7_eggs: number
-  km_10_eggs: number
-  km_12_eggs: number
-
-  // Raids
-  star_1_raids: number
-  star_3_raids: number
-  star_5_raids: number
-  mega_raids: number
-  shadow_raids: number
-
-  // Max Battles
-  star_1_battles: number
-  star_2_battles: number
-  star_3_battles: number
-  star_4_battles: number
-  star_5_battles: number
-  star_6_battles: number
-  in_person_bonus: number
-
-  // Max Moves
-  level_1_moves: number
-  level_2_moves: number
-  max_moves: number
-
-  // Friendship
-  good_friends: number
-  great_friends: number
-  ultra_friends: number
-  best_friends: number
-
-  // Options
-  lucky_egg: boolean
-  target_type: "date" | "days"
-  target_date: string
-  target_days: number
-}
-
-interface DetailedXPCalculatorProps {
-  onBack: () => void
-}
+import { useState } from "react";
+import {
+  ArrowLeft,
+  BarChart3,
+  Target,
+  Clock,
+  Zap,
+  Calculator,
+  TrendingUp,
+  Calendar,
+  Activity,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { XP_REQUIREMENTS, XP_MULTIPLIERS } from "@/types/xp-constants";
+import type { 
+  DetailedXPInputs, 
+  DetailedXPCalculatorProps,
+  CategoryXP,
+  LevelProgress,
+  TimeToTarget,
+  DailyRequirements
+} from "@/types/xp-calculator";
 
 export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
   const [inputs, setInputs] = useState<DetailedXPInputs>({
@@ -182,16 +62,17 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
     in_person_bonus: 0,
     level_1_moves: 0,
     level_2_moves: 0,
-    max_moves: 0,
+    level_max_moves: 0,
     good_friends: 0,
     great_friends: 0,
     ultra_friends: 0,
     best_friends: 0,
     lucky_egg: false,
+    use_target_timeline: true,
     target_type: "date",
     target_date: "2025-12-31",
     target_days: 30,
-  })
+  });
 
   const calculateCategoryXP = () => {
     const catching =
@@ -202,25 +83,25 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
       inputs.first_throws * XP_MULTIPLIERS.catching.first_throw +
       inputs.great_throws * XP_MULTIPLIERS.catching.great_throw +
       inputs.nice_throws * XP_MULTIPLIERS.catching.nice_throw +
-      inputs.xp_celebration * XP_MULTIPLIERS.catching.xp_celebration
+      inputs.xp_celebration * XP_MULTIPLIERS.catching.xp_celebration;
 
     const evolution =
       inputs.normal_evolutions * XP_MULTIPLIERS.evolution.normal +
-      inputs.new_pokemon_evolutions * XP_MULTIPLIERS.evolution.new_pokemon
+      inputs.new_pokemon_evolutions * XP_MULTIPLIERS.evolution.new_pokemon;
 
     const hatching =
       inputs.km_2_eggs * XP_MULTIPLIERS.hatching.km_2 +
       inputs.km_5_eggs * XP_MULTIPLIERS.hatching.km_5 +
       inputs.km_7_eggs * XP_MULTIPLIERS.hatching.km_7 +
       inputs.km_10_eggs * XP_MULTIPLIERS.hatching.km_10 +
-      inputs.km_12_eggs * XP_MULTIPLIERS.hatching.km_12
+      inputs.km_12_eggs * XP_MULTIPLIERS.hatching.km_12;
 
     const raids =
       inputs.star_1_raids * XP_MULTIPLIERS.raids.star_1 +
       inputs.star_3_raids * XP_MULTIPLIERS.raids.star_3 +
       inputs.star_5_raids * XP_MULTIPLIERS.raids.star_5 +
       inputs.mega_raids * XP_MULTIPLIERS.raids.mega +
-      inputs.shadow_raids * XP_MULTIPLIERS.raids.shadow
+      inputs.shadow_raids * XP_MULTIPLIERS.raids.shadow;
 
     const maxBattle =
       inputs.star_1_battles * XP_MULTIPLIERS.maxBattle.star_1 +
@@ -229,22 +110,23 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
       inputs.star_4_battles * XP_MULTIPLIERS.maxBattle.star_4 +
       inputs.star_5_battles * XP_MULTIPLIERS.maxBattle.star_5 +
       inputs.star_6_battles * XP_MULTIPLIERS.maxBattle.star_6 +
-      inputs.in_person_bonus * XP_MULTIPLIERS.maxBattle.in_person_bonus
+      inputs.in_person_bonus * XP_MULTIPLIERS.maxBattle.in_person_bonus;
 
     const maxMoves =
       inputs.level_1_moves * XP_MULTIPLIERS.maxMoves.level_1 +
       inputs.level_2_moves * XP_MULTIPLIERS.maxMoves.level_2 +
-      inputs.max_moves * XP_MULTIPLIERS.maxMoves.max_moves
+      inputs.level_max_moves * XP_MULTIPLIERS.maxMoves.level_max;
 
     const friendship =
       inputs.good_friends * XP_MULTIPLIERS.friendship.good_friends +
       inputs.great_friends * XP_MULTIPLIERS.friendship.great_friends +
       inputs.ultra_friends * XP_MULTIPLIERS.friendship.ultra_friends +
-      inputs.best_friends * XP_MULTIPLIERS.friendship.best_friends
+      inputs.best_friends * XP_MULTIPLIERS.friendship.best_friends;
 
     // Apply lucky egg to daily activities (not friendship)
-    const dailyXP = catching + evolution + hatching + raids + maxBattle + maxMoves
-    const adjustedDailyXP = inputs.lucky_egg ? dailyXP * 2 : dailyXP
+    const dailyXP =
+      catching + evolution + hatching + raids + maxBattle + maxMoves;
+    const adjustedDailyXP = inputs.lucky_egg ? dailyXP * 2 : dailyXP;
 
     return {
       catching: inputs.lucky_egg ? catching * 2 : catching,
@@ -256,26 +138,28 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
       friendship, // Friendship XP is not affected by lucky egg
       total: adjustedDailyXP + friendship,
       dailyXP: adjustedDailyXP,
-    }
-  }
+    };
+  };
 
   const calculateLevelProgress = () => {
-    const categoryXP = calculateCategoryXP()
-    const currentTotalXP = XP_REQUIREMENTS[inputs.currentLevel] + inputs.currentXP
-    const targetTotalXP = XP_REQUIREMENTS[inputs.targetLevel] || XP_REQUIREMENTS[50]
-    const newTotalXP = currentTotalXP + categoryXP.total
+    const categoryXP = calculateCategoryXP();
+    const currentTotalXP =
+      XP_REQUIREMENTS[inputs.currentLevel] + inputs.currentXP;
+    const targetTotalXP =
+      XP_REQUIREMENTS[inputs.targetLevel] || XP_REQUIREMENTS[50];
+    const newTotalXP = currentTotalXP + categoryXP.total;
 
-    const xpNeeded = Math.max(0, targetTotalXP - currentTotalXP)
-    const xpRemaining = Math.max(0, targetTotalXP - newTotalXP)
-    const targetReached = newTotalXP >= targetTotalXP
+    const xpNeeded = Math.max(0, targetTotalXP - currentTotalXP);
+    const xpRemaining = Math.max(0, targetTotalXP - newTotalXP);
+    const targetReached = newTotalXP >= targetTotalXP;
 
     // Find what level they'll reach
-    let reachedLevel = inputs.currentLevel
+    let reachedLevel = inputs.currentLevel;
     for (let level = inputs.currentLevel + 1; level <= 50; level++) {
       if (newTotalXP >= XP_REQUIREMENTS[level]) {
-        reachedLevel = level
+        reachedLevel = level;
       } else {
-        break
+        break;
       }
     }
 
@@ -287,35 +171,53 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
       targetReached,
       reachedLevel,
       categoryXP,
-    }
-  }
+    };
+  };
+
+  const calculateTimeToTarget = () => {
+    const progress = calculateLevelProgress();
+    if (progress.targetReached) return { daysToTarget: 0 };
+
+    // Only count daily activities for ongoing progress (friendship is one-time)
+    const dailyXPEarned = progress.categoryXP.dailyXP;
+
+    if (dailyXPEarned <= 0) return { daysToTarget: Infinity };
+
+    const daysToTarget = Math.ceil(progress.xpRemaining / dailyXPEarned);
+    return { daysToTarget };
+  };
 
   const calculateDailyRequirements = () => {
-    const progress = calculateLevelProgress()
-    if (progress.targetReached) return { daysNeeded: 0, dailyXPNeeded: 0 }
+    const progress = calculateLevelProgress();
+    if (progress.targetReached || !inputs.use_target_timeline)
+      return { daysNeeded: 0, dailyXPNeeded: 0 };
 
-    let days = 0
+    let days = 0;
     if (inputs.target_type === "date") {
-      const targetDate = new Date(inputs.target_date)
-      const today = new Date()
-      const timeDiff = targetDate.getTime() - today.getTime()
-      days = Math.ceil(timeDiff / (1000 * 3600 * 24))
+      const targetDate = new Date(inputs.target_date);
+      const today = new Date();
+      const timeDiff = targetDate.getTime() - today.getTime();
+      days = Math.ceil(timeDiff / (1000 * 3600 * 24));
     } else {
-      days = inputs.target_days
+      days = inputs.target_days;
     }
 
-    if (days <= 0) return { daysNeeded: 0, dailyXPNeeded: 0 }
+    if (days <= 0) return { daysNeeded: 0, dailyXPNeeded: 0 };
 
-    const dailyXPNeeded = Math.ceil(progress.xpRemaining / days)
-    return { daysNeeded: days, dailyXPNeeded }
-  }
+    const dailyXPNeeded = Math.ceil(progress.xpRemaining / days);
+    return { daysNeeded: days, dailyXPNeeded };
+  };
 
-  const updateInput = (field: keyof DetailedXPInputs, value: number | boolean | string) => {
-    setInputs((prev) => ({ ...prev, [field]: value }))
-  }
+  const updateInput = (
+    field: keyof DetailedXPInputs,
+    value: number | boolean | string
+  ) => {
+    setInputs((prev) => ({ ...prev, [field]: value }));
+  };
 
-  const progress = calculateLevelProgress()
-  const dailyReq = calculateDailyRequirements()
+  const progress = calculateLevelProgress();
+  const dailyReq = calculateDailyRequirements();
+  const timeToTarget = calculateTimeToTarget();
 
   return (
     <div className="min-h-screen bg-background">
@@ -407,56 +309,81 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
               </div>
             </div>
 
-            {/* Target Date/Days Toggle */}
+            {/* Target Timeline Toggle */}
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <Label>Target Timeline</Label>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={
-                      inputs.target_type === "date"
-                        ? "text-primary"
-                        : "text-muted-foreground"
-                    }
-                  >
-                    Date
-                  </span>
-                  <Switch
-                    checked={inputs.target_type === "days"}
-                    onCheckedChange={(checked) =>
-                      updateInput("target_type", checked ? "days" : "date")
-                    }
-                  />
-                  <span
-                    className={
-                      inputs.target_type === "days"
-                        ? "text-primary"
-                        : "text-muted-foreground"
-                    }
-                  >
-                    Days
-                  </span>
+              <div className="flex items-center justify-between p-4 glass-card rounded-lg">
+                <div className="space-y-1">
+                  <Label className="text-base font-semibold flex items-center gap-2">
+                    <Calendar className="w-4 h-4" />
+                    Set Target Timeline
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Calculate daily XP needed based on a target date/days
+                  </p>
                 </div>
+                <Switch
+                  checked={inputs.use_target_timeline}
+                  onCheckedChange={(checked) =>
+                    updateInput("use_target_timeline", checked)
+                  }
+                  className="data-[state=checked]:bg-primary"
+                />
               </div>
 
-              {inputs.target_type === "date" ? (
-                <Input
-                  type="date"
-                  value={inputs.target_date}
-                  onChange={(e) => updateInput("target_date", e.target.value)}
-                  className="glass-card border-white/20"
-                />
-              ) : (
-                <Input
-                  type="number"
-                  min="1"
-                  value={inputs.target_days}
-                  onChange={(e) =>
-                    updateInput("target_days", Number(e.target.value))
-                  }
-                  className="glass-card border-white/20"
-                  placeholder="Number of days"
-                />
+              {inputs.use_target_timeline && (
+                <>
+                  <div className="flex items-center justify-between">
+                    <Label>Target Timeline</Label>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={
+                          inputs.target_type === "date"
+                            ? "text-primary"
+                            : "text-muted-foreground"
+                        }
+                      >
+                        Date
+                      </span>
+                      <Switch
+                        checked={inputs.target_type === "days"}
+                        onCheckedChange={(checked) =>
+                          updateInput("target_type", checked ? "days" : "date")
+                        }
+                      />
+                      <span
+                        className={
+                          inputs.target_type === "days"
+                            ? "text-primary"
+                            : "text-muted-foreground"
+                        }
+                      >
+                        Days
+                      </span>
+                    </div>
+                  </div>
+
+                  {inputs.target_type === "date" ? (
+                    <Input
+                      type="date"
+                      value={inputs.target_date}
+                      onChange={(e) =>
+                        updateInput("target_date", e.target.value)
+                      }
+                      className="glass-card border-white/20"
+                    />
+                  ) : (
+                    <Input
+                      type="number"
+                      min="1"
+                      value={inputs.target_days}
+                      onChange={(e) =>
+                        updateInput("target_days", Number(e.target.value))
+                      }
+                      className="glass-card border-white/20"
+                      placeholder="Number of days"
+                    />
+                  )}
+                </>
               )}
             </div>
 
@@ -977,18 +904,18 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                     </p>
                   </div>
                   <div className="space-y-2">
-                    <Label>Max Moves</Label>
+                    <Label>Level Max Moves</Label>
                     <Input
                       type="number"
                       min="0"
-                      value={inputs.max_moves}
+                      value={inputs.level_max_moves}
                       onChange={(e) =>
-                        updateInput("max_moves", Number(e.target.value))
+                        updateInput("level_max_moves", Number(e.target.value))
                       }
                       className="glass-card border-white/20"
                     />
                     <p className="text-xs text-muted-foreground">
-                      +{XP_MULTIPLIERS.maxMoves.max_moves} XP each
+                      +{XP_MULTIPLIERS.maxMoves.level_max} XP each
                     </p>
                   </div>
                 </div>
@@ -1184,37 +1111,96 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                         {progress.xpRemaining.toLocaleString()} XP
                       </p>
                     </div>
-                    {dailyReq.daysNeeded > 0 && (
-                      <div className="space-y-2">
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground flex items-center gap-1">
+                        <Activity className="w-4 h-4" />
+                        Time at current pace:
+                      </p>
+                      <p className="text-xl font-semibold text-blue-500">
+                        {timeToTarget.daysToTarget === Infinity
+                          ? "Never (no daily XP)"
+                          : timeToTarget.daysToTarget === 0
+                          ? "Already reached!"
+                          : `${timeToTarget.daysToTarget} days`}
+                      </p>
+                    </div>
+                  </div>
+
+                  {inputs.use_target_timeline && dailyReq.daysNeeded > 0 && (
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        Daily XP needed for target:
+                      </p>
+                      <p className="text-xl font-semibold text-red-500">
+                        {dailyReq.dailyXPNeeded.toLocaleString()} XP/day
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Timeline Analysis */}
+                  <div className="space-y-4">
+                    {/* Current Pace Analysis */}
+                    <div className="p-4 glass-card rounded-lg border border-blue-500/20">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Activity className="w-4 h-4 text-blue-500" />
+                        <span className="font-medium text-blue-500">
+                          Current Pace Analysis
+                        </span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {progress.categoryXP.dailyXP > 0 ? (
+                          <>
+                            Based on your daily activities, you're earning{" "}
+                            {progress.categoryXP.dailyXP.toLocaleString()} XP
+                            per day
+                            {inputs.lucky_egg && " (with Lucky Egg)"}. At this
+                            pace, you'll reach level {inputs.targetLevel} in{" "}
+                            {timeToTarget.daysToTarget} days.
+                            {progress.categoryXP.friendship > 0 &&
+                              " This includes your one-time friendship XP bonus."}
+                          </>
+                        ) : (
+                          "You haven't entered any daily activities yet. Add some activities to see how long it will take to reach your target level."
+                        )}
+                      </p>
+                    </div>
+
+                    {/* Target Timeline Analysis */}
+                    {inputs.use_target_timeline && dailyReq.daysNeeded > 0 && (
+                      <div className="p-4 glass-card rounded-lg border border-red-500/20">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Calendar className="w-4 h-4 text-red-500" />
+                          <span className="font-medium text-red-500">
+                            Target Timeline Analysis
+                          </span>
+                        </div>
                         <p className="text-sm text-muted-foreground">
-                          Daily XP needed:
-                        </p>
-                        <p className="text-xl font-semibold text-red-500">
-                          {dailyReq.dailyXPNeeded.toLocaleString()} XP/day
+                          To reach level {inputs.targetLevel} in{" "}
+                          {dailyReq.daysNeeded} days, you need{" "}
+                          {dailyReq.dailyXPNeeded.toLocaleString()} XP per day
+                          from daily activities
+                          {inputs.lucky_egg && " (with Lucky Egg active)"}.
+                          {progress.categoryXP.dailyXP > 0 && (
+                            <>
+                              {" "}
+                              Currently you're earning{" "}
+                              {progress.categoryXP.dailyXP.toLocaleString()}{" "}
+                              XP/day, so you need{" "}
+                              {Math.max(
+                                0,
+                                dailyReq.dailyXPNeeded -
+                                  progress.categoryXP.dailyXP
+                              ).toLocaleString()}{" "}
+                              more XP per day.
+                            </>
+                          )}
+                          {progress.categoryXP.friendship > 0 &&
+                            " Friendship XP is counted as a one-time bonus."}
                         </p>
                       </div>
                     )}
                   </div>
-
-                  {dailyReq.daysNeeded > 0 && (
-                    <div className="p-4 glass-card rounded-lg border border-orange-500/20">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Clock className="w-4 h-4 text-orange-500" />
-                        <span className="font-medium text-orange-500">
-                          Timeline Analysis
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        You have {dailyReq.daysNeeded} days to reach level{" "}
-                        {inputs.targetLevel}. You need to earn{" "}
-                        {dailyReq.dailyXPNeeded.toLocaleString()} XP per day
-                        from daily activities
-                        {inputs.lucky_egg && " (with Lucky Egg active)"}.
-                        {progress.categoryXP.friendship > 0 &&
-                          " Friendship XP is counted as a one-time bonus."}
-                      </p>
-                    </div>
-                  )}
                 </div>
               )}
 

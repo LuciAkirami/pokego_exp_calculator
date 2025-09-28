@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface MaxMovesInputs {
   level_1_moves: number
   level_2_moves: number
   level_max_moves: number
+  lucky_egg: boolean
 }
 
 interface MaxMovesXP {
@@ -34,6 +36,7 @@ export function MaxMovesXPCalculator({ onBack }: MaxMovesXPCalculatorProps) {
     level_1_moves: 0,
     level_2_moves: 0,
     level_max_moves: 0,
+    lucky_egg: false,
   })
 
   const calculateTotalXP = (): number => {
@@ -41,10 +44,16 @@ export function MaxMovesXPCalculator({ onBack }: MaxMovesXPCalculatorProps) {
     totalXP += inputs.level_1_moves * maxMovesXP.level_1
     totalXP += inputs.level_2_moves * maxMovesXP.level_2
     totalXP += inputs.level_max_moves * maxMovesXP.level_max
+    
+    // Double XP if lucky egg is active
+    if (inputs.lucky_egg) {
+      totalXP *= 2
+    }
+    
     return totalXP
   }
 
-  const updateInput = (field: keyof MaxMovesInputs, value: number) => {
+  const updateInput = (field: keyof MaxMovesInputs, value: number | boolean) => {
     setInputs((prev) => ({
       ...prev,
       [field]: value,
@@ -81,6 +90,12 @@ export function MaxMovesXPCalculator({ onBack }: MaxMovesXPCalculatorProps) {
 
       {/* Calculator Content */}
       <main className="px-6 space-y-6 pb-8">
+        {/* Lucky Egg Toggle */}
+        <LuckyEggCard 
+          isActive={inputs.lucky_egg} 
+          onToggle={(checked) => updateInput("lucky_egg", checked)} 
+        />
+        
         {/* Input Fields */}
         <Card className="glass-card glass-card-hover">
           <CardHeader className="pb-4">

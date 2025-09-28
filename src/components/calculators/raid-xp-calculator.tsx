@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface RaidInputs {
   one_star_raids: number
@@ -13,6 +14,7 @@ interface RaidInputs {
   five_star_raids: number
   mega_raids: number
   shadow_raids: number
+  lucky_egg: boolean
 }
 
 interface RaidsXP {
@@ -42,6 +44,7 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
     five_star_raids: 0,
     mega_raids: 0,
     shadow_raids: 0,
+    lucky_egg: false,
   })
 
   const calculateTotalXP = (): number => {
@@ -51,10 +54,16 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
     totalXP += inputs.five_star_raids * raidsXP.five_star
     totalXP += inputs.mega_raids * raidsXP.mega
     totalXP += inputs.shadow_raids * raidsXP.shadow
+    
+    // Double XP if lucky egg is active
+    if (inputs.lucky_egg) {
+      totalXP *= 2
+    }
+    
     return totalXP
   }
 
-  const updateInput = (field: keyof RaidInputs, value: number) => {
+  const updateInput = (field: keyof RaidInputs, value: number | boolean) => {
     setInputs((prev) => ({
       ...prev,
       [field]: value,
@@ -91,6 +100,12 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
 
       {/* Calculator Content */}
       <main className="px-6 space-y-6 pb-8">
+        {/* Lucky Egg Toggle */}
+        <LuckyEggCard 
+          isActive={inputs.lucky_egg} 
+          onToggle={(checked) => updateInput("lucky_egg", checked)} 
+        />
+        
         {/* Input Fields */}
         <Card className="glass-card glass-card-hover">
           <CardHeader className="pb-4">

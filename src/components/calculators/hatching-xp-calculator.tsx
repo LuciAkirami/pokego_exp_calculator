@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface HatchingInputs {
   two_km_eggs: number
@@ -13,6 +14,7 @@ interface HatchingInputs {
   seven_km_eggs: number
   ten_km_eggs: number
   twelve_km_eggs: number
+  lucky_egg: boolean
 }
 
 interface HatchingXP {
@@ -42,6 +44,7 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
     seven_km_eggs: 0,
     ten_km_eggs: 0,
     twelve_km_eggs: 0,
+    lucky_egg: false,
   })
 
   const calculateTotalXP = (): number => {
@@ -51,10 +54,16 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
     totalXP += inputs.seven_km_eggs * hatchingXP.seven_km
     totalXP += inputs.ten_km_eggs * hatchingXP.ten_km
     totalXP += inputs.twelve_km_eggs * hatchingXP.twelve_km
+    
+    // Double XP if lucky egg is active
+    if (inputs.lucky_egg) {
+      totalXP *= 2
+    }
+    
     return totalXP
   }
 
-  const updateInput = (field: keyof HatchingInputs, value: number) => {
+  const updateInput = (field: keyof HatchingInputs, value: number | boolean) => {
     setInputs((prev) => ({
       ...prev,
       [field]: value,
@@ -91,6 +100,12 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
 
       {/* Calculator Content */}
       <main className="px-6 space-y-6 pb-8">
+        {/* Lucky Egg Toggle */}
+        <LuckyEggCard 
+          isActive={inputs.lucky_egg} 
+          onToggle={(checked) => updateInput("lucky_egg", checked)} 
+        />
+        
         {/* Input Fields */}
         <Card className="glass-card glass-card-hover">
           <CardHeader className="pb-4">

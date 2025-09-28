@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface FriendshipInputs {
   good_friends: number
   great_friends: number
   ultra_friends: number
   best_friends: number
+  lucky_egg: boolean
 }
 
 interface FriendshipXP {
@@ -38,6 +40,7 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
     great_friends: 0,
     ultra_friends: 0,
     best_friends: 0,
+    lucky_egg: false,
   })
 
   const calculateTotalXP = (): number => {
@@ -46,10 +49,16 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
     totalXP += inputs.great_friends * friendshipXP.great_friends
     totalXP += inputs.ultra_friends * friendshipXP.ultra_friends
     totalXP += inputs.best_friends * friendshipXP.best_friends
+    
+    // Double XP if lucky egg is active
+    if (inputs.lucky_egg) {
+      totalXP *= 2
+    }
+    
     return totalXP
   }
 
-  const updateInput = (field: keyof FriendshipInputs, value: number) => {
+  const updateInput = (field: keyof FriendshipInputs, value: number | boolean) => {
     setInputs((prev) => ({
       ...prev,
       [field]: value,
@@ -86,6 +95,12 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
 
       {/* Calculator Content */}
       <main className="px-6 space-y-6 pb-8">
+        {/* Lucky Egg Toggle */}
+        <LuckyEggCard 
+          isActive={inputs.lucky_egg} 
+          onToggle={(checked) => updateInput("lucky_egg", checked)} 
+        />
+        
         {/* Input Fields */}
         <Card className="glass-card glass-card-hover">
           <CardHeader className="pb-4">

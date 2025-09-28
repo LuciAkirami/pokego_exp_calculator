@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface MaxBattleInputs {
   one_star_battles: number
@@ -15,6 +16,7 @@ interface MaxBattleInputs {
   five_star_battles: number
   six_star_battles: number
   in_person_bonus_battles: number
+  lucky_egg: boolean
 }
 
 interface MaxBattleXP {
@@ -50,6 +52,7 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
     five_star_battles: 0,
     six_star_battles: 0,
     in_person_bonus_battles: 0,
+    lucky_egg: false,
   })
 
   const calculateTotalXP = (): number => {
@@ -61,10 +64,16 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
     totalXP += inputs.five_star_battles * maxBattleXP.five_star
     totalXP += inputs.six_star_battles * maxBattleXP.six_star
     totalXP += inputs.in_person_bonus_battles * maxBattleXP.in_person_bonus
+    
+    // Double XP if lucky egg is active
+    if (inputs.lucky_egg) {
+      totalXP *= 2
+    }
+    
     return totalXP
   }
 
-  const updateInput = (field: keyof MaxBattleInputs, value: number) => {
+  const updateInput = (field: keyof MaxBattleInputs, value: number | boolean) => {
     setInputs((prev) => ({
       ...prev,
       [field]: value,
@@ -101,6 +110,12 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
 
       {/* Calculator Content */}
       <main className="px-6 space-y-6 pb-8">
+        {/* Lucky Egg Toggle */}
+        <LuckyEggCard 
+          isActive={inputs.lucky_egg} 
+          onToggle={(checked) => updateInput("lucky_egg", checked)} 
+        />
+        
         {/* Input Fields */}
         <Card className="glass-card glass-card-hover">
           <CardHeader className="pb-4">

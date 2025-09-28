@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
+import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface CatchingInputs {
   normal_catches: number
@@ -117,21 +117,10 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
       {/* Calculator Content */}
       <main className="px-6 space-y-6 pb-8">
         {/* Lucky Egg Toggle */}
-        <Card className="glass-card glass-card-hover">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <Label className="text-base font-semibold">Lucky Egg Active</Label>
-                <p className="text-sm text-muted-foreground">Double all XP gains</p>
-              </div>
-              <Switch
-                checked={inputs.lucky_egg}
-                onCheckedChange={(checked) => updateInput("lucky_egg", checked)}
-                className="data-[state=checked]:bg-primary"
-              />
-            </div>
-          </CardContent>
-        </Card>
+        <LuckyEggCard 
+          isActive={inputs.lucky_egg} 
+          onToggle={(checked) => updateInput("lucky_egg", checked)} 
+        />
 
         {/* Input Fields */}
         <div className="grid gap-4">
