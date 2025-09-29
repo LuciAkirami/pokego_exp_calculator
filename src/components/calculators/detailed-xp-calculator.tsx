@@ -5,7 +5,7 @@ import {
   ArrowLeft,
   BarChart3,
   Target,
-  Clock,
+  // Clock,
   Zap,
   Calculator,
   TrendingUp,
@@ -22,10 +22,10 @@ import { XP_REQUIREMENTS, XP_MULTIPLIERS } from "@/types/xp-constants";
 import type { 
   DetailedXPInputs, 
   DetailedXPCalculatorProps,
-  CategoryXP,
-  LevelProgress,
-  TimeToTarget,
-  DailyRequirements
+  // CategoryXP,
+  // LevelProgress,
+  // TimeToTarget,
+  // DailyRequirements
 } from "@/types/xp-calculator";
 
 export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
@@ -40,7 +40,6 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
     first_throws: 0,
     great_throws: 0,
     nice_throws: 0,
-    xp_celebration: 0,
     normal_evolutions: 0,
     new_pokemon_evolutions: 0,
     km_2_eggs: 0,
@@ -82,8 +81,7 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
       inputs.curve_balls * XP_MULTIPLIERS.catching.curve_ball +
       inputs.first_throws * XP_MULTIPLIERS.catching.first_throw +
       inputs.great_throws * XP_MULTIPLIERS.catching.great_throw +
-      inputs.nice_throws * XP_MULTIPLIERS.catching.nice_throw +
-      inputs.xp_celebration * XP_MULTIPLIERS.catching.xp_celebration;
+      inputs.nice_throws * XP_MULTIPLIERS.catching.nice_throw;
 
     const evolution =
       inputs.normal_evolutions * XP_MULTIPLIERS.evolution.normal +
@@ -478,7 +476,10 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                     </p>
                   </div>
                   <div className="space-y-2">
-                    <Label>New Pokémon Catches</Label>
+                    <Label>
+                      {/* New Pokémon Catches */}
+                      New Pokémon
+                    </Label>
                     <Input
                       type="number"
                       min="0"
@@ -570,21 +571,6 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                       +{XP_MULTIPLIERS.catching.first_throw} XP each
                     </p>
                   </div>
-                  <div className="space-y-2">
-                    <Label>XP Celebrations</Label>
-                    <Input
-                      type="number"
-                      min="0"
-                      value={inputs.xp_celebration}
-                      onChange={(e) =>
-                        updateInput("xp_celebration", Number(e.target.value))
-                      }
-                      className="glass-card border-white/20"
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      +{XP_MULTIPLIERS.catching.xp_celebration} XP each
-                    </p>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -613,7 +599,7 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                     </p>
                   </div>
                   <div className="space-y-2">
-                    <Label>New Pokémon Evolutions</Label>
+                    <Label>New Poké Evolutions</Label>
                     <Input
                       type="number"
                       min="0"

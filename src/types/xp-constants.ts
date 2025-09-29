@@ -64,7 +64,6 @@ export const XP_MULTIPLIERS = {
     nice_throw: 20,
     great_throw: 100,
     excellent_throw: 1000,
-    xp_celebration: 500,
   },
   evolution: { normal: 1000, new_pokemon: 1000 },
   hatching: { 

@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { ArrowLeft, Heart, Calculator } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -9,10 +7,10 @@ import { Label } from "@/components/ui/label"
 import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface FriendshipInputs {
-  good_friends: number
-  great_friends: number
-  ultra_friends: number
-  best_friends: number
+  good_friends: string
+  great_friends: string
+  ultra_friends: string
+  best_friends: string
   lucky_egg: boolean
 }
 
@@ -36,19 +34,23 @@ interface FriendshipXPCalculatorProps {
 
 export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) {
   const [inputs, setInputs] = useState<FriendshipInputs>({
-    good_friends: 0,
-    great_friends: 0,
-    ultra_friends: 0,
-    best_friends: 0,
+    good_friends: "",
+    great_friends: "",
+    ultra_friends: "",
+    best_friends: "",
     lucky_egg: false,
   })
 
   const calculateTotalXP = (): number => {
     let totalXP = 0
-    totalXP += inputs.good_friends * friendshipXP.good_friends
-    totalXP += inputs.great_friends * friendshipXP.great_friends
-    totalXP += inputs.ultra_friends * friendshipXP.ultra_friends
-    totalXP += inputs.best_friends * friendshipXP.best_friends
+    const goodFriends = Number.parseInt(inputs.good_friends) || 0
+    const greatFriends = Number.parseInt(inputs.great_friends) || 0
+    const ultraFriends = Number.parseInt(inputs.ultra_friends) || 0
+    const bestFriends = Number.parseInt(inputs.best_friends) || 0
+    totalXP += goodFriends * friendshipXP.good_friends
+    totalXP += greatFriends * friendshipXP.great_friends
+    totalXP += ultraFriends * friendshipXP.ultra_friends
+    totalXP += bestFriends * friendshipXP.best_friends
     
     // Double XP if lucky egg is active
     if (inputs.lucky_egg) {
@@ -58,7 +60,14 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
     return totalXP
   }
 
-  const updateInput = (field: keyof FriendshipInputs, value: number | boolean) => {
+  const handleNumberInput = (field: keyof Pick<FriendshipInputs, 'good_friends' | 'great_friends' | 'ultra_friends' | 'best_friends'>, value: string) => {
+    // Allow empty string or valid numbers only
+    if (value === "" || /^\d+$/.test(value)) {
+      updateInput(field, value)
+    }
+  }
+
+  const updateInput = (field: keyof FriendshipInputs, value: string | boolean) => {
     setInputs((prev) => ({
       ...prev,
       [field]: value,
@@ -84,23 +93,27 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
             <h1 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
               Friendship XP Calculator
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">Calculate XP from friendship levels</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              Calculate XP from friendship levels
+            </p>
           </div>
         </div>
         <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
           <Heart className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium text-primary">{totalXP.toLocaleString()} XP</span>
+          <span className="text-sm font-medium text-primary">
+            {totalXP.toLocaleString()} XP
+          </span>
         </div>
       </header>
 
       {/* Calculator Content */}
       <main className="px-6 space-y-6 pb-8">
         {/* Lucky Egg Toggle */}
-        <LuckyEggCard 
-          isActive={inputs.lucky_egg} 
-          onToggle={(checked) => updateInput("lucky_egg", checked)} 
+        <LuckyEggCard
+          isActive={inputs.lucky_egg}
+          onToggle={(checked) => updateInput("lucky_egg", checked)}
         />
-        
+
         {/* Input Fields */}
         <Card className="glass-card glass-card-hover">
           <CardHeader className="pb-4">
@@ -115,56 +128,76 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
                 <Label htmlFor="good_friends">Good Friends</Label>
                 <Input
                   id="good_friends"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.good_friends}
-                  onChange={(e) => updateInput("good_friends", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) =>
+                    handleNumberInput("good_friends", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{friendshipXP.good_friends.toLocaleString()} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{friendshipXP.good_friends.toLocaleString()} XP each
+                </p>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="great_friends">Great Friends</Label>
                 <Input
                   id="great_friends"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.great_friends}
-                  onChange={(e) => updateInput("great_friends", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) =>
+                    handleNumberInput("great_friends", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{friendshipXP.great_friends.toLocaleString()} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{friendshipXP.great_friends.toLocaleString()} XP each
+                </p>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="ultra_friends">Ultra Friends</Label>
                 <Input
                   id="ultra_friends"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.ultra_friends}
-                  onChange={(e) => updateInput("ultra_friends", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) =>
+                    handleNumberInput("ultra_friends", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{friendshipXP.ultra_friends.toLocaleString()} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{friendshipXP.ultra_friends.toLocaleString()} XP each
+                </p>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="best_friends">Best Friends</Label>
                 <Input
                   id="best_friends"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.best_friends}
-                  onChange={(e) => updateInput("best_friends", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) =>
+                    handleNumberInput("best_friends", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{friendshipXP.best_friends.toLocaleString()} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{friendshipXP.best_friends.toLocaleString()} XP each
+                </p>
               </div>
             </div>
           </CardContent>
@@ -174,7 +207,9 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
         <Card className="glass-card glass-card-hover border-primary/40 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent">
           <CardContent className="p-6">
             <div className="text-center space-y-2">
-              <h3 className="text-lg font-semibold text-foreground">Total XP Earned</h3>
+              <h3 className="text-lg font-semibold text-foreground">
+                Total XP Earned
+              </h3>
               <div className="text-4xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
                 {totalXP.toLocaleString()}
               </div>
@@ -183,5 +218,5 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
         </Card>
       </main>
     </div>
-  )
+  );
 }

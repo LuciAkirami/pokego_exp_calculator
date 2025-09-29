@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
-  Settings,
+  // Settings,
   Target,
   BarChart3,
   Zap,
@@ -23,11 +23,57 @@ import { Level50Calculator } from "./components/calculators/level-50-calculator"
 import { DetailedXPCalculator } from "./components/calculators/detailed-xp-calculator";
 import { ModeToggle } from "./components/mode-toggle";
 
+// Declare global type for androidBackCallback
+declare global {
+  interface Window {
+    androidBackCallback?: () => boolean;
+  }
+}
+
 export default function HomePage() {
   const [selectedCalculator, setSelectedCalculator] = useState<string | null>(
     null
   );
 
+  // NEW: Handle Android back button
+  useEffect(() => {
+    // useEffect runs after the component renders
+    // This is perfect for setting up event handlers
+
+    window.androidBackCallback = () => {
+      // NEW: Define the function that Kotlin will call
+      // This is attached to the global window object so Kotlin can find it
+      // Arrow function captures the current value of 'selectedCalculator'
+
+      if (selectedCalculator) {
+        // If selectedCalculator has a value (not null)
+        // That means we're currently viewing a calculator
+
+        setSelectedCalculator(null);
+        // Set it back to null - this makes React re-render and show the home page
+        // React sees selectedCalculator is null and renders the calculator list
+
+        return false;
+        // Return false tells Kotlin: "Don't close the app, I handled the navigation"
+      }
+
+      // If we reach here, selectedCalculator is null (we're on home page)
+      return true;
+      // Return true tells Kotlin: "Go ahead and close the app"
+    };
+
+    // NEW: Cleanup function
+    return () => {
+      delete window.androidBackCallback;
+      // This runs when the component unmounts (app closes or component removed)
+      // We remove our function from the window object to prevent memory leaks
+      // Good practice to clean up after ourselves
+    };
+  }, [selectedCalculator]);
+  // NEW: Dependency array with [selectedCalculator]
+  // This means: "Re-run this effect whenever selectedCalculator changes"
+  // This ensures our callback always has the latest value of selectedCalculator
+  // Without this, the function would always see the initial value (null)
   const calculators = [
     {
       id: "level-50",
@@ -172,7 +218,6 @@ export default function HomePage() {
           />
         ))}
       </main>
-
     </div>
   );
 }

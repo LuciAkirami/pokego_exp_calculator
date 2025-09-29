@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { ArrowLeft, Shuffle, Calculator } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -9,8 +7,8 @@ import { Label } from "@/components/ui/label"
 import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface EvolutionInputs {
-  normal_evolutions: number
-  new_pokemon_evolutions: number
+  normal_evolutions: string
+  new_pokemon_evolutions: string
   lucky_egg: boolean
 }
 
@@ -30,15 +28,18 @@ interface EvolutionXPCalculatorProps {
 
 export function EvolutionXPCalculator({ onBack }: EvolutionXPCalculatorProps) {
   const [inputs, setInputs] = useState<EvolutionInputs>({
-    normal_evolutions: 0,
-    new_pokemon_evolutions: 0,
+    normal_evolutions: "",
+    new_pokemon_evolutions: "",
     lucky_egg: false,
   })
 
   const calculateTotalXP = (): number => {
     let totalXP = 0
-    totalXP += inputs.normal_evolutions * evolutionXP.normal
-    totalXP += inputs.new_pokemon_evolutions * evolutionXP.new_pokemon
+    const normalEvolutions = Number.parseInt(inputs.normal_evolutions) || 0
+    const newPokemonEvolutions = Number.parseInt(inputs.new_pokemon_evolutions) || 0
+    
+    totalXP += normalEvolutions * evolutionXP.normal
+    totalXP += newPokemonEvolutions * evolutionXP.new_pokemon
     
     // Double XP if lucky egg is active
     if (inputs.lucky_egg) {
@@ -48,11 +49,18 @@ export function EvolutionXPCalculator({ onBack }: EvolutionXPCalculatorProps) {
     return totalXP
   }
 
-  const updateInput = (field: keyof EvolutionInputs, value: number | boolean) => {
+  const updateInput = (field: keyof EvolutionInputs, value: string | boolean) => {
     setInputs((prev) => ({
       ...prev,
       [field]: value,
     }))
+  }
+
+  const handleNumberInput = (field: keyof Pick<EvolutionInputs, 'normal_evolutions' | 'new_pokemon_evolutions'>, value: string) => {
+    // Allow empty string or valid numbers only
+    if (value === "" || /^\d+$/.test(value)) {
+      updateInput(field, value)
+    }
   }
 
   const totalXP = calculateTotalXP()
@@ -105,10 +113,10 @@ export function EvolutionXPCalculator({ onBack }: EvolutionXPCalculatorProps) {
                 <Label htmlFor="normal_evolutions">Normal Evolutions</Label>
                 <Input
                   id="normal_evolutions"
-                  type="number"
-                  min="0"
+                  type="text"
+                  inputMode="numeric"
                   value={inputs.normal_evolutions}
-                  onChange={(e) => updateInput("normal_evolutions", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("normal_evolutions", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -119,10 +127,10 @@ export function EvolutionXPCalculator({ onBack }: EvolutionXPCalculatorProps) {
                 <Label htmlFor="new_pokemon_evolutions">New Pokémon Evolutions</Label>
                 <Input
                   id="new_pokemon_evolutions"
-                  type="number"
-                  min="0"
+                  type="text"
+                  inputMode="numeric"
                   value={inputs.new_pokemon_evolutions}
-                  onChange={(e) => updateInput("new_pokemon_evolutions", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("new_pokemon_evolutions", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />

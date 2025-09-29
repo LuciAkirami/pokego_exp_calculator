@@ -9,9 +9,9 @@ import { Label } from "@/components/ui/label"
 import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface MaxMovesInputs {
-  level_1_moves: number
-  level_2_moves: number
-  level_max_moves: number
+  level_1_moves: string
+  level_2_moves: string
+  level_max_moves: string
   lucky_egg: boolean
 }
 
@@ -33,17 +33,28 @@ interface MaxMovesXPCalculatorProps {
 
 export function MaxMovesXPCalculator({ onBack }: MaxMovesXPCalculatorProps) {
   const [inputs, setInputs] = useState<MaxMovesInputs>({
-    level_1_moves: 0,
-    level_2_moves: 0,
-    level_max_moves: 0,
+    level_1_moves: "",
+    level_2_moves: "",
+    level_max_moves: "",
     lucky_egg: false,
   })
 
+  const handleNumberInput = (field: keyof Pick<MaxMovesInputs, 'level_1_moves' | 'level_2_moves' | 'level_max_moves'>, value: string) => {
+    // Allow empty string or valid numbers only
+    if (value === "" || /^\d+$/.test(value)) {
+      updateInput(field, value)
+    }
+  }
+
   const calculateTotalXP = (): number => {
     let totalXP = 0
-    totalXP += inputs.level_1_moves * maxMovesXP.level_1
-    totalXP += inputs.level_2_moves * maxMovesXP.level_2
-    totalXP += inputs.level_max_moves * maxMovesXP.level_max
+    const level1Moves = Number.parseInt(inputs.level_1_moves) || 0
+    const level2Moves = Number.parseInt(inputs.level_2_moves) || 0
+    const levelMaxMoves = Number.parseInt(inputs.level_max_moves) || 0
+
+    totalXP += level1Moves * maxMovesXP.level_1
+    totalXP += level2Moves * maxMovesXP.level_2
+    totalXP += levelMaxMoves * maxMovesXP.level_max
     
     // Double XP if lucky egg is active
     if (inputs.lucky_egg) {
@@ -53,7 +64,7 @@ export function MaxMovesXPCalculator({ onBack }: MaxMovesXPCalculatorProps) {
     return totalXP
   }
 
-  const updateInput = (field: keyof MaxMovesInputs, value: number | boolean) => {
+  const updateInput = (field: keyof MaxMovesInputs, value: string | boolean) => {
     setInputs((prev) => ({
       ...prev,
       [field]: value,
@@ -110,10 +121,11 @@ export function MaxMovesXPCalculator({ onBack }: MaxMovesXPCalculatorProps) {
                 <Label htmlFor="level_1_moves">Level 1 Moves</Label>
                 <Input
                   id="level_1_moves"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.level_1_moves}
-                  onChange={(e) => updateInput("level_1_moves", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("level_1_moves", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -124,10 +136,11 @@ export function MaxMovesXPCalculator({ onBack }: MaxMovesXPCalculatorProps) {
                 <Label htmlFor="level_2_moves">Level 2 Moves</Label>
                 <Input
                   id="level_2_moves"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.level_2_moves}
-                  onChange={(e) => updateInput("level_2_moves", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("level_2_moves", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -138,10 +151,11 @@ export function MaxMovesXPCalculator({ onBack }: MaxMovesXPCalculatorProps) {
                 <Label htmlFor="level_max_moves">Level Max Moves</Label>
                 <Input
                   id="level_max_moves"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.level_max_moves}
-                  onChange={(e) => updateInput("level_max_moves", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("level_max_moves", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />

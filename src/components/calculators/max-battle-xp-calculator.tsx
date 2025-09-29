@@ -9,13 +9,13 @@ import { Label } from "@/components/ui/label"
 import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface MaxBattleInputs {
-  one_star_battles: number
-  two_star_battles: number
-  three_star_battles: number
-  four_star_battles: number
-  five_star_battles: number
-  six_star_battles: number
-  in_person_bonus_battles: number
+  one_star_battles: string
+  two_star_battles: string
+  three_star_battles: string
+  four_star_battles: string
+  five_star_battles: string
+  six_star_battles: string
+  in_person_bonus_battles: string
   lucky_egg: boolean
 }
 
@@ -45,25 +45,47 @@ interface MaxBattleXPCalculatorProps {
 
 export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
   const [inputs, setInputs] = useState<MaxBattleInputs>({
-    one_star_battles: 0,
-    two_star_battles: 0,
-    three_star_battles: 0,
-    four_star_battles: 0,
-    five_star_battles: 0,
-    six_star_battles: 0,
-    in_person_bonus_battles: 0,
+    one_star_battles: "",
+    two_star_battles: "",
+    three_star_battles: "",
+    four_star_battles: "",
+    five_star_battles: "",
+    six_star_battles: "",
+    in_person_bonus_battles: "",
     lucky_egg: false,
   })
 
+  const handleNumberInput = (field: keyof Pick<MaxBattleInputs, 'one_star_battles' | 'two_star_battles' | 'three_star_battles' | 'four_star_battles' | 'five_star_battles' | 'six_star_battles' | 'in_person_bonus_battles'>, value: string) => {
+    // Allow empty string or valid numbers only
+    if (value === "" || /^\d+$/.test(value)) {
+      updateInput(field, value)
+    }
+  }
+
+  const updateInput = (field: keyof MaxBattleInputs, value: string | boolean) => {
+    setInputs((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
+  }
+
   const calculateTotalXP = (): number => {
     let totalXP = 0
-    totalXP += inputs.one_star_battles * maxBattleXP.one_star
-    totalXP += inputs.two_star_battles * maxBattleXP.two_star
-    totalXP += inputs.three_star_battles * maxBattleXP.three_star
-    totalXP += inputs.four_star_battles * maxBattleXP.four_star
-    totalXP += inputs.five_star_battles * maxBattleXP.five_star
-    totalXP += inputs.six_star_battles * maxBattleXP.six_star
-    totalXP += inputs.in_person_bonus_battles * maxBattleXP.in_person_bonus
+    const oneStarBattles = Number.parseInt(inputs.one_star_battles) || 0
+    const twoStarBattles = Number.parseInt(inputs.two_star_battles) || 0
+    const threeStarBattles = Number.parseInt(inputs.three_star_battles) || 0
+    const fourStarBattles = Number.parseInt(inputs.four_star_battles) || 0
+    const fiveStarBattles = Number.parseInt(inputs.five_star_battles) || 0
+    const sixStarBattles = Number.parseInt(inputs.six_star_battles) || 0
+    const inPersonBonusBattles = Number.parseInt(inputs.in_person_bonus_battles) || 0
+
+    totalXP += oneStarBattles * maxBattleXP.one_star
+    totalXP += twoStarBattles * maxBattleXP.two_star
+    totalXP += threeStarBattles * maxBattleXP.three_star
+    totalXP += fourStarBattles * maxBattleXP.four_star
+    totalXP += fiveStarBattles * maxBattleXP.five_star
+    totalXP += sixStarBattles * maxBattleXP.six_star
+    totalXP += inPersonBonusBattles * maxBattleXP.in_person_bonus
     
     // Double XP if lucky egg is active
     if (inputs.lucky_egg) {
@@ -73,12 +95,6 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
     return totalXP
   }
 
-  const updateInput = (field: keyof MaxBattleInputs, value: number | boolean) => {
-    setInputs((prev) => ({
-      ...prev,
-      [field]: value,
-    }))
-  }
 
   const totalXP = calculateTotalXP()
 
@@ -130,10 +146,11 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
                 <Label htmlFor="one_star_battles">1-Star Battles</Label>
                 <Input
                   id="one_star_battles"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.one_star_battles}
-                  onChange={(e) => updateInput("one_star_battles", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("one_star_battles", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -144,10 +161,11 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
                 <Label htmlFor="two_star_battles">2-Star Battles</Label>
                 <Input
                   id="two_star_battles"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.two_star_battles}
-                  onChange={(e) => updateInput("two_star_battles", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("two_star_battles", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -158,10 +176,11 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
                 <Label htmlFor="three_star_battles">3-Star Battles</Label>
                 <Input
                   id="three_star_battles"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.three_star_battles}
-                  onChange={(e) => updateInput("three_star_battles", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("three_star_battles", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -172,10 +191,11 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
                 <Label htmlFor="four_star_battles">4-Star Battles</Label>
                 <Input
                   id="four_star_battles"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.four_star_battles}
-                  onChange={(e) => updateInput("four_star_battles", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("four_star_battles", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -186,10 +206,11 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
                 <Label htmlFor="five_star_battles">5-Star Battles</Label>
                 <Input
                   id="five_star_battles"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.five_star_battles}
-                  onChange={(e) => updateInput("five_star_battles", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("five_star_battles", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -200,10 +221,11 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
                 <Label htmlFor="six_star_battles">6-Star Battles</Label>
                 <Input
                   id="six_star_battles"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.six_star_battles}
-                  onChange={(e) => updateInput("six_star_battles", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("six_star_battles", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -214,10 +236,11 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
                 <Label htmlFor="in_person_bonus_battles">In-Person Bonus Battles</Label>
                 <Input
                   id="in_person_bonus_battles"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.in_person_bonus_battles}
-                  onChange={(e) => updateInput("in_person_bonus_battles", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("in_person_bonus_battles", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />

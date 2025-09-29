@@ -23,7 +23,6 @@ export interface CatchingInputs {
   first_throws: number;
   great_throws: number;
   nice_throws: number;
-  xp_celebration: number;
 }
 
 // Evolution related types

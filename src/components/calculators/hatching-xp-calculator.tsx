@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { ArrowLeft, Egg, Calculator } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -9,11 +7,11 @@ import { Label } from "@/components/ui/label"
 import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface HatchingInputs {
-  two_km_eggs: number
-  five_km_eggs: number
-  seven_km_eggs: number
-  ten_km_eggs: number
-  twelve_km_eggs: number
+  two_km_eggs: string
+  five_km_eggs: string
+  seven_km_eggs: string
+  ten_km_eggs: string
+  twelve_km_eggs: string
   lucky_egg: boolean
 }
 
@@ -39,21 +37,26 @@ interface HatchingXPCalculatorProps {
 
 export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
   const [inputs, setInputs] = useState<HatchingInputs>({
-    two_km_eggs: 0,
-    five_km_eggs: 0,
-    seven_km_eggs: 0,
-    ten_km_eggs: 0,
-    twelve_km_eggs: 0,
+    two_km_eggs: "",
+    five_km_eggs: "",
+    seven_km_eggs: "",
+    ten_km_eggs: "",
+    twelve_km_eggs: "",
     lucky_egg: false,
   })
 
   const calculateTotalXP = (): number => {
     let totalXP = 0
-    totalXP += inputs.two_km_eggs * hatchingXP.two_km
-    totalXP += inputs.five_km_eggs * hatchingXP.five_km
-    totalXP += inputs.seven_km_eggs * hatchingXP.seven_km
-    totalXP += inputs.ten_km_eggs * hatchingXP.ten_km
-    totalXP += inputs.twelve_km_eggs * hatchingXP.twelve_km
+    const two_km_eggs = Number.parseInt(inputs.two_km_eggs) || 0
+    const five_km_eggs = Number.parseInt(inputs.five_km_eggs) || 0
+    const seven_km_eggs = Number.parseInt(inputs.seven_km_eggs) || 0
+    const ten_km_eggs = Number.parseInt(inputs.ten_km_eggs) || 0
+    const twelve_km_eggs = Number.parseInt(inputs.twelve_km_eggs) || 0
+    totalXP += two_km_eggs * hatchingXP.two_km
+    totalXP += five_km_eggs * hatchingXP.five_km
+    totalXP += seven_km_eggs * hatchingXP.seven_km
+    totalXP += ten_km_eggs * hatchingXP.ten_km
+    totalXP += twelve_km_eggs * hatchingXP.twelve_km
     
     // Double XP if lucky egg is active
     if (inputs.lucky_egg) {
@@ -63,7 +66,14 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
     return totalXP
   }
 
-  const updateInput = (field: keyof HatchingInputs, value: number | boolean) => {
+  const handleNumberInput = (field: keyof Pick<HatchingInputs, 'two_km_eggs' | 'five_km_eggs' | 'seven_km_eggs' | 'ten_km_eggs' | 'twelve_km_eggs'>, value: string) => {
+    // Allow empty string or valid numbers only
+    if (value === "" || /^\d+$/.test(value)) {
+      updateInput(field, value)
+    }
+  }
+
+  const updateInput = (field: keyof HatchingInputs, value: string | boolean) => {
     setInputs((prev) => ({
       ...prev,
       [field]: value,
@@ -120,10 +130,11 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
                 <Label htmlFor="two_km_eggs">2km Eggs</Label>
                 <Input
                   id="two_km_eggs"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.two_km_eggs}
-                  onChange={(e) => updateInput("two_km_eggs", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("two_km_eggs", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -134,10 +145,11 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
                 <Label htmlFor="five_km_eggs">5km Eggs</Label>
                 <Input
                   id="five_km_eggs"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.five_km_eggs}
-                  onChange={(e) => updateInput("five_km_eggs", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("five_km_eggs", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -148,10 +160,11 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
                 <Label htmlFor="seven_km_eggs">7km Eggs</Label>
                 <Input
                   id="seven_km_eggs"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.seven_km_eggs}
-                  onChange={(e) => updateInput("seven_km_eggs", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("seven_km_eggs", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -162,10 +175,11 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
                 <Label htmlFor="ten_km_eggs">10km Eggs</Label>
                 <Input
                   id="ten_km_eggs"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.ten_km_eggs}
-                  onChange={(e) => updateInput("ten_km_eggs", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("ten_km_eggs", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -176,10 +190,11 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
                 <Label htmlFor="twelve_km_eggs">12km Eggs</Label>
                 <Input
                   id="twelve_km_eggs"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.twelve_km_eggs}
-                  onChange={(e) => updateInput("twelve_km_eggs", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("twelve_km_eggs", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />

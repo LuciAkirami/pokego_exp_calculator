@@ -9,14 +9,13 @@ import { Label } from "@/components/ui/label"
 import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface CatchingInputs {
-  normal_catches: number
-  new_pokemon_catches: number
-  excellent_throws: number
-  curve_balls: number
-  first_throws: number
-  great_throws: number
-  nice_throws: number
-  xp_celebration: number
+  normal_catches: string
+  new_pokemon_catches: string
+  excellent_throws: string
+  curve_balls: string
+  first_throws: string
+  great_throws: string
+  nice_throws: string
   lucky_egg: boolean
 }
 
@@ -48,28 +47,33 @@ interface CatchXPCalculatorProps {
 
 export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
   const [inputs, setInputs] = useState<CatchingInputs>({
-    normal_catches: 0,
-    new_pokemon_catches: 0,
-    excellent_throws: 0,
-    curve_balls: 0,
-    first_throws: 0,
-    great_throws: 0,
-    nice_throws: 0,
-    xp_celebration: 0,
+    normal_catches: "",
+    new_pokemon_catches: "",
+    excellent_throws: "",
+    curve_balls: "",
+    first_throws: "",
+    great_throws: "",
+    nice_throws: "",
     lucky_egg: false,
   })
 
   const calculateTotalXP = (): number => {
     let totalXP = 0
+    const normalCatches = Number.parseInt(inputs.normal_catches) || 0
+    const newPokemonCatches = Number.parseInt(inputs.new_pokemon_catches) || 0
+    const excellentThrows = Number.parseInt(inputs.excellent_throws) || 0
+    const curveBalls = Number.parseInt(inputs.curve_balls) || 0
+    const firstThrows = Number.parseInt(inputs.first_throws) || 0
+    const greatThrows = Number.parseInt(inputs.great_throws) || 0
+    const niceThrows = Number.parseInt(inputs.nice_throws) || 0
 
-    totalXP += inputs.normal_catches * catchingXP.normal
-    totalXP += inputs.new_pokemon_catches * catchingXP.new_pokemon
-    totalXP += inputs.excellent_throws * catchingXP.excellent_throw
-    totalXP += inputs.curve_balls * catchingXP.curve_ball
-    totalXP += inputs.first_throws * catchingXP.first_throw
-    totalXP += inputs.great_throws * catchingXP.great_throw
-    totalXP += inputs.nice_throws * catchingXP.nice_throw
-    totalXP += inputs.xp_celebration * catchingXP.xp_celebration
+    totalXP += normalCatches * catchingXP.normal
+    totalXP += newPokemonCatches * catchingXP.new_pokemon
+    totalXP += excellentThrows * catchingXP.excellent_throw
+    totalXP += curveBalls * catchingXP.curve_ball
+    totalXP += firstThrows * catchingXP.first_throw
+    totalXP += greatThrows * catchingXP.great_throw
+    totalXP += niceThrows * catchingXP.nice_throw
 
     // Double XP if lucky egg is active
     if (inputs.lucky_egg) {
@@ -84,6 +88,13 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
       ...prev,
       [field]: value,
     }))
+  }
+
+  const handleNumberInput = (field: keyof Pick<CatchingInputs, 'normal_catches' | 'new_pokemon_catches' | 'excellent_throws' | 'curve_balls' | 'first_throws' | 'great_throws' | 'nice_throws'>, value: string) => {
+    // Allow empty string or valid numbers only
+    if (value === "" || /^\d+$/.test(value)) {
+      updateInput(field, Number.parseInt(value) || 0)
+    }
   }
 
   const totalXP = calculateTotalXP()
@@ -137,10 +148,11 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
                   <Label htmlFor="normal_catches">Normal Catches</Label>
                   <Input
                     id="normal_catches"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     min="0"
                     value={inputs.normal_catches}
-                    onChange={(e) => updateInput("normal_catches", Number.parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleNumberInput("normal_catches", e.target.value)}
                     className="glass-card border-white/20"
                     placeholder="0"
                   />
@@ -151,10 +163,11 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
                   <Label htmlFor="new_pokemon_catches">New Pokémon Catches</Label>
                   <Input
                     id="new_pokemon_catches"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     min="0"
                     value={inputs.new_pokemon_catches}
-                    onChange={(e) => updateInput("new_pokemon_catches", Number.parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleNumberInput("new_pokemon_catches", e.target.value)}
                     className="glass-card border-white/20"
                     placeholder="0"
                   />
@@ -165,10 +178,11 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
                   <Label htmlFor="excellent_throws">Excellent Throws</Label>
                   <Input
                     id="excellent_throws"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     min="0"
                     value={inputs.excellent_throws}
-                    onChange={(e) => updateInput("excellent_throws", Number.parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleNumberInput("excellent_throws", e.target.value)}
                     className="glass-card border-white/20"
                     placeholder="0"
                   />
@@ -179,10 +193,11 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
                   <Label htmlFor="great_throws">Great Throws</Label>
                   <Input
                     id="great_throws"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     min="0"
                     value={inputs.great_throws}
-                    onChange={(e) => updateInput("great_throws", Number.parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleNumberInput("great_throws", e.target.value)}
                     className="glass-card border-white/20"
                     placeholder="0"
                   />
@@ -193,10 +208,11 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
                   <Label htmlFor="nice_throws">Nice Throws</Label>
                   <Input
                     id="nice_throws"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     min="0"
                     value={inputs.nice_throws}
-                    onChange={(e) => updateInput("nice_throws", Number.parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleNumberInput("nice_throws", e.target.value)}
                     className="glass-card border-white/20"
                     placeholder="0"
                   />
@@ -207,10 +223,11 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
                   <Label htmlFor="curve_balls">Curve Balls</Label>
                   <Input
                     id="curve_balls"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     min="0"
                     value={inputs.curve_balls}
-                    onChange={(e) => updateInput("curve_balls", Number.parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleNumberInput("curve_balls", e.target.value)}
                     className="glass-card border-white/20"
                     placeholder="0"
                   />
@@ -221,29 +238,17 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
                   <Label htmlFor="first_throws">First Throws</Label>
                   <Input
                     id="first_throws"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     min="0"
                     value={inputs.first_throws}
-                    onChange={(e) => updateInput("first_throws", Number.parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleNumberInput("first_throws", e.target.value)}
                     className="glass-card border-white/20"
                     placeholder="0"
                   />
                   <p className="text-xs text-muted-foreground">+{catchingXP.first_throw} XP each</p>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="xp_celebration">XP Celebrations</Label>
-                  <Input
-                    id="xp_celebration"
-                    type="number"
-                    min="0"
-                    value={inputs.xp_celebration}
-                    onChange={(e) => updateInput("xp_celebration", Number.parseInt(e.target.value) || 0)}
-                    className="glass-card border-white/20"
-                    placeholder="0"
-                  />
-                  <p className="text-xs text-muted-foreground">+{catchingXP.xp_celebration} XP each</p>
-                </div>
               </div>
             </CardContent>
           </Card>

@@ -9,11 +9,11 @@ import { Label } from "@/components/ui/label"
 import { LuckyEggCard } from "@/components/common/lucky-egg-card"
 
 interface RaidInputs {
-  one_star_raids: number
-  three_star_raids: number
-  five_star_raids: number
-  mega_raids: number
-  shadow_raids: number
+  one_star_raids: string
+  three_star_raids: string
+  five_star_raids: string
+  mega_raids: string
+  shadow_raids: string
   lucky_egg: boolean
 }
 
@@ -39,21 +39,27 @@ interface RaidXPCalculatorProps {
 
 export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
   const [inputs, setInputs] = useState<RaidInputs>({
-    one_star_raids: 0,
-    three_star_raids: 0,
-    five_star_raids: 0,
-    mega_raids: 0,
-    shadow_raids: 0,
+    one_star_raids: "",
+    three_star_raids: "",
+    five_star_raids: "",
+    mega_raids: "",
+    shadow_raids: "",
     lucky_egg: false,
   })
 
   const calculateTotalXP = (): number => {
     let totalXP = 0
-    totalXP += inputs.one_star_raids * raidsXP.one_star
-    totalXP += inputs.three_star_raids * raidsXP.three_star
-    totalXP += inputs.five_star_raids * raidsXP.five_star
-    totalXP += inputs.mega_raids * raidsXP.mega
-    totalXP += inputs.shadow_raids * raidsXP.shadow
+    const oneStarRaids = Number.parseInt(inputs.one_star_raids) || 0
+    const threeStarRaids = Number.parseInt(inputs.three_star_raids) || 0
+    const fiveStarRaids = Number.parseInt(inputs.five_star_raids) || 0
+    const megaRaids = Number.parseInt(inputs.mega_raids) || 0
+    const shadowRaids = Number.parseInt(inputs.shadow_raids) || 0
+    
+    totalXP += oneStarRaids * raidsXP.one_star
+    totalXP += threeStarRaids * raidsXP.three_star
+    totalXP += fiveStarRaids * raidsXP.five_star
+    totalXP += megaRaids * raidsXP.mega
+    totalXP += shadowRaids * raidsXP.shadow
     
     // Double XP if lucky egg is active
     if (inputs.lucky_egg) {
@@ -63,7 +69,14 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
     return totalXP
   }
 
-  const updateInput = (field: keyof RaidInputs, value: number | boolean) => {
+  const handleNumberInput = (field: keyof Pick<RaidInputs, 'one_star_raids' | 'three_star_raids' | 'five_star_raids' | 'mega_raids' | 'shadow_raids'>, value: string) => {
+    // Allow empty string or valid numbers only
+    if (value === "" || /^\d+$/.test(value)) {
+      updateInput(field, value)
+    }
+  }
+
+  const updateInput = (field: keyof RaidInputs, value: string | boolean) => {
     setInputs((prev) => ({
       ...prev,
       [field]: value,
@@ -120,10 +133,11 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
                 <Label htmlFor="one_star_raids">1-Star Raids</Label>
                 <Input
                   id="one_star_raids"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.one_star_raids}
-                  onChange={(e) => updateInput("one_star_raids", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("one_star_raids", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -134,10 +148,11 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
                 <Label htmlFor="three_star_raids">3-Star Raids</Label>
                 <Input
                   id="three_star_raids"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.three_star_raids}
-                  onChange={(e) => updateInput("three_star_raids", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("three_star_raids", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -148,10 +163,11 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
                 <Label htmlFor="five_star_raids">5-Star Raids</Label>
                 <Input
                   id="five_star_raids"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.five_star_raids}
-                  onChange={(e) => updateInput("five_star_raids", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("five_star_raids", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -162,10 +178,11 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
                 <Label htmlFor="mega_raids">Mega Raids</Label>
                 <Input
                   id="mega_raids"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.mega_raids}
-                  onChange={(e) => updateInput("mega_raids", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("mega_raids", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
@@ -176,10 +193,11 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
                 <Label htmlFor="shadow_raids">Shadow Raids</Label>
                 <Input
                   id="shadow_raids"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.shadow_raids}
-                  onChange={(e) => updateInput("shadow_raids", Number.parseInt(e.target.value) || 0)}
+                  onChange={(e) => handleNumberInput("shadow_raids", e.target.value)}
                   className="glass-card border-white/20"
                   placeholder="0"
                 />

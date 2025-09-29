@@ -65,15 +65,37 @@ const XP_REQUIREMENTS: Record<number, number> = {
   50: 176000000,
 }
 
+interface Level50Inputs {
+  current_level: string
+  current_xp: string
+  lucky_egg: boolean
+}
+
 const TARGET_DATE = new Date("2025-10-14")
 
 export function Level50Calculator({ onBack }: Level50CalculatorProps) {
-  const [currentLevel, setCurrentLevel] = useState<number>(1)
-  const [currentXP, setCurrentXP] = useState<number>(0)
-  const [luckyEgg, setLuckyEgg] = useState<boolean>(false)
+  const [inputs, setInputs] = useState<Level50Inputs>({
+    current_level: "",
+    current_xp: "",
+    lucky_egg: false,
+  })
   const [totalXPNeeded, setTotalXPNeeded] = useState<number>(0)
   const [daysRemaining, setDaysRemaining] = useState<number>(0)
   const [dailyXPNeeded, setDailyXPNeeded] = useState<number>(0)
+
+  const updateInput = (field: keyof Level50Inputs, value: string | boolean) => {
+    setInputs((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
+  }
+
+  const handleNumberInput = (field: keyof Pick<Level50Inputs, 'current_level' | 'current_xp'>, value: string) => {
+    // Allow empty string or valid numbers only
+    if (value === "" || /^\d+$/.test(value)) {
+      updateInput(field, value)
+    }
+  }
 
   useEffect(() => {
     const today = new Date()
@@ -83,6 +105,10 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
   }, [])
 
   useEffect(() => {
+    const currentLevel = Number.parseInt(inputs.current_level) || 0
+    const currentXP = Number.parseInt(inputs.current_xp) || 0
+    const luckyEgg = inputs.lucky_egg
+
     if (currentLevel >= 1 && currentLevel <= 50) {
       const currentLevelXP = XP_REQUIREMENTS[currentLevel] || 0
       const totalCurrentXP = currentLevelXP + currentXP
@@ -97,7 +123,7 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
         setDailyXPNeeded(Math.ceil(adjustedDaily))
       }
     }
-  }, [currentLevel, currentXP, luckyEgg, daysRemaining])
+  }, [inputs.current_level, inputs.current_xp, inputs.lucky_egg, daysRemaining])
 
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat().format(num)
@@ -152,11 +178,12 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
               </Label>
               <Input
                 id="currentLevel"
-                type="number"
+                type="text"
+                inputMode="numeric"
                 min="1"
                 max="50"
-                value={currentLevel}
-                onChange={(e) => setCurrentLevel(Number(e.target.value))}
+                value={inputs.current_level}
+                onChange={(e) => handleNumberInput("current_level", e.target.value)}
                 className="glass-input"
                 placeholder="Enter level"
               />
@@ -168,10 +195,11 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
               </Label>
               <Input
                 id="currentXP"
-                type="number"
+                type="text"
+                inputMode="numeric"
                 min="0"
-                value={currentXP}
-                onChange={(e) => setCurrentXP(Number(e.target.value))}
+                value={inputs.current_xp}
+                onChange={(e) => handleNumberInput("current_xp", e.target.value)}
                 className="glass-input"
                 placeholder="Enter XP"
               />
@@ -188,7 +216,7 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
                 <p className="text-xs text-muted-foreground">Doubles XP earned</p>
               </div>
             </div>
-            <Switch id="luckyEgg" className="bg-red-500" checked={luckyEgg} onCheckedChange={setLuckyEgg} />
+            <Switch id="luckyEgg" className="bg-red-500" checked={inputs.lucky_egg} onCheckedChange={(checked) => updateInput("lucky_egg", checked)} />
           </div>
         </div>
 
@@ -222,14 +250,14 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-red-500" />
                 <span className="text-sm font-medium text-foreground">
-                  Daily XP Needed {luckyEgg && "(with Lucky Egg)"}
+                  Daily XP Needed {inputs.lucky_egg && "(with Lucky Egg)"}
                 </span>
               </div>
               <span className="font-bold text-xl text-red-500">{formatNumber(dailyXPNeeded)} XP/day</span>
             </div>
           </div>
 
-          {currentLevel >= 50 && (
+          {Number.parseInt(inputs.current_level) >= 50 && (
             <div className="p-4 glass-card rounded-lg border-2 border-green-500/20 bg-green-500/5">
               <div className="flex items-center gap-2">
                 <Target className="w-5 h-5 text-green-500" />
@@ -238,7 +266,7 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
             </div>
           )}
 
-          {daysRemaining <= 0 && currentLevel < 50 && (
+          {daysRemaining <= 0 && Number.parseInt(inputs.current_level) < 50 && (
             <div className="p-4 glass-card rounded-lg border-2 border-orange-500/20 bg-orange-500/5">
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-orange-500" />
