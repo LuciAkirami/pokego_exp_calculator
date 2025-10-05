@@ -76,7 +76,7 @@ class MainActivity : TauriActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     // This runs when your app starts up
-    enableEdgeToEdge()
+    // enableEdgeToEdge()
     super.onCreate(savedInstanceState)
 
     // NEW: Handle modern back gesture (swipe from edge)

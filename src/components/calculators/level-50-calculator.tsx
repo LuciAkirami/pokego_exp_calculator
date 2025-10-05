@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import { GAME_CONSTANTS } from "@/types/xp-constants"
 
 interface Level50CalculatorProps {
   onBack: () => void
@@ -93,7 +94,17 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
   const handleNumberInput = (field: keyof Pick<Level50Inputs, 'current_level' | 'current_xp'>, value: string) => {
     // Allow empty string or valid numbers only
     if (value === "" || /^\d+$/.test(value)) {
-      updateInput(field, value)
+      // If the field is current_level and the value is greater than 50, cap it at 50
+      if (field === 'current_level' && value !== '' && parseInt(value) > GAME_CONSTANTS.MAX_LEVEL) {
+        updateInput(field, '50');
+      } 
+      // If the field is current_xp and the value is greater than 100000000, cap it at 100000000
+      else if (field === 'current_xp' && value !== '' && parseInt(value) > GAME_CONSTANTS.MAX_XP) {
+        updateInput(field, '1000000000');
+      } 
+      else {
+        updateInput(field, value);
+      }
     }
   }
 
@@ -151,14 +162,16 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
             <ArrowLeft className="w-5 h-5 text-primary" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-lg md:text-lg lg:text-xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
               To Level 50
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">Calculate XP needed to reach level 50</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              Calculate XP needed to reach level 50
+            </p>
           </div>
         </div>
         <div className="glass-card rounded-full p-3">
-          <Target className="w-6 h-6 text-red-500" />
+          <Target className="w-5 h-5 text-red-500" />
         </div>
       </header>
 
@@ -168,12 +181,17 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
         <div className="glass-card p-6 space-y-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2 h-8 bg-gradient-to-b from-red-500 to-red-600 rounded-full" />
-            <h2 className="text-lg font-semibold text-foreground">Current Progress</h2>
+            <h2 className="text-lg font-semibold text-foreground">
+              Current Progress
+            </h2>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="currentLevel" className="text-sm font-medium text-foreground">
+              <Label
+                htmlFor="currentLevel"
+                className="text-sm font-medium text-foreground"
+              >
                 Current Level
               </Label>
               <Input
@@ -183,14 +201,19 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
                 min="1"
                 max="50"
                 value={inputs.current_level}
-                onChange={(e) => handleNumberInput("current_level", e.target.value)}
+                onChange={(e) =>
+                  handleNumberInput("current_level", e.target.value)
+                }
                 className="glass-input"
                 placeholder="Enter level"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="currentXP" className="text-sm font-medium text-foreground">
+              <Label
+                htmlFor="currentXP"
+                className="text-sm font-medium text-foreground"
+              >
                 Current XP in Level
               </Label>
               <Input
@@ -199,7 +222,9 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
                 inputMode="numeric"
                 min="0"
                 value={inputs.current_xp}
-                onChange={(e) => handleNumberInput("current_xp", e.target.value)}
+                onChange={(e) =>
+                  handleNumberInput("current_xp", e.target.value)
+                }
                 className="glass-input"
                 placeholder="Enter XP"
               />
@@ -210,13 +235,23 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
             <div className="flex items-center gap-3">
               <Zap className="w-5 h-5 text-yellow-500" />
               <div>
-                <Label htmlFor="luckyEgg" className="text-sm font-medium text-foreground">
+                <Label
+                  htmlFor="luckyEgg"
+                  className="text-sm font-medium text-foreground"
+                >
                   Lucky Egg Active
                 </Label>
-                <p className="text-xs text-muted-foreground">Doubles XP earned</p>
+                <p className="text-xs text-muted-foreground">
+                  Doubles XP earned
+                </p>
               </div>
             </div>
-            <Switch id="luckyEgg" className="bg-red-500" checked={inputs.lucky_egg} onCheckedChange={(checked) => updateInput("lucky_egg", checked)} />
+            <Switch
+              id="luckyEgg"
+              className="bg-red-500"
+              checked={inputs.lucky_egg}
+              onCheckedChange={(checked) => updateInput("lucky_egg", checked)}
+            />
           </div>
         </div>
 
@@ -224,36 +259,53 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
         <div className="glass-card p-6 space-y-4">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-2 h-8 bg-gradient-to-b from-red-500 to-red-600 rounded-full" />
-            <h2 className="text-lg font-semibold text-foreground">XP Calculation</h2>
+            <h2 className="text-lg font-semibold text-foreground">
+              XP Calculation
+            </h2>
           </div>
 
           <div className="grid gap-4">
             <div className="flex justify-between items-center p-4 glass-card rounded-lg">
-              <span className="text-sm text-muted-foreground">Total XP Needed</span>
-              <span className="font-semibold text-lg text-red-500">{formatNumber(totalXPNeeded)} XP</span>
+              <span className="text-sm text-muted-foreground">
+                Total XP Needed
+              </span>
+              <span className="font-semibold text-lg text-red-500">
+                {formatNumber(totalXPNeeded)} XP
+              </span>
             </div>
 
             <div className="flex justify-between items-center p-4 glass-card rounded-lg">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">Target Date</span>
+                <span className="text-sm text-muted-foreground">
+                  Target Date
+                </span>
               </div>
-              <span className="font-semibold text-foreground">{formatDate(TARGET_DATE)}</span>
+              <span className="font-semibold text-foreground">
+                {formatDate(TARGET_DATE)}
+              </span>
             </div>
 
             <div className="flex justify-between items-center p-4 glass-card rounded-lg">
-              <span className="text-sm text-muted-foreground">Days Remaining</span>
-              <span className="font-semibold text-lg text-foreground">{daysRemaining} days</span>
+              <span className="text-xs md:text-sm text-muted-foreground">
+                Days Remaining
+              </span>
+              <span className="font-semibold text-xs md:text-sm text-foreground">
+                {daysRemaining} days
+              </span>
             </div>
 
             <div className="flex justify-between items-center p-4 glass-card rounded-lg border-2 border-red-500/20">
               <div className="flex items-center gap-2">
-                <Target className="w-4 h-4 text-red-500" />
-                <span className="text-sm font-medium text-foreground">
-                  Daily XP Needed {inputs.lucky_egg && "(with Lucky Egg)"}
+                <Target className="w-4 h-4 md:w-5 md:h-5 text-red-500" />
+                <span className="text-xs md:text-sm font-medium text-foreground">
+                  <p>Daily XP Needed</p>
+                  {inputs.lucky_egg && "(with Lucky Egg)"}
                 </span>
               </div>
-              <span className="font-bold text-xl text-red-500">{formatNumber(dailyXPNeeded)} XP/day</span>
+              <span className="font-bold text-xs md:text-sm text-red-500">
+                {formatNumber(dailyXPNeeded)} XP/day
+              </span>
             </div>
           </div>
 
@@ -261,7 +313,9 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
             <div className="p-4 glass-card rounded-lg border-2 border-green-500/20 bg-green-500/5">
               <div className="flex items-center gap-2">
                 <Target className="w-5 h-5 text-green-500" />
-                <span className="font-semibold text-green-500">Congratulations! You're already at level 50!</span>
+                <span className="font-semibold text-green-500">
+                  Congratulations! You're already at level 50!
+                </span>
               </div>
             </div>
           )}
@@ -270,12 +324,14 @@ export function Level50Calculator({ onBack }: Level50CalculatorProps) {
             <div className="p-4 glass-card rounded-lg border-2 border-orange-500/20 bg-orange-500/5">
               <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-orange-500" />
-                <span className="font-semibold text-orange-500">Target date has passed. Set a new goal!</span>
+                <span className="font-semibold text-orange-500">
+                  Target date has passed. Set a new goal!
+                </span>
               </div>
             </div>
           )}
         </div>
       </main>
     </div>
-  )
+  );
 }

@@ -18,108 +18,152 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { XP_REQUIREMENTS, XP_MULTIPLIERS } from "@/types/xp-constants";
-import type { 
-  DetailedXPInputs, 
+import {
+  XP_REQUIREMENTS,
+  XP_MULTIPLIERS,
+  GAME_CONSTANTS,
+} from "@/types/xp-constants";
+import type {
+  DetailedXPInputs,
   DetailedXPCalculatorProps,
-  // CategoryXP,
-  // LevelProgress,
-  // TimeToTarget,
-  // DailyRequirements
 } from "@/types/xp-calculator";
 
 export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
   const [inputs, setInputs] = useState<DetailedXPInputs>({
-    currentLevel: 1,
-    currentXP: 0,
-    targetLevel: 50,
-    normal_catches: 0,
-    new_pokemon_catches: 0,
-    excellent_throws: 0,
-    curve_balls: 0,
-    first_throws: 0,
-    great_throws: 0,
-    nice_throws: 0,
-    normal_evolutions: 0,
-    new_pokemon_evolutions: 0,
-    km_2_eggs: 0,
-    km_5_eggs: 0,
-    km_7_eggs: 0,
-    km_10_eggs: 0,
-    km_12_eggs: 0,
-    star_1_raids: 0,
-    star_3_raids: 0,
-    star_5_raids: 0,
-    mega_raids: 0,
-    shadow_raids: 0,
-    star_1_battles: 0,
-    star_2_battles: 0,
-    star_3_battles: 0,
-    star_4_battles: 0,
-    star_5_battles: 0,
-    star_6_battles: 0,
-    in_person_bonus: 0,
-    level_1_moves: 0,
-    level_2_moves: 0,
-    level_max_moves: 0,
-    good_friends: 0,
-    great_friends: 0,
-    ultra_friends: 0,
-    best_friends: 0,
+    currentLevel: "",
+    currentXP: "",
+    targetLevel: "",
+    normal_catches: "",
+    new_pokemon_catches: "",
+    excellent_throws: "",
+    curve_balls: "",
+    first_throws: "",
+    great_throws: "",
+    nice_throws: "",
+    normal_evolutions: "",
+    new_pokemon_evolutions: "",
+    km_2_eggs: "",
+    km_5_eggs: "",
+    km_7_eggs: "",
+    km_10_eggs: "",
+    km_12_eggs: "",
+    star_1_raids: "",
+    star_3_raids: "",
+    star_5_raids: "",
+    mega_raids: "",
+    shadow_raids: "",
+    star_1_battles: "",
+    star_2_battles: "",
+    star_3_battles: "",
+    star_4_battles: "",
+    star_5_battles: "",
+    star_6_battles: "",
+    in_person_bonus: "",
+    level_1_moves: "",
+    level_2_moves: "",
+    level_max_moves: "",
+    good_friends: "",
+    great_friends: "",
+    ultra_friends: "",
+    best_friends: "",
     lucky_egg: false,
     use_target_timeline: true,
     target_type: "date",
     target_date: "2025-12-31",
-    target_days: 30,
+    target_days: "",
   });
 
   const calculateCategoryXP = () => {
+    // --------  Catching ----------
+    const normal_catches = Number.parseInt(inputs.normal_catches) || 0;
+    const new_pokemon_catches =
+      Number.parseInt(inputs.new_pokemon_catches) || 0;
+    const excellent_throws = Number.parseInt(inputs.excellent_throws) || 0;
+    const curve_balls = Number.parseInt(inputs.curve_balls) || 0;
+    const first_throws = Number.parseInt(inputs.first_throws) || 0;
+    const great_throws = Number.parseInt(inputs.great_throws) || 0;
+    const nice_throws = Number.parseInt(inputs.nice_throws) || 0;
+
     const catching =
-      inputs.normal_catches * XP_MULTIPLIERS.catching.normal +
-      inputs.new_pokemon_catches * XP_MULTIPLIERS.catching.new_pokemon +
-      inputs.excellent_throws * XP_MULTIPLIERS.catching.excellent_throw +
-      inputs.curve_balls * XP_MULTIPLIERS.catching.curve_ball +
-      inputs.first_throws * XP_MULTIPLIERS.catching.first_throw +
-      inputs.great_throws * XP_MULTIPLIERS.catching.great_throw +
-      inputs.nice_throws * XP_MULTIPLIERS.catching.nice_throw;
+      normal_catches * XP_MULTIPLIERS.catching.normal +
+      new_pokemon_catches * XP_MULTIPLIERS.catching.new_pokemon +
+      excellent_throws * XP_MULTIPLIERS.catching.excellent_throw +
+      curve_balls * XP_MULTIPLIERS.catching.curve_ball +
+      first_throws * XP_MULTIPLIERS.catching.first_throw +
+      great_throws * XP_MULTIPLIERS.catching.great_throw +
+      nice_throws * XP_MULTIPLIERS.catching.nice_throw;
 
+    // --------  Evolution ----------
+    const normal_evolutions = Number.parseInt(inputs.normal_evolutions) || 0;
+    const new_pokemon_evolutions =
+      Number.parseInt(inputs.new_pokemon_evolutions) || 0;
     const evolution =
-      inputs.normal_evolutions * XP_MULTIPLIERS.evolution.normal +
-      inputs.new_pokemon_evolutions * XP_MULTIPLIERS.evolution.new_pokemon;
+      normal_evolutions * XP_MULTIPLIERS.evolution.normal +
+      new_pokemon_evolutions * XP_MULTIPLIERS.evolution.new_pokemon;
 
+    // --------  Hatching ----------
+    const km_2_eggs = Number.parseInt(inputs.km_2_eggs) || 0;
+    const km_5_eggs = Number.parseInt(inputs.km_5_eggs) || 0;
+    const km_7_eggs = Number.parseInt(inputs.km_7_eggs) || 0;
+    const km_10_eggs = Number.parseInt(inputs.km_10_eggs) || 0;
+    const km_12_eggs = Number.parseInt(inputs.km_12_eggs) || 0;
     const hatching =
-      inputs.km_2_eggs * XP_MULTIPLIERS.hatching.km_2 +
-      inputs.km_5_eggs * XP_MULTIPLIERS.hatching.km_5 +
-      inputs.km_7_eggs * XP_MULTIPLIERS.hatching.km_7 +
-      inputs.km_10_eggs * XP_MULTIPLIERS.hatching.km_10 +
-      inputs.km_12_eggs * XP_MULTIPLIERS.hatching.km_12;
+      km_2_eggs * XP_MULTIPLIERS.hatching.km_2 +
+      km_5_eggs * XP_MULTIPLIERS.hatching.km_5 +
+      km_7_eggs * XP_MULTIPLIERS.hatching.km_7 +
+      km_10_eggs * XP_MULTIPLIERS.hatching.km_10 +
+      km_12_eggs * XP_MULTIPLIERS.hatching.km_12;
 
+    // --------  Raids ----------
+    const star_1_raids = Number.parseInt(inputs.star_1_raids) || 0;
+    const star_3_raids = Number.parseInt(inputs.star_3_raids) || 0;
+    const star_5_raids = Number.parseInt(inputs.star_5_raids) || 0;
+    const mega_raids = Number.parseInt(inputs.mega_raids) || 0;
+    const shadow_raids = Number.parseInt(inputs.shadow_raids) || 0;
     const raids =
-      inputs.star_1_raids * XP_MULTIPLIERS.raids.star_1 +
-      inputs.star_3_raids * XP_MULTIPLIERS.raids.star_3 +
-      inputs.star_5_raids * XP_MULTIPLIERS.raids.star_5 +
-      inputs.mega_raids * XP_MULTIPLIERS.raids.mega +
-      inputs.shadow_raids * XP_MULTIPLIERS.raids.shadow;
+      star_1_raids * XP_MULTIPLIERS.raids.star_1 +
+      star_3_raids * XP_MULTIPLIERS.raids.star_3 +
+      star_5_raids * XP_MULTIPLIERS.raids.star_5 +
+      mega_raids * XP_MULTIPLIERS.raids.mega +
+      shadow_raids * XP_MULTIPLIERS.raids.shadow;
 
+    // --------  Max Battles ----------
+    const star_1_battles = Number.parseInt(inputs.star_1_battles) || 0;
+    const star_2_battles = Number.parseInt(inputs.star_2_battles) || 0;
+    const star_3_battles = Number.parseInt(inputs.star_3_battles) || 0;
+    const star_4_battles = Number.parseInt(inputs.star_4_battles) || 0;
+    const star_5_battles = Number.parseInt(inputs.star_5_battles) || 0;
+    const star_6_battles = Number.parseInt(inputs.star_6_battles) || 0;
+    const in_person_bonus = Number.parseInt(inputs.in_person_bonus) || 0;
     const maxBattle =
-      inputs.star_1_battles * XP_MULTIPLIERS.maxBattle.star_1 +
-      inputs.star_2_battles * XP_MULTIPLIERS.maxBattle.star_2 +
-      inputs.star_3_battles * XP_MULTIPLIERS.maxBattle.star_3 +
-      inputs.star_4_battles * XP_MULTIPLIERS.maxBattle.star_4 +
-      inputs.star_5_battles * XP_MULTIPLIERS.maxBattle.star_5 +
-      inputs.star_6_battles * XP_MULTIPLIERS.maxBattle.star_6 +
-      inputs.in_person_bonus * XP_MULTIPLIERS.maxBattle.in_person_bonus;
+      star_1_battles * XP_MULTIPLIERS.maxBattle.star_1 +
+      star_2_battles * XP_MULTIPLIERS.maxBattle.star_2 +
+      star_3_battles * XP_MULTIPLIERS.maxBattle.star_3 +
+      star_4_battles * XP_MULTIPLIERS.maxBattle.star_4 +
+      star_5_battles * XP_MULTIPLIERS.maxBattle.star_5 +
+      star_6_battles * XP_MULTIPLIERS.maxBattle.star_6 +
+      in_person_bonus * XP_MULTIPLIERS.maxBattle.in_person_bonus;
 
+    // --------  Max Moves ----------
+    const level_1_moves = Number.parseInt(inputs.level_1_moves) || 0;
+    const level_2_moves = Number.parseInt(inputs.level_2_moves) || 0;
+    const level_max_moves = Number.parseInt(inputs.level_max_moves) || 0;
     const maxMoves =
-      inputs.level_1_moves * XP_MULTIPLIERS.maxMoves.level_1 +
-      inputs.level_2_moves * XP_MULTIPLIERS.maxMoves.level_2 +
-      inputs.level_max_moves * XP_MULTIPLIERS.maxMoves.level_max;
+      level_1_moves * XP_MULTIPLIERS.maxMoves.level_1 +
+      level_2_moves * XP_MULTIPLIERS.maxMoves.level_2 +
+      level_max_moves * XP_MULTIPLIERS.maxMoves.level_max;
 
+    // --------  Friendship ----------
+    // Friendship XP is only calculated once not per day
+    const good_friends = Number.parseInt(inputs.good_friends) || 0;
+    const great_friends = Number.parseInt(inputs.great_friends) || 0;
+    const ultra_friends = Number.parseInt(inputs.ultra_friends) || 0;
+    const best_friends = Number.parseInt(inputs.best_friends) || 0;
     const friendship =
-      inputs.good_friends * XP_MULTIPLIERS.friendship.good_friends +
-      inputs.great_friends * XP_MULTIPLIERS.friendship.great_friends +
-      inputs.ultra_friends * XP_MULTIPLIERS.friendship.ultra_friends +
-      inputs.best_friends * XP_MULTIPLIERS.friendship.best_friends;
+      good_friends * XP_MULTIPLIERS.friendship.good_friends +
+      great_friends * XP_MULTIPLIERS.friendship.great_friends +
+      ultra_friends * XP_MULTIPLIERS.friendship.ultra_friends +
+      best_friends * XP_MULTIPLIERS.friendship.best_friends;
 
     // Apply lucky egg to daily activities (not friendship)
     const dailyXP =
@@ -141,10 +185,11 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
 
   const calculateLevelProgress = () => {
     const categoryXP = calculateCategoryXP();
-    const currentTotalXP =
-      XP_REQUIREMENTS[inputs.currentLevel] + inputs.currentXP;
-    const targetTotalXP =
-      XP_REQUIREMENTS[inputs.targetLevel] || XP_REQUIREMENTS[50];
+    const currentXP = Number.parseInt(inputs.currentXP) || 0;
+    const currentLevel = Number.parseInt(inputs.currentLevel) || 1;
+    const targetLevel = Number.parseInt(inputs.targetLevel) || 50;
+    const currentTotalXP = XP_REQUIREMENTS[currentLevel] + currentXP;
+    const targetTotalXP = XP_REQUIREMENTS[targetLevel] || XP_REQUIREMENTS[50];
     const newTotalXP = currentTotalXP + categoryXP.total;
 
     const xpNeeded = Math.max(0, targetTotalXP - currentTotalXP);
@@ -152,8 +197,8 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
     const targetReached = newTotalXP >= targetTotalXP;
 
     // Find what level they'll reach
-    let reachedLevel = inputs.currentLevel;
-    for (let level = inputs.currentLevel + 1; level <= 50; level++) {
+    let reachedLevel = currentLevel;
+    for (let level = currentLevel + 1; level <= 50; level++) {
       if (newTotalXP >= XP_REQUIREMENTS[level]) {
         reachedLevel = level;
       } else {
@@ -170,6 +215,307 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
       reachedLevel,
       categoryXP,
     };
+  };
+
+  const updateInput = (
+    field: keyof DetailedXPInputs,
+    value: string | boolean
+  ) => {
+    setInputs((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  // Everything except lucky_egg and use_target_timeline
+  const handleNumberInput = (
+    // field: keyof Pick<
+    //   DetailedXPInputs,
+    //   | "currentLevel"
+    //   | "currentXP"
+    //   | "targetLevel"
+    //   | "normal_catches"
+    //   | "new_pokemon_catches"
+    //   | "excellent_throws"
+    //   | "curve_balls"
+    //   | "first_throws"
+    //   | "great_throws"
+    //   | "nice_throws"
+    //   | "normal_evolutions"
+    //   | "new_pokemon_evolutions"
+    //   | "km_2_eggs"
+    //   | "km_5_eggs"
+    //   | "km_7_eggs"
+    //   | "km_10_eggs"
+    //   | "km_12_eggs"
+    //   | "star_1_raids"
+    //   | "star_3_raids"
+    //   | "star_5_raids"
+    //   | "mega_raids"
+    //   | "shadow_raids"
+    //   | "star_1_battles"
+    //   | "star_2_battles"
+    //   | "star_3_battles"
+    //   | "star_4_battles"
+    //   | "star_5_battles"
+    //   | "star_6_battles"
+    //   | "in_person_bonus"
+    //   | "level_1_moves"
+    //   | "level_2_moves"
+    //   | "level_max_moves"
+    //   | "good_friends"
+    //   | "great_friends"
+    //   | "ultra_friends"
+    //   | "best_friends"
+    //   | "target_days"
+    // >,
+    // star_{1 to 6}_battles was giving error for above
+    field: keyof DetailedXPInputs,
+    value: string
+  ) => {
+    // Allow empty string or valid numbers only
+    if (value === "" || /^\d+$/.test(value)) {
+      // If blocks for each field to handle edge cases
+      // If the field is current_level and the value is greater than 50, cap it at 50
+      if (field === "currentLevel" && value !== "") {
+        if (parseInt(value) > GAME_CONSTANTS.MAX_LEVEL) {
+          updateInput(field, GAME_CONSTANTS.MAX_LEVEL.toString());
+        } else {
+          updateInput(field, value);
+        }
+      }
+      // If the field is current_xp and the value is greater than 100000000, cap it at 100000000
+      else if (field === "currentXP" && value !== "") {
+        if (parseInt(value) > GAME_CONSTANTS.MAX_XP) {
+          updateInput(field, GAME_CONSTANTS.MAX_XP.toString());
+        } else {
+          updateInput(field, value);
+        }
+      }
+      // If the field is target_level and the value is greater than 50, cap it at 50
+      else if (field === "targetLevel" && value !== "") {
+        if (parseInt(value) > GAME_CONSTANTS.MAX_LEVEL) {
+          updateInput(field, GAME_CONSTANTS.MAX_LEVEL.toString());
+        } else {
+          updateInput(field, value);
+        }
+      }
+      // If the field is one of the catching activities, check if the value is valid and within the constraints
+      // -- To be implemented
+      // else if (
+      //   field === "normal_catches" ||
+      //   field === "excellent_throws" ||
+      //   field === "great_throws" ||
+      //   field === "nice_throws"
+      // ) {
+      //   const normalCatches = parseInt(inputs.normal_catches) || 0;
+      //   const excellentCatches = parseInt(inputs.excellent_throws) || 0;
+      //   const greatCatches = parseInt(inputs.great_throws) || 0;
+      //   const niceCatches = parseInt(inputs.nice_throws) || 0;
+
+      //   if (field === "normal_catches") {
+      //     if (parseInt(value) < excellentCatches + greatCatches + niceCatches) {
+      //       updateInput(
+      //         field,
+      //         (excellentCatches + greatCatches + niceCatches).toString()
+      //       );
+      //     } else {
+      //       updateInput(field, value);
+      //     }
+      //   } else {
+      //     const totalCatches = excellentCatches + greatCatches + niceCatches;
+      //     if (parseInt(value) > normalCatches - totalCatches) {
+      //       updateInput(
+      //         "normal_catches",
+      //         (totalCatches + parseInt(value)).toString()
+      //       );
+      //       updateInput(field, value);
+      //     } else {
+      //       updateInput(field, value);
+      //     }
+      //   }
+      // }
+      // If the field is curve_balls or first_throws, check if the value is valid and within the constraints
+      else if (
+        field === "curve_balls" ||
+        field === "first_throws" ||
+        field === "new_pokemon_catches" ||
+        field === "normal_catches" ||
+        field === "nice_throws" ||
+        field === "great_throws" ||
+        field === "excellent_throws"
+      ) {
+        const normal_catches = parseInt(inputs.normal_catches) || 0;
+        const curve_balls = parseInt(inputs.curve_balls) || 0;
+        const first_throws = parseInt(inputs.first_throws) || 0;
+        const excellent_throws = parseInt(inputs.excellent_throws) || 0;
+        const great_throws = parseInt(inputs.great_throws) || 0;
+        const nice_throws = parseInt(inputs.nice_throws) || 0;
+        const new_pokemon_catches = parseInt(inputs.new_pokemon_catches) || 0;
+        const int_value = parseInt(value) || 0;
+
+        // if value is > 3000, set it to 3000
+        if (int_value > GAME_CONSTANTS.MAX_CATCHES) {
+          value = GAME_CONSTANTS.MAX_CATCHES.toString();
+        }
+
+        if (field === "normal_catches") {
+          if (int_value < curve_balls) {
+            updateInput("curve_balls", value);
+          }
+          if (int_value < first_throws) {
+            updateInput("first_throws", value);
+          }
+          if (int_value < new_pokemon_catches) {
+            updateInput("new_pokemon_catches", value);
+          }
+          if (int_value < excellent_throws) {
+            updateInput("excellent_throws", value);
+          }
+          if (int_value < great_throws) {
+            updateInput("great_throws", value);
+          }
+          if (int_value < nice_throws) {
+            updateInput("nice_throws", value);
+          }
+          updateInput(field, value);
+
+          if (int_value === 0) {
+            updateInput("curve_balls", "");
+            updateInput("first_throws", "");
+            updateInput("new_pokemon_catches", "");
+            updateInput("nice_throws", "");
+            updateInput("great_throws", "");
+            updateInput("excellent_throws", "");
+          }
+        } else if (field === "curve_balls") {
+          if (int_value > normal_catches) {
+            updateInput(field, normal_catches.toString());
+          } else {
+            updateInput(field, value);
+          }
+        } else if (field === "first_throws") {
+          if (int_value > normal_catches) {
+            updateInput(field, normal_catches.toString());
+          } else {
+            updateInput(field, value);
+          }
+        } else if (field === "new_pokemon_catches") {
+          if (int_value > normal_catches) {
+            updateInput(field, normal_catches.toString());
+          } else {
+            updateInput(field, value);
+          }
+        } else if (field === "nice_throws") {
+          if (int_value > normal_catches) {
+            updateInput(field, normal_catches.toString());
+          } else {
+            updateInput(field, value);
+          }
+        } else if (field === "great_throws") {
+          if (int_value > normal_catches) {
+            updateInput(field, normal_catches.toString());
+          } else {
+            updateInput(field, value);
+          }
+        } else if (field === "excellent_throws") {
+          if (int_value > normal_catches) {
+            updateInput(field, normal_catches.toString());
+          } else {
+            updateInput(field, value);
+          }
+        }
+      }
+      // -------- Evolution XP --------
+      // New Pokemon Evolution count should be <= Normal Evolution count
+      // Limit is 3000
+      else if (
+        field === "new_pokemon_evolutions" ||
+        field === "normal_evolutions"
+      ) {
+        const normal_evolutions = parseInt(inputs.normal_evolutions) || 0;
+        const new_pokemon_evolutions =
+          parseInt(inputs.new_pokemon_evolutions) || 0;
+        const int_value = parseInt(value) || 0;
+
+        if (
+          field === "normal_evolutions" &&
+          int_value > GAME_CONSTANTS.MAX_EVOLUTIONS
+        ) {
+          updateInput(field, GAME_CONSTANTS.MAX_EVOLUTIONS.toString());
+        }
+
+        else if (field === "new_pokemon_evolutions") {
+          if (int_value > normal_evolutions) {
+            updateInput(field, normal_evolutions.toString());
+          } else {
+            updateInput(field, value);
+          }
+        } else if (field === "normal_evolutions") {
+          if (int_value < new_pokemon_evolutions) {
+            updateInput("new_pokemon_evolutions", value);
+          }
+          updateInput(field, value);
+          // if normal_evolutions is 0 then set new_pokemon_evolutions to 0
+          if (int_value === 0) {
+            updateInput("new_pokemon_evolutions", "");
+          }
+        }
+      } 
+      // -------- Friendship XP --------
+      // Limit is 450
+      else if (field === "good_friends" || field === "great_friends" || field === "ultra_friends" || field === "best_friends") {
+        const int_value = parseInt(value) || 0;
+        if (int_value > GAME_CONSTANTS.MAX_FRIENDSHIP) {
+          updateInput(field, GAME_CONSTANTS.MAX_FRIENDSHIP.toString());
+        } else {
+          updateInput(field, value);
+        }
+      } 
+      // -------- Hatching XP --------
+      // Limit is 300
+      else if (field === "km_2_eggs" || field === "km_5_eggs" || field === "km_7_eggs" || field === "km_10_eggs" || field === "km_12_eggs") {
+        const int_value = parseInt(value) || 0;
+        if (int_value > GAME_CONSTANTS.MAX_HATCHES) {
+          updateInput(field, GAME_CONSTANTS.MAX_HATCHES.toString());
+        } else {
+          updateInput(field, value);
+        }
+      } 
+      // -------- Raid XP --------
+      // Limit is 300
+      else if (field === "star_1_raids" || field === "star_3_raids" || field === "star_5_raids" || field === "mega_raids" || field === "shadow_raids") {
+        const int_value = parseInt(value) || 0;
+        if (int_value > GAME_CONSTANTS.MAX_RAIDS) {
+          updateInput(field, GAME_CONSTANTS.MAX_RAIDS.toString());
+        } else {
+          updateInput(field, value);
+        }
+      } 
+      // -------- Max Battle XP --------
+      // Limit is 300
+      else if (field === "star_1_battles" || field === "star_2_battles" || field === "star_3_battles" || field === "star_4_battles" || field === "star_5_battles" || field === "star_6_battles" || field === "in_person_bonus") {
+        const int_value = parseInt(value) || 0;
+        if (int_value > GAME_CONSTANTS.MAX_MAX_BATTLES) {
+          updateInput(field, GAME_CONSTANTS.MAX_MAX_BATTLES.toString());
+        } else {
+          updateInput(field, value);
+        }
+      } 
+      // -------- Max Moves XP --------
+      // Limit is 300
+      else if (field === "level_1_moves" || field === "level_2_moves" || field === "level_max_moves") {
+        const int_value = parseInt(value) || 0;
+        if (int_value > GAME_CONSTANTS.MAX_MAX_MOVES) {
+          updateInput(field, GAME_CONSTANTS.MAX_MAX_MOVES.toString());
+        } else {
+          updateInput(field, value);
+        }
+      } 
+      else {
+        updateInput(field, value);
+      }
+    }
   };
 
   const calculateTimeToTarget = () => {
@@ -197,7 +543,8 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
       const timeDiff = targetDate.getTime() - today.getTime();
       days = Math.ceil(timeDiff / (1000 * 3600 * 24));
     } else {
-      days = inputs.target_days;
+      const targetDays = Number.parseInt(inputs.target_days) || 0;
+      days = targetDays;
     }
 
     if (days <= 0) return { daysNeeded: 0, dailyXPNeeded: 0 };
@@ -206,12 +553,12 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
     return { daysNeeded: days, dailyXPNeeded };
   };
 
-  const updateInput = (
-    field: keyof DetailedXPInputs,
-    value: number | boolean | string
-  ) => {
-    setInputs((prev) => ({ ...prev, [field]: value }));
-  };
+  // const updateInput = (
+  //   field: keyof DetailedXPInputs,
+  //   value: number | boolean | string
+  // ) => {
+  //   setInputs((prev) => ({ ...prev, [field]: value }));
+  // };
 
   const progress = calculateLevelProgress();
   const dailyReq = calculateDailyRequirements();
@@ -231,19 +578,27 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
             <ArrowLeft className="w-5 h-5 text-primary" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-sm md:text-lg lg:text-xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
               Detailed XP Calculator
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-xs md:text-sm lg:text-base text-muted-foreground mt-1">
               Comprehensive XP calculation between levels
             </p>
           </div>
         </div>
         <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
-          <BarChart3 className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium text-primary">
-            {progress.categoryXP.total.toLocaleString()} XP
-          </span>
+          <BarChart3 className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 text-primary" />
+          <div className="flex items-center gap-1">
+            <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
+              {/* If progress.categoryXP.total is greater than 1000000 then show it as M */}
+              {progress.categoryXP.total > 1000000
+                ? (progress.categoryXP.total / 1000000).toFixed(1) + "M"
+                : progress.categoryXP.total.toLocaleString()}
+            </span>
+            <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
+              XP
+            </span>
+          </div>
         </div>
       </header>
 
@@ -264,14 +619,16 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                 </Label>
                 <Input
                   id="currentLevel"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="1"
                   max="50"
                   value={inputs.currentLevel}
                   onChange={(e) =>
-                    updateInput("currentLevel", Number(e.target.value))
+                    handleNumberInput("currentLevel", e.target.value)
                   }
                   className="glass-card border-white/20 h-10"
+                  placeholder="1"
                 />
               </div>
               <div className="space-y-2">
@@ -280,13 +637,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                 </Label>
                 <Input
                   id="currentXP"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="0"
                   value={inputs.currentXP}
                   onChange={(e) =>
-                    updateInput("currentXP", Number(e.target.value))
+                    handleNumberInput("currentXP", e.target.value)
                   }
                   className="glass-card border-white/20 h-10"
+                  placeholder="0"
                 />
               </div>
               <div className="space-y-2">
@@ -295,14 +654,16 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                 </Label>
                 <Input
                   id="targetLevel"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   min="1"
                   max="50"
                   value={inputs.targetLevel}
                   onChange={(e) =>
-                    updateInput("targetLevel", Number(e.target.value))
+                    handleNumberInput("targetLevel", e.target.value)
                   }
                   className="glass-card border-white/20 h-10"
+                  placeholder="50"
                 />
               </div>
             </div>
@@ -371,11 +732,12 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                     />
                   ) : (
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="1"
                       value={inputs.target_days}
                       onChange={(e) =>
-                        updateInput("target_days", Number(e.target.value))
+                        handleNumberInput("target_days", e.target.value)
                       }
                       className="glass-card border-white/20"
                       placeholder="Number of days"
@@ -463,13 +825,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Normal Catches</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.normal_catches}
                       onChange={(e) =>
-                        updateInput("normal_catches", Number(e.target.value))
+                        handleNumberInput("normal_catches", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.catching.normal} XP each
@@ -478,19 +842,18 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>
                       {/* New Pokémon Catches */}
-                      New Pokémon
+                      New Pokemon
                     </Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.new_pokemon_catches}
                       onChange={(e) =>
-                        updateInput(
-                          "new_pokemon_catches",
-                          Number(e.target.value)
-                        )
+                        handleNumberInput("new_pokemon_catches", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.catching.new_pokemon} XP each
@@ -499,13 +862,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Excellent Throws</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.excellent_throws}
                       onChange={(e) =>
-                        updateInput("excellent_throws", Number(e.target.value))
+                        handleNumberInput("excellent_throws", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.catching.excellent_throw} XP each
@@ -514,13 +879,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Great Throws</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.great_throws}
                       onChange={(e) =>
-                        updateInput("great_throws", Number(e.target.value))
+                        handleNumberInput("great_throws", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.catching.great_throw} XP each
@@ -529,13 +896,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Nice Throws</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.nice_throws}
                       onChange={(e) =>
-                        updateInput("nice_throws", Number(e.target.value))
+                        handleNumberInput("nice_throws", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.catching.nice_throw} XP each
@@ -544,13 +913,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Curve Balls</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.curve_balls}
                       onChange={(e) =>
-                        updateInput("curve_balls", Number(e.target.value))
+                        handleNumberInput("curve_balls", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.catching.curve_ball} XP each
@@ -559,13 +930,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>First Throws</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.first_throws}
                       onChange={(e) =>
-                        updateInput("first_throws", Number(e.target.value))
+                        handleNumberInput("first_throws", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.catching.first_throw} XP each
@@ -586,31 +959,35 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Normal Evolutions</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.normal_evolutions}
                       onChange={(e) =>
-                        updateInput("normal_evolutions", Number(e.target.value))
+                        handleNumberInput("normal_evolutions", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.evolution.normal} XP each
                     </p>
                   </div>
                   <div className="space-y-2">
-                    <Label>New Poké Evolutions</Label>
+                    <Label>New Poke Evolutions</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.new_pokemon_evolutions}
                       onChange={(e) =>
-                        updateInput(
+                        handleNumberInput(
                           "new_pokemon_evolutions",
-                          Number(e.target.value)
+                          e.target.value
                         )
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.evolution.new_pokemon} XP each
@@ -631,13 +1008,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>2km Eggs</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.km_2_eggs}
                       onChange={(e) =>
-                        updateInput("km_2_eggs", Number(e.target.value))
+                        handleNumberInput("km_2_eggs", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.hatching.km_2} XP each
@@ -646,13 +1025,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>5km Eggs</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.km_5_eggs}
                       onChange={(e) =>
-                        updateInput("km_5_eggs", Number(e.target.value))
+                        handleNumberInput("km_5_eggs", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.hatching.km_5} XP each
@@ -661,13 +1042,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>7km Eggs</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.km_7_eggs}
                       onChange={(e) =>
-                        updateInput("km_7_eggs", Number(e.target.value))
+                        handleNumberInput("km_7_eggs", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.hatching.km_7} XP each
@@ -676,13 +1059,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>10km Eggs</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.km_10_eggs}
                       onChange={(e) =>
-                        updateInput("km_10_eggs", Number(e.target.value))
+                        handleNumberInput("km_10_eggs", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.hatching.km_10} XP each
@@ -691,13 +1076,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>12km Eggs</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.km_12_eggs}
                       onChange={(e) =>
-                        updateInput("km_12_eggs", Number(e.target.value))
+                        handleNumberInput("km_12_eggs", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.hatching.km_12} XP each
@@ -718,13 +1105,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>1-Star Raids</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.star_1_raids}
                       onChange={(e) =>
-                        updateInput("star_1_raids", Number(e.target.value))
+                        handleNumberInput("star_1_raids", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.raids.star_1} XP each
@@ -733,13 +1122,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>3-Star Raids</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.star_3_raids}
                       onChange={(e) =>
-                        updateInput("star_3_raids", Number(e.target.value))
+                        handleNumberInput("star_3_raids", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.raids.star_3} XP each
@@ -748,13 +1139,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>5-Star Raids</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.star_5_raids}
                       onChange={(e) =>
-                        updateInput("star_5_raids", Number(e.target.value))
+                        handleNumberInput("star_5_raids", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.raids.star_5} XP each
@@ -763,13 +1156,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Mega Raids</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.mega_raids}
                       onChange={(e) =>
-                        updateInput("mega_raids", Number(e.target.value))
+                        handleNumberInput("mega_raids", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.raids.mega} XP each
@@ -778,13 +1173,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Shadow Raids</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.shadow_raids}
                       onChange={(e) =>
-                        updateInput("shadow_raids", Number(e.target.value))
+                        handleNumberInput("shadow_raids", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.raids.shadow} XP each
@@ -806,20 +1203,21 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                     <div key={star} className="space-y-2">
                       <Label>{star}-Star Battles</Label>
                       <Input
-                        type="number"
+                        type="text"
+                        inputMode="numeric"
                         min="0"
                         value={
                           inputs[
                             `star_${star}_battles` as keyof DetailedXPInputs
-                          ] as number
+                          ] as string
                         }
-                        onChange={(e) =>
-                          updateInput(
-                            `star_${star}_battles` as keyof DetailedXPInputs,
-                            Number(e.target.value)
-                          )
-                        }
+                        onChange={(e) => {
+                          let field =
+                            `star_${star}_battles` as keyof DetailedXPInputs;
+                          handleNumberInput(field, e.target.value);
+                        }}
                         className="glass-card border-white/20"
+                        placeholder="0"
                       />
                       <p className="text-xs text-muted-foreground">
                         +
@@ -835,13 +1233,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>In-Person Bonus</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.in_person_bonus}
                       onChange={(e) =>
-                        updateInput("in_person_bonus", Number(e.target.value))
+                        handleNumberInput("in_person_bonus", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.maxBattle.in_person_bonus} XP each
@@ -862,13 +1262,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Level 1 Moves</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.level_1_moves}
                       onChange={(e) =>
-                        updateInput("level_1_moves", Number(e.target.value))
+                        handleNumberInput("level_1_moves", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.maxMoves.level_1} XP each
@@ -877,13 +1279,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Level 2 Moves</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.level_2_moves}
                       onChange={(e) =>
-                        updateInput("level_2_moves", Number(e.target.value))
+                        handleNumberInput("level_2_moves", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.maxMoves.level_2} XP each
@@ -892,13 +1296,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Level Max Moves</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.level_max_moves}
                       onChange={(e) =>
-                        updateInput("level_max_moves", Number(e.target.value))
+                        handleNumberInput("level_max_moves", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.maxMoves.level_max} XP each
@@ -919,13 +1325,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Good Friends</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.good_friends}
                       onChange={(e) =>
-                        updateInput("good_friends", Number(e.target.value))
+                        handleNumberInput("good_friends", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.friendship.good_friends.toLocaleString()}{" "}
@@ -935,13 +1343,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Great Friends</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.great_friends}
                       onChange={(e) =>
-                        updateInput("great_friends", Number(e.target.value))
+                        handleNumberInput("great_friends", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +
@@ -952,13 +1362,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Ultra Friends</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.ultra_friends}
                       onChange={(e) =>
-                        updateInput("ultra_friends", Number(e.target.value))
+                        handleNumberInput("ultra_friends", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +
@@ -969,13 +1381,15 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                   <div className="space-y-2">
                     <Label>Best Friends</Label>
                     <Input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
                       min="0"
                       value={inputs.best_friends}
                       onChange={(e) =>
-                        updateInput("best_friends", Number(e.target.value))
+                        handleNumberInput("best_friends", e.target.value)
                       }
                       className="glass-card border-white/20"
+                      placeholder="0"
                     />
                     <p className="text-xs text-muted-foreground">
                       +{XP_MULTIPLIERS.friendship.best_friends.toLocaleString()}{" "}
@@ -1107,6 +1521,8 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
                           ? "Never (no daily XP)"
                           : timeToTarget.daysToTarget === 0
                           ? "Already reached!"
+                          : timeToTarget.daysToTarget === 1
+                          ? "1 day"
                           : `${timeToTarget.daysToTarget} days`}
                       </p>
                     </div>

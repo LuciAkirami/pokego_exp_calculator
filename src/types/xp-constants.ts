@@ -102,3 +102,15 @@ export const XP_MULTIPLIERS = {
     best_friends: 100000,
   },
 } as const;
+
+export const GAME_CONSTANTS = {
+  MAX_XP: 1000000000,
+  MAX_LEVEL: 50,
+  MAX_CATCHES: 3000,
+  MAX_EVOLUTIONS: 3000,
+  MAX_HATCHES: 300,
+  MAX_RAIDS: 300,
+  MAX_MAX_BATTLES: 300,
+  MAX_MAX_MOVES: 300,
+  MAX_FRIENDSHIP: 450,
+}

@@ -4,75 +4,75 @@ export type TargetType = "date" | "days";
 
 // Base interface with common fields
 export interface BaseXPInputs {
-  currentLevel: number;
-  currentXP: number;
-  targetLevel: number;
+  currentLevel: string;
+  currentXP: string;
+  targetLevel: string;
   lucky_egg: boolean;
   use_target_timeline: boolean;
   target_type: TargetType;
   target_date: string;
-  target_days: number;
+  target_days: string;
 }
 
 // Catching related types
 export interface CatchingInputs {
-  normal_catches: number;
-  new_pokemon_catches: number;
-  excellent_throws: number;
-  curve_balls: number;
-  first_throws: number;
-  great_throws: number;
-  nice_throws: number;
+  normal_catches: string;
+  new_pokemon_catches: string;
+  excellent_throws: string;
+  curve_balls: string;
+  first_throws: string;
+  great_throws: string;
+  nice_throws: string;
 }
 
 // Evolution related types
 export interface EvolutionInputs {
-  normal_evolutions: number;
-  new_pokemon_evolutions: number;
+  normal_evolutions: string;
+  new_pokemon_evolutions: string;
 }
 
 // Hatching related types
 export interface HatchingInputs {
-  km_2_eggs: number;
-  km_5_eggs: number;
-  km_7_eggs: number;
-  km_10_eggs: number;
-  km_12_eggs: number;
+  km_2_eggs: string;
+  km_5_eggs: string;
+  km_7_eggs: string;
+  km_10_eggs: string;
+  km_12_eggs: string;
 }
 
 // Raid related types
 export interface RaidInputs {
-  star_1_raids: number;
-  star_3_raids: number;
-  star_5_raids: number;
-  mega_raids: number;
-  shadow_raids: number;
+  star_1_raids: string;
+  star_3_raids: string;
+  star_5_raids: string;
+  mega_raids: string;
+  shadow_raids: string;
 }
 
 // Max Battle related types
 export interface MaxBattleInputs {
-  star_1_battles: number;
-  star_2_battles: number;
-  star_3_battles: number;
-  star_4_battles: number;
-  star_5_battles: number;
-  star_6_battles: number;
-  in_person_bonus: number;
+  star_1_battles: string;
+  star_2_battles: string;
+  star_3_battles: string;
+  star_4_battles: string;
+  star_5_battles: string;
+  star_6_battles: string;
+  in_person_bonus: string;
 }
 
 // Max Moves related types
 export interface MaxMovesInputs {
-  level_1_moves: number;
-  level_2_moves: number;
-  level_max_moves: number;
+  level_1_moves: string;
+  level_2_moves: string;
+  level_max_moves: string;
 }
 
 // Friendship related types
 export interface FriendshipInputs {
-  good_friends: number;
-  great_friends: number;
-  ultra_friends: number;
-  best_friends: number;
+  good_friends: string;
+  great_friends: string;
+  ultra_friends: string;
+  best_friends: string;
 }
 
 // Main detailed XP inputs that combines all categories

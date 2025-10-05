@@ -209,14 +209,16 @@ export default function HomePage() {
 
       {/* Calculator Cards */}
       <main className="px-6 space-y-4 pb-8">
-        {calculators.map((calculator) => (
-          <XPCalculatorCard
-            key={calculator.id}
-            {...calculator}
-            isSelected={selectedCalculator === calculator.id}
-            onClick={() => setSelectedCalculator(calculator.id)}
-          />
-        ))}
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
+          {calculators.map((calculator) => (
+            <XPCalculatorCard
+              key={calculator.id}
+              {...calculator}
+              isSelected={selectedCalculator === calculator.id}
+              onClick={() => setSelectedCalculator(calculator.id)}
+            />
+          ))}
+        </div>
       </main>
     </div>
   );
