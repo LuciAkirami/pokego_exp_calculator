@@ -213,7 +213,7 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
               Catch XP Calculator
             </h1>
             <p className="text-xs md:text-sm lg:text-base text-muted-foreground mt-1">
-              Calculate XP from catching Pokémon
+              Calculate XP from catching Pokemon
             </p>
           </div>
         </div>

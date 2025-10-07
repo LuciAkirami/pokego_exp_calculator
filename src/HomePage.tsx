@@ -75,14 +75,14 @@ export default function HomePage() {
   // This ensures our callback always has the latest value of selectedCalculator
   // Without this, the function would always see the initial value (null)
   const calculators = [
-    {
-      id: "level-50",
-      title: "To Level 50",
-      subtitle: "Simple XP calculator",
-      description: "Calculate XP needed to reach level 50",
-      icon: Target,
-      color: "from-red-600 to-red-500",
-    },
+    // {
+    //   id: "level-50",
+    //   title: "To Level 50",
+    //   subtitle: "Simple XP calculator",
+    //   description: "Calculate XP needed to reach level 50",
+    //   icon: Target,
+    //   color: "from-red-600 to-red-500",
+    // },
     {
       id: "detailed-xp",
       title: "Detailed XP",
@@ -149,9 +149,9 @@ export default function HomePage() {
     },
   ];
 
-  if (selectedCalculator === "level-50") {
-    return <Level50Calculator onBack={() => setSelectedCalculator(null)} />;
-  }
+  // if (selectedCalculator === "level-50") {
+  //   return <Level50Calculator onBack={() => setSelectedCalculator(null)} />;
+  // }
 
   if (selectedCalculator === "detailed-xp") {
     return <DetailedXPCalculator onBack={() => setSelectedCalculator(null)} />;
@@ -197,14 +197,14 @@ export default function HomePage() {
           </h1>
           <p className="text-sm text-muted-foreground mt-1">App Home Screen</p>
         </div>
-        <Button
+        {/* Ignore as of Now */}
+        {/* <Button
           variant="ghost"
           size="icon"
           className="glass-card glass-card-hover rounded-full w-10 h-10"
         >
           <ModeToggle />
-          {/* <Settings className="w-5 h-5 text-primary" /> */}
-        </Button>
+        </Button> */}
       </header>
 
       {/* Calculator Cards */}

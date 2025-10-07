@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LuckyEggCard } from "@/components/common/lucky-egg-card";
-import { GAME_CONSTANTS } from "@/types/xp-constants";
 
 interface EvolutionInputs {
   normal_evolutions: string;
@@ -117,7 +116,7 @@ export function EvolutionXPCalculator({ onBack }: EvolutionXPCalculatorProps) {
               Evolution XP Calculator
             </h1>
             <p className="text-xs md:text-sm lg:text-base text-muted-foreground mt-1">
-              Calculate XP from evolving Pokémon
+              Calculate XP from Evolving Pokemon
             </p>
           </div>
         </div>

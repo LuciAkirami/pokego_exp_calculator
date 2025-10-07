@@ -69,6 +69,11 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
   const handleNumberInput = (field: keyof Pick<HatchingInputs, 'two_km_eggs' | 'five_km_eggs' | 'seven_km_eggs' | 'ten_km_eggs' | 'twelve_km_eggs'>, value: string) => {
     // Allow empty string or valid numbers only
     if (value === "" || /^\d+$/.test(value)) {
+      const int_value = parseInt(value) || 0
+      // Limit to 100000
+      if (int_value > 100000) {
+        value = "100000"
+      }
       updateInput(field, value)
     }
   }
@@ -96,15 +101,28 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
             <ArrowLeft className="w-5 h-5 text-primary" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
-              Hatching XP Calculator
+            <h1 className="text-sm md:text-lg lg:text-xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+              {/* Apply line break only on mobile */}
+              Hatching XP
+              <br className="md:hidden" />
+              Calculator
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">Calculate XP from hatching eggs</p>
+            <p className="text-xs md:text-sm lg:text-base text-muted-foreground mt-1">Calculate XP from <br className="md:hidden" /> Hatching Eggs</p>
           </div>
         </div>
         <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
           <Egg className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium text-primary">{totalXP.toLocaleString()} XP</span>
+          <div className="flex items-center gap-1">
+            <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
+              {/* If totalXP is greater than 1000000 then show it as M */}
+              {totalXP > 1000000
+                ? (totalXP / 1000000).toFixed(1) + "M"
+                : totalXP.toLocaleString()}
+            </span>
+            <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
+              XP
+            </span>
+          </div>
         </div>
       </header>
 

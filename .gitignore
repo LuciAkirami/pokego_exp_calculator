@@ -25,3 +25,4 @@ src-tauri/gen/android/keystore.properties
 *.sw?
 .cursor/*
 src-cpy
+glassthemefiles/

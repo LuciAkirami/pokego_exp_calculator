@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LuckyEggCard } from "@/components/common/lucky-egg-card"
+import { XP_MULTIPLIERS } from "@/types/xp-constants"
 
 interface RaidInputs {
   one_star_raids: string
@@ -15,22 +16,6 @@ interface RaidInputs {
   mega_raids: string
   shadow_raids: string
   lucky_egg: boolean
-}
-
-interface RaidsXP {
-  one_star: number
-  three_star: number
-  five_star: number
-  mega: number
-  shadow: number
-}
-
-const raidsXP: RaidsXP = {
-  one_star: 3500,
-  three_star: 5000,
-  five_star: 10000,
-  mega: 10000,
-  shadow: 10000,
 }
 
 interface RaidXPCalculatorProps {
@@ -55,11 +40,11 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
     const megaRaids = Number.parseInt(inputs.mega_raids) || 0
     const shadowRaids = Number.parseInt(inputs.shadow_raids) || 0
     
-    totalXP += oneStarRaids * raidsXP.one_star
-    totalXP += threeStarRaids * raidsXP.three_star
-    totalXP += fiveStarRaids * raidsXP.five_star
-    totalXP += megaRaids * raidsXP.mega
-    totalXP += shadowRaids * raidsXP.shadow
+    totalXP += oneStarRaids * XP_MULTIPLIERS.raids.star_1
+    totalXP += threeStarRaids * XP_MULTIPLIERS.raids.star_3
+    totalXP += fiveStarRaids * XP_MULTIPLIERS.raids.star_5
+    totalXP += megaRaids * XP_MULTIPLIERS.raids.mega
+    totalXP += shadowRaids * XP_MULTIPLIERS.raids.shadow
     
     // Double XP if lucky egg is active
     if (inputs.lucky_egg) {
@@ -72,6 +57,11 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
   const handleNumberInput = (field: keyof Pick<RaidInputs, 'one_star_raids' | 'three_star_raids' | 'five_star_raids' | 'mega_raids' | 'shadow_raids'>, value: string) => {
     // Allow empty string or valid numbers only
     if (value === "" || /^\d+$/.test(value)) {
+      const int_value = parseInt(value) || 0
+      // Limit to 100000
+      if (int_value > 100000) {
+        value = "100000"
+      }
       updateInput(field, value)
     }
   }
@@ -99,26 +89,39 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
             <ArrowLeft className="w-5 h-5 text-primary" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-sm md:text-lg lg:text-xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
               Raid XP Calculator
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">Calculate XP from raid battles</p>
+            <p className="text-xs md:text-sm lg:text-base text-muted-foreground mt-1">
+              {/* Apply line break only on mobile */}
+              Calculate XP from <br className="md:hidden" /> Raid Battles
+            </p>
           </div>
         </div>
         <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
           <Sword className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium text-primary">{totalXP.toLocaleString()} XP</span>
+          <div className="flex items-center gap-1">
+            <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
+              {/* If totalXP is greater than 1000000 then show it as M */}
+              {totalXP > 1000000
+                ? (totalXP / 1000000).toFixed(1) + "M"
+                : totalXP.toLocaleString()}
+            </span>
+            <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
+              XP
+            </span>
+          </div>
         </div>
       </header>
 
       {/* Calculator Content */}
       <main className="px-6 space-y-6 pb-8">
         {/* Lucky Egg Toggle */}
-        <LuckyEggCard 
-          isActive={inputs.lucky_egg} 
-          onToggle={(checked) => updateInput("lucky_egg", checked)} 
+        <LuckyEggCard
+          isActive={inputs.lucky_egg}
+          onToggle={(checked) => updateInput("lucky_egg", checked)}
         />
-        
+
         {/* Input Fields */}
         <Card className="glass-card glass-card-hover">
           <CardHeader className="pb-4">
@@ -137,11 +140,15 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
                   inputMode="numeric"
                   min="0"
                   value={inputs.one_star_raids}
-                  onChange={(e) => handleNumberInput("one_star_raids", e.target.value)}
+                  onChange={(e) =>
+                    handleNumberInput("one_star_raids", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{raidsXP.one_star.toLocaleString()} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{XP_MULTIPLIERS.raids.star_1.toLocaleString()} XP each
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -152,11 +159,15 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
                   inputMode="numeric"
                   min="0"
                   value={inputs.three_star_raids}
-                  onChange={(e) => handleNumberInput("three_star_raids", e.target.value)}
+                  onChange={(e) =>
+                    handleNumberInput("three_star_raids", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{raidsXP.three_star.toLocaleString()} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{XP_MULTIPLIERS.raids.star_3.toLocaleString()} XP each
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -167,11 +178,15 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
                   inputMode="numeric"
                   min="0"
                   value={inputs.five_star_raids}
-                  onChange={(e) => handleNumberInput("five_star_raids", e.target.value)}
+                  onChange={(e) =>
+                    handleNumberInput("five_star_raids", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{raidsXP.five_star.toLocaleString()} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{XP_MULTIPLIERS.raids.star_5.toLocaleString()} XP each
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -182,11 +197,15 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
                   inputMode="numeric"
                   min="0"
                   value={inputs.mega_raids}
-                  onChange={(e) => handleNumberInput("mega_raids", e.target.value)}
+                  onChange={(e) =>
+                    handleNumberInput("mega_raids", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{raidsXP.mega.toLocaleString()} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{XP_MULTIPLIERS.raids.mega.toLocaleString()} XP each
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -197,11 +216,15 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
                   inputMode="numeric"
                   min="0"
                   value={inputs.shadow_raids}
-                  onChange={(e) => handleNumberInput("shadow_raids", e.target.value)}
+                  onChange={(e) =>
+                    handleNumberInput("shadow_raids", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{raidsXP.shadow.toLocaleString()} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{XP_MULTIPLIERS.raids.shadow.toLocaleString()} XP each
+                </p>
               </div>
             </div>
           </CardContent>
@@ -211,7 +234,9 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
         <Card className="glass-card glass-card-hover border-primary/40 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent">
           <CardContent className="p-6">
             <div className="text-center space-y-2">
-              <h3 className="text-lg font-semibold text-foreground">Total XP Earned</h3>
+              <h3 className="text-lg font-semibold text-foreground">
+                Total XP Earned
+              </h3>
               <div className="text-4xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
                 {totalXP.toLocaleString()}
               </div>
@@ -220,5 +245,5 @@ export function RaidXPCalculator({ onBack }: RaidXPCalculatorProps) {
         </Card>
       </main>
     </div>
-  )
+  );
 }

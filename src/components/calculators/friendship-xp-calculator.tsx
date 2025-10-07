@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LuckyEggCard } from "@/components/common/lucky-egg-card"
+import { XP_MULTIPLIERS, GAME_CONSTANTS } from "@/types/xp-constants"
 
 interface FriendshipInputs {
   good_friends: string
@@ -14,19 +15,6 @@ interface FriendshipInputs {
   lucky_egg: boolean
 }
 
-interface FriendshipXP {
-  good_friends: number
-  great_friends: number
-  ultra_friends: number
-  best_friends: number
-}
-
-const friendshipXP: FriendshipXP = {
-  good_friends: 3000,
-  great_friends: 10000,
-  ultra_friends: 50000,
-  best_friends: 100000,
-}
 
 interface FriendshipXPCalculatorProps {
   onBack: () => void
@@ -47,10 +35,10 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
     const greatFriends = Number.parseInt(inputs.great_friends) || 0
     const ultraFriends = Number.parseInt(inputs.ultra_friends) || 0
     const bestFriends = Number.parseInt(inputs.best_friends) || 0
-    totalXP += goodFriends * friendshipXP.good_friends
-    totalXP += greatFriends * friendshipXP.great_friends
-    totalXP += ultraFriends * friendshipXP.ultra_friends
-    totalXP += bestFriends * friendshipXP.best_friends
+    totalXP += goodFriends * XP_MULTIPLIERS.friendship.good_friends
+    totalXP += greatFriends * XP_MULTIPLIERS.friendship.great_friends
+    totalXP += ultraFriends * XP_MULTIPLIERS.friendship.ultra_friends
+    totalXP += bestFriends * XP_MULTIPLIERS.friendship.best_friends
     
     // Double XP if lucky egg is active
     if (inputs.lucky_egg) {
@@ -63,6 +51,11 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
   const handleNumberInput = (field: keyof Pick<FriendshipInputs, 'good_friends' | 'great_friends' | 'ultra_friends' | 'best_friends'>, value: string) => {
     // Allow empty string or valid numbers only
     if (value === "" || /^\d+$/.test(value)) {
+      const int_value = parseInt(value) || 0;
+      // Limit to 450
+      if (int_value > GAME_CONSTANTS.MAX_FRIENDSHIP) {
+        value = GAME_CONSTANTS.MAX_FRIENDSHIP.toString();
+      }
       updateInput(field, value)
     }
   }
@@ -90,18 +83,26 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
             <ArrowLeft className="w-5 h-5 text-primary" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
-              Friendship XP Calculator
+            <h1 className="text-sm md:text-lg lg:text-xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+              {/* Apply line break only on mobile */}
+              Friendship XP <br className="sm:hidden" /> Calculator
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Calculate XP from friendship levels
+            <p className="text-xs md:text-sm lg:text-base text-muted-foreground mt-1">
+              {/* Apply line break only on mobile */}
+              Calculate XP from <br className="sm:hidden" /> friendship levels
             </p>
           </div>
         </div>
         <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
           <Heart className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium text-primary">
-            {totalXP.toLocaleString()} XP
+          <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
+            {/* If totalXP is greater than 1000000 then show it as M */}
+            {totalXP > 1000000
+              ? (totalXP / 1000000).toFixed(1) + "M"
+              : totalXP.toLocaleString()}
+          </span>
+          <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
+            XP
           </span>
         </div>
       </header>
@@ -139,7 +140,8 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
                   placeholder="0"
                 />
                 <p className="text-xs text-muted-foreground">
-                  +{friendshipXP.good_friends.toLocaleString()} XP each
+                  +{XP_MULTIPLIERS.friendship.good_friends.toLocaleString()} XP
+                  each
                 </p>
               </div>
 
@@ -158,7 +160,8 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
                   placeholder="0"
                 />
                 <p className="text-xs text-muted-foreground">
-                  +{friendshipXP.great_friends.toLocaleString()} XP each
+                  +{XP_MULTIPLIERS.friendship.great_friends.toLocaleString()} XP
+                  each
                 </p>
               </div>
 
@@ -177,7 +180,8 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
                   placeholder="0"
                 />
                 <p className="text-xs text-muted-foreground">
-                  +{friendshipXP.ultra_friends.toLocaleString()} XP each
+                  +{XP_MULTIPLIERS.friendship.ultra_friends.toLocaleString()} XP
+                  each
                 </p>
               </div>
 
@@ -196,7 +200,8 @@ export function FriendshipXPCalculator({ onBack }: FriendshipXPCalculatorProps) 
                   placeholder="0"
                 />
                 <p className="text-xs text-muted-foreground">
-                  +{friendshipXP.best_friends.toLocaleString()} XP each
+                  +{XP_MULTIPLIERS.friendship.best_friends.toLocaleString()} XP
+                  each
                 </p>
               </div>
             </div>
