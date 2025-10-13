@@ -578,19 +578,20 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
             <ArrowLeft className="w-5 h-5 text-primary" />
           </Button>
           <div>
-            <h1 className="text-sm md:text-lg lg:text-xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
               Detailed XP Calculator
             </h1>
-            <p className="text-xs md:text-sm lg:text-base text-muted-foreground mt-1">
+            <p className="text-sm md:text-base lg:text-lg text-muted-foreground mt-1">
               Comprehensive XP calculation between levels
             </p>
           </div>
         </div>
-        <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
+        {/* If progress.categoryXP.total is greater than 1000000 then show it as M */}
+        {/* <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
           <BarChart3 className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 text-primary" />
           <div className="flex items-center gap-1">
             <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
-              {/* If progress.categoryXP.total is greater than 1000000 then show it as M */}
+              
               {progress.categoryXP.total > 1000000
                 ? (progress.categoryXP.total / 1000000).toFixed(1) + "M"
                 : progress.categoryXP.total.toLocaleString()}
@@ -599,7 +600,7 @@ export function DetailedXPCalculator({ onBack }: DetailedXPCalculatorProps) {
               XP
             </span>
           </div>
-        </div>
+        </div> */}
       </header>
 
       <main className="px-6 space-y-6 pb-8">

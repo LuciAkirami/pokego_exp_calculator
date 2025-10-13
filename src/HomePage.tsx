@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   // Settings,
-  Target,
+  // Target,
   BarChart3,
   Zap,
   Sword,
@@ -10,7 +10,7 @@ import {
   Shield,
   Heart,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { XPCalculatorCard } from "./components/common/xp-calculator-card";
 import { CatchXPCalculator } from "./components/calculators/catch-xp-calculator";
 import { EvolutionXPCalculator } from "./components/calculators/evolution-xp-calculator";
@@ -19,9 +19,9 @@ import { RaidXPCalculator } from "./components/calculators/raid-xp-calculator";
 import { MaxBattleXPCalculator } from "./components/calculators/max-battle-xp-calculator";
 import { MaxMovesXPCalculator } from "./components/calculators/max-moves-xp-calculator";
 import { FriendshipXPCalculator } from "./components/calculators/friendship-xp-calculator";
-import { Level50Calculator } from "./components/calculators/level-50-calculator";
+// import { Level50Calculator } from "./components/calculators/level-50-calculator";
 import { DetailedXPCalculator } from "./components/calculators/detailed-xp-calculator";
-import { ModeToggle } from "./components/mode-toggle";
+// import { ModeToggle } from "./components/mode-toggle";
 
 // Declare global type for androidBackCallback
 declare global {
@@ -193,7 +193,7 @@ export default function HomePage() {
       <header className="flex items-center justify-between p-6 pb-4">
         <div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
-            XP Calculators
+            Poke Exp Calculators
           </h1>
           <p className="text-sm text-muted-foreground mt-1">App Home Screen</p>
         </div>

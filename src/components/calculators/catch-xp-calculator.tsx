@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LuckyEggCard } from "@/components/common/lucky-egg-card";
-import { GAME_CONSTANTS } from "@/types/xp-constants";
 
 interface CatchingInputs {
   normal_catches: string;
@@ -209,15 +208,15 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
             <ArrowLeft className="w-5 h-5 text-primary" />
           </Button>
           <div>
-            <h1 className="text-sm md:text-lg lg:text-xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
               Catch XP Calculator
             </h1>
-            <p className="text-xs md:text-sm lg:text-base text-muted-foreground mt-1">
+            <p className="text-sm md:text-base lg:text-lg text-muted-foreground mt-1">
               Calculate XP from catching Pokemon
             </p>
           </div>
         </div>
-        <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
+        {/* <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
           <Zap className="w-4 h-4 text-primary" />
           <div className="flex items-center gap-1">
             <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
@@ -225,7 +224,7 @@ export function CatchXPCalculator({ onBack }: CatchXPCalculatorProps) {
             </span>
             <span className="text-xs md:text-sm lg:text-base font-medium text-primary">XP</span>
           </div>
-        </div>
+        </div> */}
       </header>
 
       {/* Calculator Content */}

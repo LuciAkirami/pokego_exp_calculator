@@ -1,4 +1,4 @@
-package com.luciferstudios.PokegoExpCalculator
+package com.luciferstudios.PokeExp
 
 import android.os.Bundle
 import android.view.KeyEvent  // NEW: Import for handling physical back button

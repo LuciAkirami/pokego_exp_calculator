@@ -113,21 +113,18 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
             <ArrowLeft className="w-5 h-5 text-primary" />
           </Button>
           <div>
-            <h1 className="text-sm md:text-lg lg:text-xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
-              {/* Apply line break only on mobile */}
-              Max Battle XP
-              <br className="md:hidden" />
-              Calculator
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+              Max Battle XP Calculator
             </h1>
-            <p className="text-xs md:text-sm lg:text-base text-muted-foreground mt-1">
-              Calculate XP from <br className="md:hidden" /> Max Battles
+            <p className="text-sm md:text-base lg:text-lg text-muted-foreground mt-1">
+              Calculate XP from Max Battles
             </p>
           </div>
         </div>
-        <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
+        {/* If totalXP is greater than 1000000 then show it as M */}
+        {/* <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
           <Shield className="w-4 h-4 text-primary" />
           <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
-            {/* If totalXP is greater than 1000000 then show it as M */}
             {totalXP > 1000000
               ? (totalXP / 1000000).toFixed(1) + "M"
               : totalXP.toLocaleString()}
@@ -135,7 +132,7 @@ export function MaxBattleXPCalculator({ onBack }: MaxBattleXPCalculatorProps) {
           <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
             XP
           </span>
-        </div>
+        </div> */}
       </header>
 
       {/* Calculator Content */}

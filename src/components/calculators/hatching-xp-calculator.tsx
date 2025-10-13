@@ -101,20 +101,20 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
             <ArrowLeft className="w-5 h-5 text-primary" />
           </Button>
           <div>
-            <h1 className="text-sm md:text-lg lg:text-xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
               {/* Apply line break only on mobile */}
-              Hatching XP
-              <br className="md:hidden" />
-              Calculator
+              Hatching XP Calculator
             </h1>
-            <p className="text-xs md:text-sm lg:text-base text-muted-foreground mt-1">Calculate XP from <br className="md:hidden" /> Hatching Eggs</p>
+            <p className="text-sm md:text-base lg:text-lg text-muted-foreground mt-1">
+              Calculate XP from Hatching Eggs
+            </p>
           </div>
         </div>
-        <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
+        {/* If totalXP is greater than 1000000 then show it as M */}
+        {/* <div className="glass-card rounded-full px-4 py-2 flex items-center gap-2">
           <Egg className="w-4 h-4 text-primary" />
           <div className="flex items-center gap-1">
             <span className="text-xs md:text-sm lg:text-base font-medium text-primary">
-              {/* If totalXP is greater than 1000000 then show it as M */}
               {totalXP > 1000000
                 ? (totalXP / 1000000).toFixed(1) + "M"
                 : totalXP.toLocaleString()}
@@ -123,17 +123,17 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
               XP
             </span>
           </div>
-        </div>
+        </div> */}
       </header>
 
       {/* Calculator Content */}
       <main className="px-6 space-y-6 pb-8">
         {/* Lucky Egg Toggle */}
-        <LuckyEggCard 
-          isActive={inputs.lucky_egg} 
-          onToggle={(checked) => updateInput("lucky_egg", checked)} 
+        <LuckyEggCard
+          isActive={inputs.lucky_egg}
+          onToggle={(checked) => updateInput("lucky_egg", checked)}
         />
-        
+
         {/* Input Fields */}
         <Card className="glass-card glass-card-hover">
           <CardHeader className="pb-4">
@@ -152,11 +152,15 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
                   inputMode="numeric"
                   min="0"
                   value={inputs.two_km_eggs}
-                  onChange={(e) => handleNumberInput("two_km_eggs", e.target.value)}
+                  onChange={(e) =>
+                    handleNumberInput("two_km_eggs", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{hatchingXP.two_km} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{hatchingXP.two_km} XP each
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -167,11 +171,15 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
                   inputMode="numeric"
                   min="0"
                   value={inputs.five_km_eggs}
-                  onChange={(e) => handleNumberInput("five_km_eggs", e.target.value)}
+                  onChange={(e) =>
+                    handleNumberInput("five_km_eggs", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{hatchingXP.five_km} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{hatchingXP.five_km} XP each
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -182,11 +190,15 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
                   inputMode="numeric"
                   min="0"
                   value={inputs.seven_km_eggs}
-                  onChange={(e) => handleNumberInput("seven_km_eggs", e.target.value)}
+                  onChange={(e) =>
+                    handleNumberInput("seven_km_eggs", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{hatchingXP.seven_km} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{hatchingXP.seven_km} XP each
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -197,11 +209,15 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
                   inputMode="numeric"
                   min="0"
                   value={inputs.ten_km_eggs}
-                  onChange={(e) => handleNumberInput("ten_km_eggs", e.target.value)}
+                  onChange={(e) =>
+                    handleNumberInput("ten_km_eggs", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{hatchingXP.ten_km} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{hatchingXP.ten_km} XP each
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -212,11 +228,15 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
                   inputMode="numeric"
                   min="0"
                   value={inputs.twelve_km_eggs}
-                  onChange={(e) => handleNumberInput("twelve_km_eggs", e.target.value)}
+                  onChange={(e) =>
+                    handleNumberInput("twelve_km_eggs", e.target.value)
+                  }
                   className="glass-card border-white/20"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground">+{hatchingXP.twelve_km} XP each</p>
+                <p className="text-xs text-muted-foreground">
+                  +{hatchingXP.twelve_km} XP each
+                </p>
               </div>
             </div>
           </CardContent>
@@ -226,7 +246,9 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
         <Card className="glass-card glass-card-hover border-primary/40 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent">
           <CardContent className="p-6">
             <div className="text-center space-y-2">
-              <h3 className="text-lg font-semibold text-foreground">Total XP Earned</h3>
+              <h3 className="text-lg font-semibold text-foreground">
+                Total XP Earned
+              </h3>
               <div className="text-4xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
                 {totalXP.toLocaleString()}
               </div>
@@ -235,5 +257,5 @@ export function HatchingXPCalculator({ onBack }: HatchingXPCalculatorProps) {
         </Card>
       </main>
     </div>
-  )
+  );
 }
